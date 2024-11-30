@@ -1,0 +1,13 @@
+{
+  "name": "loop-seller-portal",
+  "version": "1.0.0",
+  "private": true,
+"scripts": {
+    "backend": "node Backend/index.js",
+    "frontend": "npm run dev --prefix Frontend",
+    "dev": "concurrently \"npm run frontend\" \"npm run backend"
+  },
+  "devDependencies": {
+    "concurrently": "^7.0.0"
+  }
+}
