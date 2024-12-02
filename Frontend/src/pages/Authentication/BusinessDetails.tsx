@@ -8,7 +8,7 @@ const BusinessDetails: React.FC<{
 }> = ({ data, onChange, onNext, onPrevious }) => {
   const [formErrors, setFormErrors] = useState<any>({});
   const [isVerifying, setIsVerifying] = useState<boolean>(false);
-  const [gstDetails, setGstDetails] = useState<any>(null);
+  const [gstDetails, setGstDetails] = useState<any>(data.gstDetails || null);
 
   const gstRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
 
@@ -16,12 +16,25 @@ const BusinessDetails: React.FC<{
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
+    
+    // Update the data first
     onChange({ ...data, [name]: value });
 
     // Only verify GST when GST number is entered and matches format
     if (name === 'gstNumber') {
       if (gstRegex.test(value)) {
+        // Store the original GST number
+        const originalGstNumber = value;
         await verifyGstNumber(value);
+        
+        // Restore the original GST number after verification
+        onChange({
+          ...data,
+          [name]: originalGstNumber,
+          businessName: data.businessName,
+          businessType: data.businessType,
+          address: data.address
+        });
       } else {
         setGstDetails(null); // Clear GST details if format doesn't match
       }
@@ -68,14 +81,15 @@ const BusinessDetails: React.FC<{
         console.log("Frontend: Setting GST Details:", result.data);
         setGstDetails(result.data);
 
-        // Auto-fill business name if empty
-        if (!data.businessName) {
-          onChange({
-            ...data,
-            businessName: result.data.legalName,
-            businessType: result.data.businessType
-          });
-        }
+        // Store both GST details and other business info in the main data
+        onChange({
+          ...data,
+          businessName: result.data.legalName,
+          businessType: result.data.businessType,
+          address: result.data.address,
+          gstDetails: result.data
+        });
+        
         setFormErrors({ ...formErrors, gstNumber: "" });
         return true;
       } else {
@@ -141,6 +155,13 @@ const BusinessDetails: React.FC<{
   useEffect(() => {
     console.log("Frontend: Current gstDetails state:", gstDetails);
   }, [gstDetails]);
+
+  // Add useEffect to update gstDetails when data changes
+  useEffect(() => {
+    if (data.gstDetails) {
+      setGstDetails(data.gstDetails);
+    }
+  }, [data.gstDetails]);
 
   return (
     <div className="rounded-sm flex items-center justify-center w-full">
