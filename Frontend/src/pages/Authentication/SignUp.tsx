@@ -94,7 +94,7 @@ const MultiStepForm: React.FC = () => {
 
   return (
     <div className="form-container">
-      <AuthHeader/>
+      <AuthHeader />
       {errorMessage && <div className="error-message">{errorMessage}</div>}
       {/* Stepper Navigation */}
       <div className="flex items-center justify-center mb-6">
@@ -102,11 +102,10 @@ const MultiStepForm: React.FC = () => {
           <div
             key={step.id}
             onClick={() => setCurrentStep(step.id)} // Optional: Click to navigate
-            className={`cursor-pointer text-center py-2 px-4 mx-2 rounded ${
-              currentStep === step.id
+            className={`cursor-pointer text-center py-2 px-4 mx-2 rounded ${currentStep === step.id
                 ? "bg-orange-700 font-semibold border-2 border-white text-white"
                 : "bg-gray-200 text-gray-600"
-            }`}
+              }`}
           >
             {step.name}
           </div>
