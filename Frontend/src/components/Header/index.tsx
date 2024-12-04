@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 // import DropdownMessage from './DropdownMessage';
 import DropdownNotification from './DropdownNotification';
 import DropdownUser from './DropdownUser';
-import LogoIcon from '../../images/logo/logo-icon.svg';
 import DarkModeSwitcher from './DarkModeSwitcher';
 
 const Header = (props: {
@@ -29,7 +28,7 @@ const Header = (props: {
 
           if (response.ok) {
             const data = await response.json();
-            
+
             setUser(data);
           } else if (response.status === 401) {
             console.error('Unauthorized, redirecting to login');
@@ -65,13 +64,15 @@ const Header = (props: {
               e.stopPropagation();
               props.setSidebarOpen(!props.sidebarOpen);
             }}
-            className="z-99999 block rounded-sm border border-stroke bg-white p-1.5 shadow-sm dark:border-strokedark dark:bg-boxdark lg:hidden"
+            className="z-99999 block rounded-sm border border-stroke bg-white p-1.5 shadow-sm dark:border-stroke dark:bg-boxdark lg:hidden"
           >
-            {/* Hamburger icon */}
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
           </button>
 
-          <Link className="block flex-shrink-0 lg:hidden" to="/">
-            <img src={LogoIcon} alt="Logo" />
+          <Link className="block flex-shrink-0 lg:hidden " to="/">
+            <img className='h-12' src={"https://loopin.netlify.app/static/media/logo.245df7adb7de257385e2.png"} alt="Logo" />
           </Link>
         </div>
 

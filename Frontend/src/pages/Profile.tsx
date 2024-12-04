@@ -1,56 +1,10 @@
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
-import { useState, useEffect } from 'react';
-
-interface PersonalDetails {
-  fullName: string;
-  email: string;
-  phoneNumber: string;
-  address: string;
-}
-
-interface UserInfo {
-  personalDetails: PersonalDetails;
-}
+import useUserInfo from '../hooks/useUserInfo';
 
 const Profile = () => {
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const token = localStorage.getItem('authToken');
-        if (!token) {
-          throw new Error('User not authenticated. Please log in.');
-        }
-
-        const response = await fetch('/api/users/user-info', {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'Failed to fetch user info');
-        }
-
-        const data = await response.json();
-        console.log('User data:', data); // Log user data
-        setUserInfo(data);
-        setError(null); // Clear errors if successful
-      } catch (err: any) {
-        const message = err.message || 'Failed to fetch user info';
-        setError(message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUserInfo();
-  }, []);
+  const { userInfo, loading, error } = useUserInfo();
+  console.log("user data", userInfo)
 
   if (loading) {
     return <div className="text-center mt-10 text-lg font-semibold">Loading...</div>;
@@ -78,7 +32,7 @@ const Profile = () => {
           {/* User Information */}
           <div className="mt-6">
             <h3 className="mb-2 text-3xl font-bold text-gray-900 dark:text-gray-100">
-              {userInfo?.personalDetails?.fullName || 'Name not available'}
+              {userInfo?.personalDetails?.fullName ? userInfo?.personalDetails?.fullName.charAt(0).toUpperCase() + userInfo?.personalDetails?.fullName.slice(1) : 'Name not available'}
             </h3>
             <p className="text-lg font-medium text-gray-500 dark:text-gray-300">
               {userInfo?.personalDetails?.email || 'Email not available'}

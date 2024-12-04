@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React,  { useState } from 'react';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 
 const AddNewProduct = () => {

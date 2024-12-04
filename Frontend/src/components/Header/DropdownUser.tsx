@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ClickOutside from '../ClickOutside';
 import UserOne from '../../images/user/user-01.png'; // Placeholder
+import useUserInfo from '../../hooks/useUserInfo';
 
 interface User {
   name?: string;
@@ -16,6 +17,8 @@ interface DropdownUserProps {
 const DropdownUser: React.FC<DropdownUserProps> = ({ user, onLogout }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
+  const { userInfo } = useUserInfo();
+
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
       <Link
@@ -25,9 +28,11 @@ const DropdownUser: React.FC<DropdownUserProps> = ({ user, onLogout }) => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            {user?.name || 'Himanshu'}
+            {userInfo?.personalDetails?.fullName ? userInfo.personalDetails.fullName.charAt(0).toUpperCase() + userInfo.personalDetails.fullName.slice(1) : 'Guest'}
           </span>
-          <span className="block text-xs">{user?.role || 'Role'}</span>
+          <span className="block text-xs">
+            {userInfo?.businessDetails?.businessType || 'Role'}
+          </span>
         </span>
 
         <span className="h-12 w-12 rounded-full">
