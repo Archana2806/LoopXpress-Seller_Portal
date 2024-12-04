@@ -1,7 +1,11 @@
 import React,  { useState } from 'react';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 
-const AddNewProduct = () => {
+interface AddNewProductProps {
+  onProductAdded: () => void;
+}
+
+const AddNewProduct: React.FC<AddNewProductProps> = ({ onProductAdded }) => {
   const [productData, setProductData] = useState({
     title: '',
     brand: '',
@@ -36,7 +40,6 @@ const AddNewProduct = () => {
       if (response.ok) {
         const data = await response.json();
         alert('Product added successfully!');
-        // Reset form or redirect
         setProductData({
           title: '',
           brand: '',
@@ -48,6 +51,7 @@ const AddNewProduct = () => {
           size: '',
           description: '',
         });
+        onProductAdded();
       } else {
         const error = await response.json();
         alert(`Error: ${error.message}`);
