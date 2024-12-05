@@ -1,5 +1,5 @@
-import  SellerHeader  from './SellerHeader'
-import  SellerFooter  from './SellerFooter'
+import SellerHeader  from './SellerHeader'
+import SellerFooter  from './SellerFooter'
 import StartSellingSection from './StartSellingSection'
 import WhySellWithUs from './WhySellWithUs'
 import HowToRegister from './HowToRegister'

@@ -5,13 +5,72 @@ const router = express.Router();
 // Add a new product
 router.post('/add-product', async (req, res) => {
   try {
-    const product = new Product(req.body);
+    const {
+      title,
+      brand,
+      imageUrls,
+      originalPrice,
+      discountedPrice,
+      category,
+      subcategory,
+      quantity,
+      size,
+      description,
+      material,
+      weight,
+      dimensions,
+      manufacturingDate,
+      warranty,
+      shippingInfo,
+      highlights,
+      stockAlert,
+    } = req.body;
+
+    // Validate imageUrls
+    if (!Array.isArray(imageUrls) || imageUrls.length !== 4) {
+      return res.status(400).json({
+        success: false,
+        message: 'Product must have exactly 4 image URLs'
+      });
+    }
+
+    // Create new product
+    const product = new Product({
+      title,
+      brand,
+      imageUrls,
+      originalPrice: Number(originalPrice),
+      discountedPrice: Number(discountedPrice),
+      category,
+      subcategory,
+      quantity: Number(quantity),
+      size,
+      description,
+      material,
+      weight,
+      dimensions,
+      manufacturingDate: manufacturingDate ? new Date(manufacturingDate) : undefined,
+      warranty,
+      shippingInfo,
+      highlights: highlights || [],
+      stockAlert: Number(stockAlert),
+    });
+
+    // Save the product
     await product.save();
-    console.log('Product saved to database:', product);
-    res.status(201).json(product);
+
+    res.status(201).json({
+      success: true,
+      message: 'Product added successfully',
+      product
+    });
   } catch (error) {
-    console.error('Error saving product:', error);
-    res.status(400).json({ message: error.message });
+    console.error('Error adding product:', error);
+    res.status(400).json({
+      success: false,
+      message: 'Failed to add product',
+      error: error.message
+    });
   }
 });
 
@@ -29,10 +88,19 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
-    if (!product) return res.status(404).json({ message: 'Product not found' });
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: 'Product not found'
+      });
+    }
     res.json(product);
   } catch (error) {
-    res.status(500).json({ message: 'Failed to fetch product', error: error.message });
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching product',
+      error: error.message
+    });
   }
 });
 

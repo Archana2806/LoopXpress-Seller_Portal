@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface Product {
   _id: string;
   title: string;
   brand: string;
-  imageUrl: string;
+  imageUrls: string[];
   originalPrice: number;
   discountedPrice: number;
   category: string;
@@ -18,6 +19,7 @@ const ProductList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(0);
   const rowsPerPage = 5;
+  const navigate = useNavigate();
 
   const fetchProducts = async () => {
     try {
@@ -90,11 +92,15 @@ const ProductList = () => {
     setPage(newPage);
   };
 
+  const handleProductClick = (productId: string) => {
+    navigate(`/product/${productId}`);
+  };
+
   return (
     <div className="min-h-screen bg-gray-200 p-6">
-      <div className="container mx-auto max-w-5xl bg-white shadow-lg rounded-lg p-6 border border-gray-300">
+      <div className="container mx-auto max-w-7xl">
         {/* Header */}
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-6 bg-white p-4 rounded-lg shadow">
           <h1 className="text-2xl font-bold text-gray-800">Product List</h1>
           <input
             type="text"
@@ -105,57 +111,82 @@ const ProductList = () => {
           />
         </div>
 
-        {/* Product Table */}
-        <table className="min-w-full bg-white rounded-lg shadow-sm">
-          <thead className="bg-gray-300">
-            <tr>
-              <th className="px-4 py-2 text-left text-gray-700">Image</th>
-              <th className="px-4 py-2 text-left text-gray-700">Name</th>
-              <th className="px-4 py-2 text-left text-gray-700">Price</th>
-              <th className="px-4 py-2 text-left text-gray-700">Category</th>
-              <th className="px-4 py-2 text-left text-gray-700">Description</th>
-              <th className="px-4 py-2 text-left text-gray-700">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {displayedProducts.map((product) => (
-              <tr key={product._id} className="hover:bg-gray-100">
-                <td className="px-4 py-2">
-                  <img
-                    src={product.imageUrl}
-                    alt={product.title}
-                    className="w-12 h-12 rounded-lg object-cover"
-                  />
-                </td>
-                <td className="px-4 py-2 text-gray-800">{product.title}</td>
-                <td className="px-4 py-2 text-gray-800">₹{product.originalPrice}</td>
-                <td className="px-4 py-2 text-gray-800">{product.category}</td>
-                <td className="px-4 py-2 text-gray-800">{product.description}</td>
-                <td className="px-4 py-2">
+        {/* Product Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {displayedProducts.map((product) => (
+            <div 
+              key={product._id} 
+              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+            >
+              {/* Product Image */}
+              <div 
+                className="h-48 overflow-hidden cursor-pointer"
+                onClick={() => handleProductClick(product._id)}
+              >
+                <img
+                  src={product.imageUrls[0]}
+                  alt={product.title}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+
+              {/* Product Details */}
+              <div className="p-4">
+                <p className="text-gray-600 text-sm mb-2">
+                  Brand: {product.brand}
+                </p>
+                <h2 className="text-xl font-semibold text-gray-800 mb-2 truncate">
+                  {product.title}
+                </h2>
+                
+                {/* Price Section */}
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <span className="text-lg font-bold text-orange-600">
+                      ₹{product.discountedPrice}
+                    </span>
+                    {product.originalPrice > product.discountedPrice && (
+                      <span className="text-sm text-gray-500 line-through ml-2">
+                        ₹{product.originalPrice}
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-sm text-gray-600">
+                    Stock: {product.quantity}
+                  </span>
+                </div>
+
+                {/* Description */}
+                <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                  {product.description}
+                </p>
+
+                {/* Action Buttons */}
+                <div className="flex justify-between gap-2">
                   <button
-                    onClick={() => alert('Edit functionality coming soon!')}
-                    className="bg-yellow-500 text-white px-3 py-1 rounded-md mr-2 hover:bg-yellow-600"
+                    onClick={() => handleProductClick(product._id)}
+                    className="flex-1 bg-[#20651e] text-white px-3 py-1.5 rounded-md hover:bg-[#20651e] transition-colors"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDelete(product._id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
+                    className="flex-1 bg-[#24303f] text-white px-3 py-1.5 rounded-md hover:bg-[#24303f] transition-colors"
                   >
                     Delete
                   </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
 
         {/* Pagination */}
-        <div className="flex justify-between items-center mt-4">
+        <div className="flex justify-between items-center mt-6 bg-white p-4 rounded-lg shadow">
           <button
             onClick={() => handlePageChange(page - 1)}
             disabled={page === 0}
-            className="flex items-center px-4 py-2 text-base font-semibold text-white bg-orange-500 rounded-md hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors duration-150 shadow-sm"
+            className="flex items-center px-4 py-2 text-base font-semibold text-white bg-[#20651e] rounded-md hover:bg-[#20651e] disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors duration-150 shadow-sm"
           >
             <svg 
               className="w-5 h-5 mr-2" 
@@ -175,7 +206,7 @@ const ProductList = () => {
           <button
             onClick={() => handlePageChange(page + 1)}
             disabled={page + 1 >= Math.ceil(filteredProducts.length / rowsPerPage)}
-            className="flex items-center px-4 py-2 text-base font-semibold text-white bg-orange-500 rounded-md hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors duration-150 shadow-sm"
+            className="flex items-center px-4 py-2 text-base font-semibold text-white bg-[#20651e] rounded-md hover:bg-[#20651e] disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors duration-150 shadow-sm"
           >
             Next
             <svg 
