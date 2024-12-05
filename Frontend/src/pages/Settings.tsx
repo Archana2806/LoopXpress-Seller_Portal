@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 import PersonalSettings from './AccountSetting/PersonalSettings';
 import BusinessSettings from './AccountSetting/BusinessSettings';
-import BankSettings from './AccountSetting/BankSettings';
+
 
 const Settings: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
@@ -10,7 +10,7 @@ const Settings: React.FC = () => {
   const steps = [
     { label: "Personal Details", content: <PersonalSettings /> },
     { label: "Business Details", content: <BusinessSettings /> },
-    { label: "Bank Details", content: <BankSettings /> },
+
   ];
 
   const nextStep = () => {

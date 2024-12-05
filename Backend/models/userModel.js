@@ -1,84 +1,92 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
-const userSchema = new mongoose.Schema({
-  personalDetails: {
-    fullName: {
-      type: String,
-      required: true,
+const userSchema = new mongoose.Schema(
+  {
+    personalDetails: {
+      fullName: {
+        type: String,
+        required: true,
+      },
+      email: {
+        type: String,
+        required: true,
+        unique: true, // Ensure no duplicate emails
+        lowercase: true, // Normalize email to lowercase
+        trim: true, // Remove extra spaces from the email
+      },
+      phoneNumber: {
+        type: String,
+        required: true,
+      },
+      address: {
+        type: String,
+        required: true,
+      },
+      password: {
+        type: String,
+        required: true,
+        select: true, // Prevent password from being returned by default
+      },
     },
-    email: {
-      type: String,
-      required: true,
-      unique: true,  // Ensure no duplicate emails
-      lowercase: true, // Normalize email to lowercase
-      trim: true, // Remove extra spaces from the email
+    businessDetails: {
+      businessName: {
+        type: String,
+        required: true,
+      },
+      businessType: {
+        type: String,
+        required: true,
+      },
+      businessPhone: {
+        type: String,
+        required: true,
+      },
+      businessEmail: {
+        type: String,
+        required: true,
+      },
+      gstNumber: {
+        type: String,
+        required: true,
+      },
     },
-    phoneNumber: {
-      type: String,
-      required: true,
-    },
-    address: {
-      type: String,
-      required: true,
-    },
-    password: {   // Add password field to handle user authentication
-      type: String,
-      required: true,
+    bankDetails: {
+      accountNumber: {
+        type: String,
+        required: true,
+      },
+      bankName: {
+        type: String,
+        required: true,
+      },
+      ifscCode: {
+        type: String,
+        required: true,
+      },
     },
   },
-  businessDetails: {
-    businessName: {
-      type: String,
-      required: true,
-    },
-    businessType: {
-      type: String,
-      required: true,
-    },
-    businessPhone: {
-      type: String,
-      required: true,
-    },
-    businessEmail: {
-      type: String,
-      required: true,
-    },
-    gstNumber: {
-      type: String,
-      required: true,
-    },
-  },
-  bankDetails: {
-    accountNumber: {
-      type: String,
-      required: true,
-    },
-    bankName: {
-      type: String,
-      required: true,
-    },
-    ifscCode: {
-      type: String,
-      required: true,
-    },
-  },
-}, { timestamps: true }); // Automatically adds createdAt and updatedAt fields
+  { timestamps: true } // Automatically adds createdAt and updatedAt fields
+);
 
 // Hash the password before saving the user
-// Hash the password before saving the user
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function (next) {
+  // Check if password is modified
   if (this.isModified('personalDetails.password')) {
-    console.log('Password before hashing:', this.personalDetails.password);  // Log the password
     if (!this.personalDetails.password) {
-      return next(new Error("Password is required"));
+      return next(new Error('Password is required'));
     }
+
     const salt = await bcrypt.genSalt(10);
     this.personalDetails.password = await bcrypt.hash(this.personalDetails.password, salt);
   }
   next();
 });
 
+// Instance method to compare passwords
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.personalDetails.password);
+};
 
 // Create indexes for better query performance, especially for email
 userSchema.index({ 'personalDetails.email': 1 });

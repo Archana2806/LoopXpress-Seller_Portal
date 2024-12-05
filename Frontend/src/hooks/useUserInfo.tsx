@@ -71,30 +71,41 @@ const useUserInfo = () => {
 
   const updateUserInfo = async (updatedDetails: any) => {
     try {
-      const response = await fetch('/api/users/update-user-info', {
+      const token = localStorage.getItem('authToken');
+      if (!token) throw new Error('User not authenticated. Please log in.');
+
+      console.log('Token being sent:', token);
+
+      const response = await fetch('http://localhost:5000/api/users/update-user-info', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`, // Use your auth token here
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(updatedDetails),
       });
-  
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Failed to update user info');
       }
-  
-      const updatedUser = await response.json(); // Parse the returned JSON
+
+      const updatedUser = await response.json();
+      setUserInfo(updatedUser); // Update the state
+
+      // Invalidate the old JWT token if the password was updated
+      if (updatedDetails.password) {
+        localStorage.removeItem('authToken'); // Remove the old token
+      }
+
       return updatedUser; // Return the updated user object
     } catch (err) {
-      console.error('Error in updateUserInfo:', err);
+      console.error('Error in updateUserInfo:', err.message);
       throw err;
     }
   };
-  
-  
-  
+
+
 
   const refetch = () => {
     setLoading(true);
