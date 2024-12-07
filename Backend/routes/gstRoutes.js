@@ -1,7 +1,27 @@
 import express from "express";
 import axios from "axios";
+import User from "../models/userModel.js";
 
 const router = express.Router();
+
+router.post("/check-exists", async (req, res) => {
+  try {
+    const { gstin } = req.body;
+    const existingGst = await User.findOne({ 'businessDetails.gstNumber': gstin });
+
+    return res.json({
+      exists: !!existingGst,
+      message: existingGst ? 'GST number already registered' : 'GST number available'
+    });
+
+  } catch (error) {
+    console.error('Error checking GST existence:', error);
+    return res.status(500).json({
+      exists: false,
+      message: 'Error checking GST number'
+    });
+  }
+});
 
 router.post("/verify-gst", async (req, res) => {
     const { gstin } = req.body;

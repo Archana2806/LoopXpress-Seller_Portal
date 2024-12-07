@@ -3,116 +3,134 @@ import mongoose from 'mongoose';
 const productSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: [true, 'Product title is required'],
-    trim: true,
+    required: [true, 'Title is required'],
+    trim: true
   },
   brand: {
     type: String,
-    required: [true, 'Brand name is required'],
-    trim: true,
+    required: [true, 'Brand is required'],
+    trim: true
   },
   imageUrls: {
     type: [String],
+    required: [true, 'At least one image URL is required'],
     validate: {
       validator: function(v) {
-        return v.length === 4;
+        return v.length > 0 && v.some(url => url.trim() !== '');
       },
-      message: 'Product must have exactly 4 image URLs'
-    },
-    required: [true, 'Product images are required']
+      message: 'At least one valid image URL is required'
+    }
   },
   originalPrice: {
     type: Number,
     required: [true, 'Original price is required'],
-    min: 0,
+    min: [0, 'Price cannot be negative']
   },
   discountedPrice: {
     type: Number,
     required: [true, 'Discounted price is required'],
-    min: 0,
+    min: [0, 'Price cannot be negative'],
+    validate: {
+      validator: function(v) {
+        return v <= this.originalPrice;
+      },
+      message: 'Discounted price cannot be higher than original price'
+    }
   },
   category: {
     type: String,
     required: [true, 'Category is required'],
+    trim: true,
+    enum: [
+      'gym-essentials',
+      'outdoor-fitness',
+      'yoga',
+      'cricket',
+      'squash',
+      'golf',
+      'gymnastics',
+      'team-sports',
+      'racquet-sports',
+      'swimming',
+      'cycling',
+      'combat-sports',
+      'winter-sports',
+      'kabaddi',
+      'kids-sports',
+      'fitness-trackers',
+      'athletic-care',
+      'sports-nutrition',
+      'training-equipment',
+      'sports-accessories'
+    ]
   },
   subcategory: {
     type: String,
     required: [true, 'Subcategory is required'],
+    trim: true
   },
   quantity: {
     type: Number,
     required: [true, 'Quantity is required'],
-    min: 0,
+    min: [0, 'Quantity cannot be negative']
   },
   size: {
     type: String,
-    trim: true,
+    trim: true
   },
   description: {
     type: String,
-    required: [true, 'Product description is required'],
-    trim: true,
+    required: [true, 'Description is required'],
+    trim: true
   },
   material: {
     type: String,
-    trim: true,
+    trim: true
   },
   weight: {
     type: String,
-    trim: true,
+    trim: true
   },
   dimensions: {
     type: String,
-    trim: true,
+    trim: true
   },
   manufacturingDate: {
-    type: Date,
+    type: Date
   },
   warranty: {
     type: String,
-    trim: true,
+    trim: true
   },
   shippingInfo: {
     type: String,
-    trim: true,
+    trim: true
   },
   highlights: {
     type: [String],
-    default: [],
+    validate: {
+      validator: function(v) {
+        return v.every(highlight => highlight.trim() !== '');
+      },
+      message: 'Highlights cannot be empty strings'
+    }
   },
   stockAlert: {
     type: Number,
     required: [true, 'Stock alert level is required'],
-    min: 0,
-  },
-}, {
-  timestamps: true,
-});
-
-productSchema.index({ title: 'text', brand: 'text', description: 'text' });
-
-productSchema.pre('save', function(next) {
-  this.updatedAt = new Date();
-  next();
-});
-
-productSchema.virtual('discountPercentage').get(function() {
-  if (this.originalPrice && this.discountedPrice) {
-    return Math.round(((this.originalPrice - this.discountedPrice) / this.originalPrice) * 100);
+    min: [0, 'Stock alert level cannot be negative']
   }
-  return 0;
+}, {
+  timestamps: true
 });
 
-productSchema.methods.isLowStock = function() {
-  return this.quantity <= this.stockAlert;
-};
+// Add indexes for better search performance
+productSchema.index({ 
+  title: 'text', 
+  brand: 'text', 
+  category: 'text', 
+  subcategory: 'text',
+  description: 'text' 
+});
 
-productSchema.statics.findLowStock = function() {
-  return this.find({
-    $expr: {
-      $lte: ['$quantity', '$stockAlert']
-    }
-  });
-};
-
-export default mongoose.model('Product', productSchema);
+export const Product = mongoose.model('Product', productSchema);

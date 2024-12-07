@@ -36,11 +36,13 @@ const ProductDetails = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/products/${id}`);
+        const response = await fetch(`http://localhost:5000/api/products/product/${id}`);
+        console.log('Fetching product with ID:', id);
         if (!response.ok) {
           throw new Error('Product not found');
         }
         const data = await response.json();
+        console.log('Received product data:', data);
         setProduct(data);
       } catch (error) {
         console.error('Error fetching product:', error);

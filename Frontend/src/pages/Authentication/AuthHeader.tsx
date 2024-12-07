@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from "react-router-dom"
 export const AuthHeader = () => {
 
@@ -13,8 +14,7 @@ export const AuthHeader = () => {
                     <div className="flex items-center space-x-2">
                         <Link to="/">
                             <img
-                                src="https://loopin.netlify.app/static/media/logo.245df7adb7de257385e2.png"
-                                alt="Logo"
+                                src={"/src/images/logo/looplogo.png"} alt="Logo" 
                                 className="h-20"
                             />
                         </Link>

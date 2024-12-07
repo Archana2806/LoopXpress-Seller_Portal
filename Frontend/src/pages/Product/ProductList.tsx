@@ -23,8 +23,12 @@ const ProductList = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/products');
+      const response = await fetch('http://localhost:5000/api/products/products');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
       const data = await response.json();
+      console.log('Fetched data:', data);
       setProducts(data);
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -32,25 +36,7 @@ const ProductList = () => {
   };
 
   useEffect(() => {
-    let mounted = true;
-
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/api/products');
-        const data = await response.json();
-        if (mounted) {
-          setProducts(data);
-        }
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    };
-
     fetchProducts();
-
-    return () => {
-      mounted = false;
-    };
   }, []);
 
   // Filter products based on search term
@@ -69,13 +55,12 @@ const ProductList = () => {
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/products/${id}`, {
+        const response = await fetch(`http://localhost:5000/api/products/delete-product/${id}`, {
           method: 'DELETE',
         });
 
         if (response.ok) {
-          // Only update UI if delete was successful
-          await fetchProducts(); // Re-fetch the updated list from server
+          await fetchProducts();
         } else {
           alert('Failed to delete product');
         }
@@ -93,6 +78,7 @@ const ProductList = () => {
   };
 
   const handleProductClick = (productId: string) => {
+    console.log('Navigating to:', `/product/${productId}`); // Debug log
     navigate(`/product/${productId}`);
   };
 
@@ -164,7 +150,10 @@ const ProductList = () => {
                 {/* Action Buttons */}
                 <div className="flex justify-between gap-2">
                   <button
-                    onClick={() => handleProductClick(product._id)}
+                    onClick={() => {
+                      console.log('Clicked product ID:', product._id); // Debug log
+                      navigate(`/product/${product._id}`);
+                    }}
                     className="flex-1 bg-[#20651e] text-white px-3 py-1.5 rounded-md hover:bg-[#20651e] transition-colors"
                   >
                     Edit

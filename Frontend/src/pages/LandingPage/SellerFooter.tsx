@@ -1,3 +1,4 @@
+import React from 'react';
 import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
 
 const Footer = () => {
@@ -8,8 +9,7 @@ const Footer = () => {
                     {/* Logo Section */}
                     <div className="flex flex-col items-start">
                         <img
-                            src="https://loopin.netlify.app/static/media/logo.245df7adb7de257385e2.png"
-                            alt="Logo"
+                            src={"/src/images/logo/looplogo.png"} alt="Logo" 
                             className="w-32 mb-4"
                         />
                         <p className="text-gray-300">
