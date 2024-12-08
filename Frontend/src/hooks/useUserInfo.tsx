@@ -5,6 +5,8 @@ interface PersonalDetails {
   email: string;
   phoneNumber: string;
   address: string;
+  password: string;
+
 }
 interface BusinessDetails {
   businessName: string;
@@ -74,7 +76,10 @@ const useUserInfo = () => {
       const token = localStorage.getItem('authToken');
       if (!token) throw new Error('User not authenticated. Please log in.');
 
-      console.log('Token being sent:', token);
+      // Remove password from updatedDetails if not changed
+      if (!updatedDetails.personalDetails.password) {
+        delete updatedDetails.personalDetails.password;
+      }
 
       const response = await fetch('http://localhost:5000/api/users/update-user-info', {
         method: 'PUT',
@@ -94,7 +99,7 @@ const useUserInfo = () => {
       setUserInfo(updatedUser); // Update the state
 
       // Invalidate the old JWT token if the password was updated
-      if (updatedDetails.password) {
+      if (updatedDetails.personalDetails.password) {
         localStorage.removeItem('authToken'); // Remove the old token
       }
 

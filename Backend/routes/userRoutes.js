@@ -21,18 +21,27 @@ router.post('/submit-form', async (req, res) => {
 // Login route
 router.post('/signin', async (req, res) => {
   const { email, password } = req.body;
+  console.log("email and password", email, password
+  )
 
   try {
-    // Explicitly include the password field
     const user = await User.findOne({ 'personalDetails.email': email }).select(
       '+personalDetails.password'
     );
-
+    console.log(user)
     if (!user) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
 
     const hashedPassword = user.personalDetails.password;
+    console.log("hashedpassword", hashedPassword)
+
+    // Compare the provided password with the stored hashed password
+    const isMatch = await bcrypt.compare(password, hashedPassword);
+
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Invalid email or password' });
+    }
 
     // Generate a JWT token
     const token = jwt.sign(
@@ -41,7 +50,6 @@ router.post('/signin', async (req, res) => {
       { expiresIn: '2h' }
     );
 
-    // Respond with the token
     res.json({
       message: 'Login successful',
       token,
@@ -56,6 +64,7 @@ router.post('/signin', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
 
 
 // Protected user info route

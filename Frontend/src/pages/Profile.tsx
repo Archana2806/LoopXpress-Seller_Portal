@@ -1,3 +1,4 @@
+import React from 'react';
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 import useUserInfo from '../hooks/useUserInfo';
 
@@ -11,7 +12,7 @@ const Profile = () => {
   }
 
   if (error) {
-    return <div className="text-center text-red-500 mt-10 text-lg">{error}</div>;
+    return <div className="text-center text-red-500 mt-10 text-lg">{error.message}</div>;
   }
 
   return (
