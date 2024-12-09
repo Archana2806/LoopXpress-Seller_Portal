@@ -175,4 +175,3 @@ const BusinessSettings = () => {
 };
 
 export default BusinessSettings;
- 

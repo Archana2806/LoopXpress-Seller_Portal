@@ -1,13 +1,29 @@
 import React from "react";
 
 interface PreviewFormProps {
-    data: any;
+    data: {
+        personalDetails: any;
+        businessDetails: {
+            businessName: string;
+            gstNumber: string;
+            address?: string;
+            gstDetails?: {
+                address?: string;
+                legalName?: string;
+                tradeName?: string;
+            };
+        };
+        bankDetails: any;
+    };
     onPrevious: () => void;
     onSubmit: () => void;
 }
 
 const PreviewForm: React.FC<PreviewFormProps> = ({ data, onPrevious, onSubmit }) => {
     const { personalDetails, businessDetails, bankDetails } = data;
+
+    console.log("Preview Form Data:", data);
+    console.log("Business Details:", businessDetails);
 
     return (
         <div className="rounded-sm flex items-center justify-center w-full">
@@ -30,7 +46,10 @@ const PreviewForm: React.FC<PreviewFormProps> = ({ data, onPrevious, onSubmit })
                     <div className="space-y-2">
                         <p className="flex justify-between"><strong>Business Name:</strong> {businessDetails.businessName}</p>
                         <p className="flex justify-between"><strong>GST Number:</strong> {businessDetails.gstNumber}</p>
-                        <p className="flex justify-between"><strong>Business Address:</strong> {businessDetails.businessAddress || 'N/A'}</p>
+                        <p className="flex justify-between">
+                            <strong>Business Address:</strong>
+                            {businessDetails.gstDetails?.address || businessDetails.address || 'Address not available'}
+                        </p>
                     </div>
                 </div>
 

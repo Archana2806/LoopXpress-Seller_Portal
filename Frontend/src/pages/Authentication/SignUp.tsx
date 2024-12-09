@@ -78,7 +78,7 @@ const MultiStepForm: React.FC = () => {
       console.log("Form data submitted successfully:", response.data);
       localStorage.setItem("authToken", response.data.token);
       setErrorMessage(""); // Clear error message if submission is successful
-      window.location.href = "/auth/signin"; // Navigate to the home page after successful submission
+      window.location.href = "/dashboard"; // Navigate to the home page after successful submission
     } catch (error) {
       console.error("Error submitting form:", error);
       setErrorMessage("Error submitting form. Please try again later.");
@@ -103,8 +103,8 @@ const MultiStepForm: React.FC = () => {
             key={step.id}
             onClick={() => setCurrentStep(step.id)} // Optional: Click to navigate
             className={`cursor-pointer text-center py-2 px-4 mx-2 rounded ${currentStep === step.id
-                ? "bg-orange-700 font-semibold border-2 border-white text-white"
-                : "bg-gray-200 text-gray-600"
+              ? "bg-orange-700 font-semibold border-2 border-white text-white"
+              : "bg-gray-200 text-gray-600"
               }`}
           >
             {step.name}

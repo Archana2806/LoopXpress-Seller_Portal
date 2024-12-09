@@ -63,7 +63,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2 px-6">
         <NavLink to="/">
-          <img src={"https://loopin.netlify.app/static/media/logo.245df7adb7de257385e2.png"} className='h-24' alt="Logo" />
+          <img src={"/src/images/logo/looplogo.png"} className='h-24' alt="Logo" />
         </NavLink>
 
         <button

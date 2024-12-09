@@ -8,7 +8,7 @@ const BusinessDetails: React.FC<{
 }> = ({ data, onChange, onNext, onPrevious }) => {
   const [formErrors, setFormErrors] = useState<any>({});
   const [isVerifying, setIsVerifying] = useState<boolean>(false);
-  const [gstDetails, setGstDetails] = useState<any>(null);
+  const [gstDetails, setGstDetails] = useState<any>(data.gstDetails || null);
 
   const gstRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
 
@@ -16,19 +16,64 @@ const BusinessDetails: React.FC<{
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
+
     onChange({ ...data, [name]: value });
 
-    // Only verify GST when GST number is entered and matches format
     if (name === 'gstNumber') {
       if (gstRegex.test(value)) {
+        const originalGstNumber = value;
+
+        const isGstExists = await checkGstInDatabase(value);
+
+        if (isGstExists) {
+          setFormErrors({
+            ...formErrors,
+            gstNumber: "This GST number is already registered with another account."
+          });
+          setGstDetails(null);
+          return;
+        }
+
         await verifyGstNumber(value);
+
+        onChange({
+          ...data,
+          [name]: originalGstNumber,
+          businessName: data.businessName,
+          businessType: data.businessType,
+          address: data.address
+        });
       } else {
-        setGstDetails(null); // Clear GST details if format doesn't match
+        setGstDetails(null);
       }
     }
   };
 
-  // Simplified GST Verification Function
+  const checkGstInDatabase = async (gstNumber: string) => {
+    try {
+      const response = await fetch("http://localhost:5000/api/gst/check-exists", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          gstin: gstNumber,
+        }),
+      });
+
+      const result = await response.json();
+      return result.exists;
+
+    } catch (error) {
+      console.error("Error checking GST in database:", error);
+      setFormErrors({
+        ...formErrors,
+        gstNumber: "Error checking GST number availability."
+      });
+      return false;
+    }
+  };
+
   const verifyGstNumber = async (gstNumber: string) => {
     setIsVerifying(true);
     try {
@@ -44,7 +89,6 @@ const BusinessDetails: React.FC<{
         }),
       });
 
-      // Check if the response is valid JSON
       const contentType = response.headers.get("content-type");
       let result;
       if (contentType && contentType.includes("application/json")) {
@@ -68,14 +112,14 @@ const BusinessDetails: React.FC<{
         console.log("Frontend: Setting GST Details:", result.data);
         setGstDetails(result.data);
 
-        // Auto-fill business name if empty
-        if (!data.businessName) {
-          onChange({
-            ...data,
-            businessName: result.data.legalName,
-            businessType: result.data.businessType
-          });
-        }
+        onChange({
+          ...data,
+          businessName: result.data.legalName,
+          businessType: result.data.businessType,
+          address: result.data.address,
+          gstDetails: result.data
+        });
+
         setFormErrors({ ...formErrors, gstNumber: "" });
         return true;
       } else {
@@ -137,10 +181,15 @@ const BusinessDetails: React.FC<{
     onNext();
   };
 
-  // Add a useEffect to monitor gstDetails changes
   useEffect(() => {
     console.log("Frontend: Current gstDetails state:", gstDetails);
   }, [gstDetails]);
+
+  useEffect(() => {
+    if (data.gstDetails) {
+      setGstDetails(data.gstDetails);
+    }
+  }, [data.gstDetails]);
 
   return (
     <div className="rounded-sm flex items-center justify-center w-full">
@@ -156,7 +205,6 @@ const BusinessDetails: React.FC<{
                 Seller Business Details
               </span>
               <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                {/* Business Name */}
                 <div className="col-span-12 lg:col-span-3">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Business Name
@@ -178,7 +226,6 @@ const BusinessDetails: React.FC<{
                   </div>
                 </div>
 
-                {/* Business Type */}
                 <div className="col-span-12 lg:col-span-3">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Business Type
@@ -209,9 +256,7 @@ const BusinessDetails: React.FC<{
                 </div>
               </div>
 
-              {/* Business Phone and Email Section */}
               <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                {/* Business Phone */}
                 <div className="col-span-12 lg:col-span-3">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Business Phone Number
@@ -233,7 +278,6 @@ const BusinessDetails: React.FC<{
                   </div>
                 </div>
 
-                {/* Business Email */}
                 <div className="col-span-12 lg:col-span-3">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Business Email
@@ -256,9 +300,6 @@ const BusinessDetails: React.FC<{
                 </div>
               </div>
 
-
-
-              {/* GST Number */}
               <div className="mt-4">
                 <label className="mb-2.5 block font-medium text-black dark:text-white">
                   GST Number
@@ -283,8 +324,6 @@ const BusinessDetails: React.FC<{
                 </div>
               </div>
 
-
-              {/* GST Details Display */}
               {gstDetails ? (
                 <div className="mt-6 p-4 border rounded-lg bg-gray-50 dark:bg-gray-800">
                   <h3 className="font-bold text-lg mb-3">GST Details</h3>

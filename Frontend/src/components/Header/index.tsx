@@ -72,7 +72,7 @@ const Header = (props: {
           </button>
 
           <Link className="block flex-shrink-0 lg:hidden " to="/">
-            <img className='h-12' src={"https://loopin.netlify.app/static/media/logo.245df7adb7de257385e2.png"} alt="Logo" />
+            <img className='h-12' src={"/src/images/logo/looplogo.png"} alt="Logo" />
           </Link>
         </div>
 

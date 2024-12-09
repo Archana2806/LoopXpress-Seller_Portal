@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation, Navigate } from 'react-router-dom';
 
 import Loader from './common/Loader';
@@ -15,6 +16,7 @@ import LandingPage from './pages/LandingPage/LandingPage';
 import ViewOrders from './pages/OrdersManagement/ViewOrders';
 import OrderStatus from './pages/OrdersManagement/OrderStatus';
 import ReturnAndRefund from './pages/OrdersManagement/ReturnAndRefund';
+import ProductDetails from './pages/Product/ProductDetails';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -47,10 +49,6 @@ function App() {
         path="/auth/signup"
         element={!isAuthenticated ? <SignUp /> : <Navigate to="/dashboard" replace />}
       />
-      <Route
-        path="*"
-        element={!isAuthenticated ? <SignIn /> : <Navigate to="/dashboard" replace />}
-      />
 
       <Route
         path="/"
@@ -73,11 +71,15 @@ function App() {
         <Route path="/dashboard" element={<ECommerce />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/settings" element={<Settings />} />
-        <Route path="/add-new-product" element={<AddNewProduct />} />
+        <Route path="/add-new-product" element={<AddNewProduct onProductAdded={() => {
+          // Optionally navigate to product list after adding
+          window.location.href = '/product-list';
+        }} />} />
         <Route path="/product-list" element={<ProductList />} />
         <Route path="/view-orders" element={<ViewOrders />} />
         <Route path="/order-status" element={<OrderStatus />} />
         <Route path="/return-or-refund" element={<ReturnAndRefund />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
       </Route>
 
       {/* Catch-all for undefined routes */}
