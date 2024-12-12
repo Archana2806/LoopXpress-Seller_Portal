@@ -11,9 +11,9 @@ const userSchema = new mongoose.Schema(
       email: {
         type: String,
         required: true,
-        unique: true, // Ensure no duplicate emails
-        lowercase: true, // Normalize email to lowercase
-        trim: true, // Remove extra spaces from the email
+        unique: true ,
+        lowercase: true,
+        trim: true,
       },
       phoneNumber: {
         type: String,
@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema(
       password: {
         type: String,
         required: true,
-        select: true, // Prevent password from being returned by default
+        select: false,
       },
     },
     businessDetails: {
@@ -65,28 +65,35 @@ const userSchema = new mongoose.Schema(
         required: true,
       },
     },
+    resetPasswordToken: {
+      type: String,
+      default: null, // Null by default
+    },
+    resetPasswordExpires: {
+      type: Date,
+      default: null, // Null by default
+    },
   },
   { timestamps: true } // Automatically adds createdAt and updatedAt fields
 );
 
-// Hash the password before saving the user
-userSchema.pre('save', async function (next) {
-  // Check if password is modified
-  if (this.isModified('personalDetails.password')) {
-    if (!this.personalDetails.password) {
-      return next(new Error('Password is required'));
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    this.personalDetails.password = await bcrypt.hash(this.personalDetails.password, salt);
-  }
-  next();
-});
+// Instance method to set password
+userSchema.methods.setPassword = async function (password) {
+  const salt = 10;
+  const hashedPassword = await bcrypt.hash(password, salt);
+  console.log('Salt:', salt);
+  console.log('Hashed Password:', hashedPassword);
+  this.personalDetails.password = hashedPassword;
+};
 
 // Instance method to compare passwords
-userSchema.methods.comparePassword = async function (candidatePassword) {
-  return bcrypt.compare(candidatePassword, this.personalDetails.password);
+userSchema.methods.isValidPassword = async function (candidatePassword, hashedPassword) {
+  console.log('Candidate Password:', candidatePassword);
+  const isMatch = await bcrypt.compare(candidatePassword, hashedPassword);
+  console.log('Password Match:', isMatch);
+  return isMatch;
 };
+
 
 // Create indexes for better query performance, especially for email
 userSchema.index({ 'personalDetails.email': 1 });

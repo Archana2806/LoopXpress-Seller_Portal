@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import useUserInfo from "../../hooks/useUserInfo";
+import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from "react-toastify";
 
 const BusinessSettings = () => {
-  const { userInfo, loading, error, updateUserInfo } = useUserInfo();
+  const { userInfo, loading, error, updateBusinessInfo } = useUserInfo();
 
   const [formData, setFormData] = useState({
     businessName: "",
@@ -38,11 +40,12 @@ const BusinessSettings = () => {
     e.preventDefault();
     setSubmitError(null); // Reset previous error
     try {
-      await updateUserInfo({ businessDetails: formData });
-      alert("Business details updated successfully!");
+      await updateBusinessInfo({ businessDetails: formData });
+      toast.success("Business details updated successfully!");
     } catch (err: any) {
       console.error("Error updating business info:", err);
       setSubmitError(err.message || "Failed to save changes. Please try again.");
+      toast.error(err.message || "Failed to save changes. Please try again.");
     }
   };
 
@@ -55,6 +58,8 @@ const BusinessSettings = () => {
   }
 
   return (
+    <>
+    <ToastContainer/>
     <div className="mx-auto max-w-4xl">
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
@@ -75,7 +80,7 @@ const BusinessSettings = () => {
                 type="text"
                 value={formData.businessName}
                 onChange={handleInputChange}
-                className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-orange-500 focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-orange-500"
+                className="w-full rounded border border-stroke  py-3 px-4.5 text-black focus:border-orange-500 focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-orange-500"
                 placeholder="Enter your business name"
               />
             </div>
@@ -93,7 +98,7 @@ const BusinessSettings = () => {
                 type="email"
                 value={formData.businessEmail}
                 onChange={handleInputChange}
-                className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-orange-500 focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-orange-500"
+                className="w-full rounded border border-stroke  py-3 px-4.5 text-black focus:border-orange-500 focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-orange-500"
                 placeholder="Enter your business email"
               />
             </div>
@@ -111,7 +116,7 @@ const BusinessSettings = () => {
                 type="text"
                 value={formData.businessPhone}
                 onChange={handleInputChange}
-                className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-orange-500 focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-orange-500"
+                className="w-full rounded border border-stroke  py-3 px-4.5 text-black focus:border-orange-500 focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-orange-500"
                 placeholder="Enter your business phone"
               />
             </div>
@@ -127,10 +132,11 @@ const BusinessSettings = () => {
                 id="gstNumber"
                 name="gstNumber"
                 type="text"
-                value={formData.gstNumber}
-                onChange={handleInputChange}
-                className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-orange-500 focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-orange-500"
+                value="GST123456789"
+                readOnly
+                className="w-full rounded border border-stroke  py-3 px-4.5 text-black focus:border-orange-500 focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-orange-500"
                 placeholder="Enter your GST number"
+                onFocus={() => toast.info("Changes to the GST Number are not allowed.")}
               />
             </div>
 
@@ -146,7 +152,7 @@ const BusinessSettings = () => {
                 name="businessType"
                 value={formData.businessType}
                 onChange={handleInputChange}
-                className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-orange-500 focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-orange-500"
+                className="w-full rounded border border-stroke  py-3 px-4.5 text-black focus:border-orange-500 focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-orange-500"
               >
                 <option value="" disabled>
                   Select your business type
@@ -171,6 +177,7 @@ const BusinessSettings = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

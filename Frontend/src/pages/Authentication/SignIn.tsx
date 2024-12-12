@@ -111,6 +111,11 @@ const SignIn: React.FC = () => {
                                         {showPassword ? <FaEyeSlash /> : <FaEye />}
                                     </button>
                                 </div>
+                                <div className="mt-2 text-right">
+                                    <Link to="/auth/forgot-password" className="text-primary">
+                                        Forgot Password?
+                                    </Link>
+                                </div>
                             </div>
 
                             <div className="mb-5">

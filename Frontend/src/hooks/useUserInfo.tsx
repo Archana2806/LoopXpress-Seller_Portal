@@ -71,7 +71,7 @@ const useUserInfo = () => {
     fetchUserInfo();
   }, []);
 
-  const updateUserInfo = async (updatedDetails: any) => {
+  const updatePersonalInfo = async (updatedDetails: any) => {
     try {
       const token = localStorage.getItem('authToken');
       if (!token) throw new Error('User not authenticated. Please log in.');
@@ -81,7 +81,7 @@ const useUserInfo = () => {
         delete updatedDetails.personalDetails.password;
       }
 
-      const response = await fetch('http://localhost:5000/api/users/update-user-info', {
+      const response = await fetch('http://localhost:5000/api/users/update-personal-info', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -92,7 +92,7 @@ const useUserInfo = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to update user info');
+        throw new Error(errorData.message || 'Failed to update personal info');
       }
 
       const updatedUser = await response.json();
@@ -105,12 +105,39 @@ const useUserInfo = () => {
 
       return updatedUser; // Return the updated user object
     } catch (err) {
-      console.error('Error in updateUserInfo:', err.message);
+      console.error('Error in updatePersonalInfo:', err.message);
       throw err;
     }
   };
 
+  const updateBusinessInfo = async (updatedDetails: any) => {
+    try {
+      const token = localStorage.getItem('authToken');
+      if (!token) throw new Error('User not authenticated. Please log in.');
 
+      const response = await fetch('http://localhost:5000/api/users/update-business-info', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updatedDetails),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to update business info');
+      }
+
+      const updatedUser = await response.json();
+      setUserInfo(updatedUser); // Update the state
+
+      return updatedUser; // Return the updated user object
+    } catch (err) {
+      console.error('Error in updateBusinessInfo:', err.message);
+      throw err;
+    }
+  };
 
   const refetch = () => {
     setLoading(true);
@@ -148,7 +175,7 @@ const useUserInfo = () => {
     fetchUserInfo();
   };
 
-  return { userInfo, loading, error, updateUserInfo, refetch };
+  return { userInfo, loading, error, updatePersonalInfo, updateBusinessInfo, refetch };
 };
 
 export default useUserInfo;

@@ -2,12 +2,17 @@
   "name": "loop-seller-portal",
   "version": "1.0.0",
   "private": true,
-"scripts": {
+  "scripts": {
     "backend": "node Backend/index.js",
     "frontend": "npm run dev --prefix Frontend",
     "dev": "concurrently \"npm run frontend\" \"npm run backend"
   },
   "devDependencies": {
+    "@types/nodemailer": "^6.4.17",
     "concurrently": "^7.0.0"
+  },
+  "dependencies": {
+    "nodemailer": "^6.9.16",
+    "react-toastify": "^10.0.6"
   }
 }

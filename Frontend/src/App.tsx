@@ -17,6 +17,8 @@ import ViewOrders from './pages/OrdersManagement/ViewOrders';
 import OrderStatus from './pages/OrdersManagement/OrderStatus';
 import ReturnAndRefund from './pages/OrdersManagement/ReturnAndRefund';
 import ProductDetails from './pages/Product/ProductDetails';
+import ForgotPassword from './pages/Authentication/ForgetPassword';
+import ResetPassword from './pages/Authentication/ResetPassword';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -49,11 +51,19 @@ function App() {
         path="/auth/signup"
         element={!isAuthenticated ? <SignUp /> : <Navigate to="/dashboard" replace />}
       />
-
+      <Route
+        path="/auth/forgot-password"
+        element={!isAuthenticated ? <ForgotPassword /> : <Navigate to="/dashboard" replace />}
+      />
+       <Route
+        path="/auth/reset-password/:token"
+        element={!isAuthenticated ? <ResetPassword /> : <Navigate to="/dashboard" replace />}
+      />
       <Route
         path="/"
         element={!isAuthenticated ? <LandingPage /> : <Navigate to="/dashboard" replace />}
       />
+      
       {/* Redirect root to dashboard or signin based on authentication */}
       <Route
         path="/"

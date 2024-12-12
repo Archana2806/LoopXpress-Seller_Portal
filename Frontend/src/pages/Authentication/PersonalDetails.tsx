@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const PersonalDetails: React.FC<{
   data: any;
@@ -6,6 +7,11 @@ const PersonalDetails: React.FC<{
   onNext: () => void;
 }> = ({ data, onChange, onNext }) => {
   const [errors, setErrors] = useState<any>({});
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -101,15 +107,24 @@ const PersonalDetails: React.FC<{
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Password
                   </label>
-                  <input
-                    type="password"
-                    name="password"
-                    value={data.password}
-                    onChange={handleInputChange}
-                    placeholder="Enter your password"
-                    className={`w-full rounded-lg border py-4 pl-6 text-black outline-none dark:border-form-strokedark dark:bg-form-input dark:text-white ${errors.password ? "border-red-500" : "focus:border-orange-500"
-                      }`}
-                  />
+                  <div className="relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      value={data.password}
+                      onChange={handleInputChange}
+                      placeholder="Enter your password"
+                      className={`w-full rounded-lg border py-4 pl-6 text-black outline-none dark:border-form-strokedark dark:bg-form-input dark:text-white ${errors.password ? "border-red-500" : "focus:border-orange-500"
+                        }`}
+                    />
+                    <button
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                      className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500"
+                    >
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </button>
+                  </div>
                   {errors.password && (
                     <p className="text-red-500 text-sm">{errors.password}</p>
                   )}

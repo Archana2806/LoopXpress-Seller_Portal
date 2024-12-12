@@ -34,7 +34,7 @@ const OrderStatusPage = () => {
 
     const handleStatusChange = (orderId: number) => {
         if (!newStatus) return;
-        console.log('Updating status for order:', orderId, 'to:', newStatus);
+        // console.log('Updating status for order:', orderId, 'to:', newStatus);
     };
 
     const getStatusColor = (status: string) => {
@@ -52,9 +52,9 @@ const OrderStatusPage = () => {
     );
 
     // Add this temporary debug log to check values
-    console.log('Orders:', orders.map(order => ({ id: order.id, status: order.status })));
-    console.log('Delivered count:', orders.filter(order => order.status === OrderStatus.DELIVERED).length);
-    console.log('All statuses:', Object.values(OrderStatus));
+    // console.log('Orders:', orders.map(order => ({ id: order.id, status: order.status })));
+    // console.log('Delivered count:', orders.filter(order => order.status === OrderStatus.DELIVERED).length);
+    // console.log('All statuses:', Object.values(OrderStatus));
 
     return (
         <div className="min-h-screen bg-gray-100 p-6">

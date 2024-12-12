@@ -23,16 +23,16 @@ const BusinessDetails: React.FC<{
       if (gstRegex.test(value)) {
         const originalGstNumber = value;
 
-        const isGstExists = await checkGstInDatabase(value);
+        // const isGstExists = await checkGstInDatabase(value);
 
-        if (isGstExists) {
-          setFormErrors({
-            ...formErrors,
-            gstNumber: "This GST number is already registered with another account."
-          });
-          setGstDetails(null);
-          return;
-        }
+        // if (isGstExists) {
+        //   setFormErrors({
+        //     ...formErrors,
+        //     gstNumber: "This GST number is already registered with another account."
+        //   });
+        //   setGstDetails(null);
+        //   return;
+        // }
 
         await verifyGstNumber(value);
 
