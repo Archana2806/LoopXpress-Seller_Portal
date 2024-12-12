@@ -145,7 +145,7 @@ const ProductDetails = () => {
               <div className="mb-6">
                 <div className="flex justify-between items-start">
                   <div>
-                    <p className="text-gray-600 text-sm">Brand: {product.brand}</p>
+                    <p className="text-gray-600 text-sm">{product.brand}</p>
                     <h1 className="text-3xl font-bold text-gray-800 mt-2">{product.title}</h1>
                   </div>
                   <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
@@ -183,6 +183,12 @@ const ProductDetails = () => {
                     <li key={index}>{highlight}</li>
                   ))}
                 </ul>
+              </div>
+
+              {/* Product Description */}
+              <div className="mb-6">
+                <h2 className="text-lg font-semibold mb-3">Product Description</h2>
+                <p className="text-gray-600">{product.description}</p>
               </div>
 
               {/* Shipping Information */}
@@ -225,7 +231,7 @@ const ProductDetails = () => {
                   Edit Product
                 </button>
                 <button
-                  onClick={() => navigate(-1)}
+                  onClick={() => navigate('/product-list')}
                   className="flex-1 bg-[#24303f] text-white px-6 py-3 rounded-md hover:bg-opacity-90 transition-colors flex items-center justify-center gap-2"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

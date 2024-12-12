@@ -372,6 +372,7 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
                     <option value="fitness-trackers">Fitness Trackers</option>
                     <option value="athletic-care">Athletic Care & Recovery</option>
                     <option value="sports-nutrition">Sports Nutrition</option>
+                    <option value="dry-fruits">Dry Fruits</option>
                     <option value="training-equipment">Training Equipment</option>
                     <option value="sports-accessories">Sports Accessories</option>
                   </select>
@@ -811,6 +812,31 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
                     </select>
                   </div>
                 )}
+
+                {productData.category === 'dry-fruits' && (
+                  <div>
+                    <label className="mb-2.5 block text-white">Dry Fruits and Nuts</label>
+                    <select
+                      name="subcategory"
+                      value={productData.subcategory} 
+                      onChange={handleChange}
+                      className="w-full rounded border-[1.5px] border-[#dc651d] bg-[#24303f] py-3 px-5 text-white outline-none transition focus:border-[#dc651d]"
+                    >
+                      <option value="">Select Type</option>
+                      <option value="almonds">Almonds</option>
+                      <option value="cashews">Cashews</option>
+                      <option value="walnuts">Walnuts</option>
+                      <option value="pistachios">Pistachios</option>
+                      <option value="raisins">Raisins</option>
+                      <option value="dates">Dates</option>
+                      <option value="apricots">Apricots</option>
+                      <option value="figs">Figs</option>
+                      <option value="prunes">Prunes</option>
+                      <option value="mixed">Mixed Dry Fruits</option>
+                    </select>
+                  </div>
+                )}
+
 
                 {productData.category === 'training-equipment' && (
                   <div>

@@ -88,7 +88,7 @@ router.get('/product/:id', async (req, res) => {
 });
 
 // Update product
-router.put('/update-product/:id', async (req, res) => {
+router.put('/product/:id', async (req, res) => {
   try {
     const {
       title,

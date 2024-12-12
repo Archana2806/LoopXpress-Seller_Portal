@@ -14,9 +14,16 @@ connectDB();
 
 const app = express();
 
-// Enable CORS
+// Enable CORS with dynamic origin
+const allowedOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : [];
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 }));
@@ -28,4 +35,5 @@ app.use(cookieParser());
 app.use("/api/users", userRoutes);
 app.use("/api/gst", gstRoutes);
 app.use("/api/products", productRoutes);
+
 app.listen(port, () => console.log(`Server running on port: ${port}`));
