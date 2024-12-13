@@ -1,5 +1,4 @@
 import express from 'express';
-import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/userModel.js';
 import nodemailer from 'nodemailer';
@@ -143,33 +142,33 @@ router.put('/update-business-info', authenticate, async (req, res) => {
 });
 
 // Update password route
-// router.put('/update-password', authenticate, async (req, res) => {
-//   const { currentPassword, newPassword } = req.body;
+router.put('/update-password', authenticate, async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
 
-//   if (!currentPassword || !newPassword) {
-//     return res.status(400).json({ message: 'Both current and new passwords are required.' });
-//   }
+  if (!currentPassword || !newPassword) {
+    return res.status(400).json({ message: 'Both current and new passwords are required.' });
+  }
 
-//   try {
-//     const user = await User.findById(req.user.id).select('+personalDetails.password');
-//     if (!user) {
-//       return res.status(404).json({ message: 'User not found' });
-//     }
+  try {
+    const user = await User.findById(req.user.id).select('+personalDetails.password');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
 
-//     const isMatch = await user.isValidate(currentPassword, user.personalDetails.password);
-//     if (!isMatch) {
-//       return res.status(400).json({ message: 'Current password is incorrect.' });
-//     }
+    const isMatch = await user.isValidPassword(currentPassword, user.personalDetails.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Current password is incorrect.' });
+    }
 
-//     user.personalDetails.password = hashedNewPassword;
-//     await user.save();
+    user.personalDetails.password = newPassword; // Update the password directly
+    await user.save();
 
-//     res.status(200).json({ message: 'Password updated successfully.' });
-//   } catch (error) {
-//     console.error('Error updating password:', error);
-//     res.status(500).json({ message: 'Server error' });
-//   }
-// });
+    res.status(200).json({ message: 'Password updated successfully.' });
+  } catch (error) {
+    console.error('Error updating password:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
 
 router.post('/forgot-password', async (req, res) => {
   const { email } = req.body;
@@ -227,7 +226,7 @@ router.post('/reset-password/:token', async (req, res) => {
   try {
     const user = await User.findOne({
       resetPasswordToken: token,
-      resetPasswordExpires: { $gt: Date.now() }, // Ensure token is still valid
+      resetPasswordExpires: { $gt: Date.now() }, 
     });
 
     if (!user) {
@@ -236,7 +235,7 @@ router.post('/reset-password/:token', async (req, res) => {
     }
 
     user.personalDetails.password = newPassword;
-    user.resetPasswordToken = null; // Clear the token
+    user.resetPasswordToken = null; 
     user.resetPasswordExpires = null;
 
     await user.save();

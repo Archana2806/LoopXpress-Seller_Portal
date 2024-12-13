@@ -84,7 +84,6 @@ userSchema.pre('save',async function(next) {
         this.personalDetails.password = await bcrypt.hash(this.personalDetails.password,hashRound)
         console.log("password is hashing")
         console.log("password ",this.isModified('personalDetails.password'))
-
     }
     next()
 })

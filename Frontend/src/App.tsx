@@ -19,6 +19,7 @@ import ReturnAndRefund from './pages/OrdersManagement/ReturnAndRefund';
 import ProductDetails from './pages/Product/ProductDetails';
 import ForgotPassword from './pages/Authentication/ForgetPassword';
 import ResetPassword from './pages/Authentication/ResetPassword';
+import Payouts from './pages/Payouts/Payouts';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -29,12 +30,11 @@ function App() {
     window.scrollTo(0, 0);
   }, [pathname]);
 
+  const token = localStorage.getItem('authToken');
   useEffect(() => {
-    // Simulate a loading state while checking token
-    const token = localStorage.getItem('authToken');
     setIsAuthenticated(!!token); // Set authentication status based on the token
     setLoading(false); // Stop loading after checking
-  }, []);
+  }, [token]);
 
   if (loading) {
     return <Loader />; // Show a loader while authentication status is being checked
@@ -81,6 +81,7 @@ function App() {
         <Route path="/dashboard" element={<ECommerce />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/payouts" element={<Payouts/>} />
         <Route path="/add-new-product" element={<AddNewProduct onProductAdded={() => {
           // Optionally navigate to product list after adding
           window.location.href = '/product-list';

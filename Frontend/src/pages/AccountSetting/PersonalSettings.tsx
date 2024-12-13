@@ -1,136 +1,135 @@
 import React, { useState, useEffect } from "react";
 import useUserInfo from "../../hooks/useUserInfo";
 import axios from "axios";
-// import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from "react-router-dom";
 
 // PasswordUpdate Component
-// const PasswordUpdate = () => {
-//   const [currentPassword, setCurrentPassword] = useState("");
-//   const [newPassword, setNewPassword] = useState("");
-//   const [confirmPassword, setConfirmPassword] = useState("");
-//   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
-//   const [showNewConfirmPassword, setShowNewConfirmPassword] = useState(false);
-//   const [error, setError] = useState(null);
-//   const [success, setSuccess] = useState(null);
+const PasswordUpdate = () => {
+  const navigate = useNavigate();
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewConfirmPassword, setShowNewConfirmPassword] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
-//   const handlePasswordUpdate = async (e) => {
-//     e.preventDefault();
-//     setError(null);
-//     setSuccess(null);
+  const handlePasswordUpdate = async (e) => {
+    e.preventDefault();
+    setError(null);
+    setSuccess(null);
 
-//     if (newPassword !== confirmPassword) {
-//       toast.error("New passwords do not match.");
-//       return;
-//     }
+    if (newPassword !== confirmPassword) {
+      toast.error("New passwords do not match.");
+      return;
+    }
 
-//     try {
-//       const token = localStorage.getItem("authToken");
-//       if (!token) throw new Error("Authorization token not found. Please log in again.");
+    try {
+      const token = localStorage.getItem("authToken");
+      if (!token) throw new Error("Authorization token not found. Please log in again.");
 
-//       const response = await axios.put(
-//         "/api/users/update-password",
-//         { currentPassword, newPassword },
-//         { headers: { Authorization: `Bearer ${token}` } }
-//       );
+      const response = await axios.put(
+        "/api/users/update-password",
+        { currentPassword, newPassword },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-//       // Check if the response indicates success
-//       if (response.status === 200) {
-//         toast.success("Password changed successfully. Please log in again.");
-//         setCurrentPassword("");
-//         setNewPassword("");
-//         setConfirmPassword("");
-//         // Force logout after password update
-//         localStorage.removeItem("authToken"); // Clear the old token
-//         window.location.href = "/login"; // Redirect to login page
-//       } else {
-//         throw new Error("Failed to update password.");
-//       }
-//     } catch (err) {
-//       console.error("Error updating password:", err);
-//       toast.error(err.response?.data?.message || "Failed to update password.");
-//     }
-//   };
+      if (response.status === 200) {
+        toast.success("Password changed successfully. Redirecting to sign-in...");
+        setTimeout(() => {
+          localStorage.removeItem('authToken');
+          navigate("/auth/signin");
+        }, 3000);
+      } else {
+        throw new Error("Failed to update password.");
+      }
+    } catch (err) {
+      console.error("Error updating password:", err);
+      toast.error(err.response?.data?.message || "Failed to update password.");
+    }
+  };
 
-//   return (
-//     <>
-//       <form onSubmit={handlePasswordUpdate}>
-//         {/* Current Password */}
-//         <div className="mb-5.5 relative">
-//           <label className="block text-sm font-medium" htmlFor="currentPassword">
-//             Current Password
-//           </label>
-//           <input
-//             type={showCurrentPassword ? "text" : "password"}
-//             id="currentPassword"
-//             value={currentPassword}
-//             onChange={(e) => setCurrentPassword(e.target.value)}
-//             className="w-full rounded border py-3 px-4 pr-12 focus:border-orange-500 focus-visible:outline-none"
-//             required
-//           />
-//           <button
-//             type="button"
-//             className="absolute right-3 top-1/2 transform -translate-y text-gray-500"
-//             onClick={() => setShowCurrentPassword((prev) => !prev)}
-//           >
-//             {showCurrentPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
-//           </button>
-//         </div>
+  return (
+    <>
+      <form onSubmit={handlePasswordUpdate}>
+        {/* Current Password */}
+        <div className="mb-5.5 relative">
+          <label className="block text-sm font-medium" htmlFor="currentPassword">
+            Current Password
+          </label>
+          <input
+            type={showCurrentPassword ? "text" : "password"}
+            id="currentPassword"
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
+            className="w-full rounded border py-3 px-4 pr-12 focus:border-orange-500 focus-visible:outline-none"
+            required
+          />
+          <button
+            type="button"
+            className="absolute right-3 top-1/2 transform -translate-y text-gray-500"
+            onClick={() => setShowCurrentPassword((prev) => !prev)}
+          >
+            {showCurrentPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+          </button>
+        </div>
 
-//       {/* New Password */}
-//       <div className="mb-5.5 relative">
-//         <label className="block text-sm font-medium" htmlFor="newPassword">
-//           New Password
-//         </label>
-//         <input
-//           type={showNewConfirmPassword ? "text" : "password"}
-//           id="newPassword"
-//           value={newPassword}
-//           onChange={(e) => setNewPassword(e.target.value)}
-//           className="w-full rounded border py-3 px-4 pr-12 focus:border-orange-500 focus-visible:outline-none"
-//           required
-//         />
-//         <button
-//           type="button"
-//           className="absolute right-3 top-1/2 transform -translate-y text-gray-500"
-//           onClick={() => setShowNewConfirmPassword((prev) => !prev)}
-//         >
-//           {showNewConfirmPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
-//         </button>
-//       </div>
+      {/* New Password */}
+      <div className="mb-5.5 relative">
+        <label className="block text-sm font-medium" htmlFor="newPassword">
+          New Password
+        </label>
+        <input
+          type={showNewConfirmPassword ? "text" : "password"}
+          id="newPassword"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          className="w-full rounded border py-3 px-4 pr-12 focus:border-orange-500 focus-visible:outline-none"
+          required
+        />
+        <button
+          type="button"
+          className="absolute right-3 top-1/2 transform -translate-y text-gray-500"
+          onClick={() => setShowNewConfirmPassword((prev) => !prev)}
+        >
+          {showNewConfirmPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+        </button>
+      </div>
 
-//       {/* Confirm Password */}
-//       <div className="mb-5.5 relative">
-//         <label className="block text-sm font-medium" htmlFor="confirmPassword">
-//           Confirm New Password
-//         </label>
-//         <input
-//           type={showNewConfirmPassword ? "text" : "password"}
-//           id="confirmPassword"
-//           value={confirmPassword}
-//           onChange={(e) => setConfirmPassword(e.target.value)}
-//           className="w-full rounded border py-3 px-4 pr-12 focus:border-orange-500 focus-visible:outline-none"
-//           required
-//         />
-//       </div>
+      {/* Confirm Password */}
+      <div className="mb-5.5 relative">
+        <label className="block text-sm font-medium" htmlFor="confirmPassword">
+          Confirm New Password
+        </label>
+        <input
+          type={showNewConfirmPassword ? "text" : "password"}
+          id="confirmPassword"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          className="w-full rounded border py-3 px-4 pr-12 focus:border-orange-500 focus-visible:outline-none"
+          required
+        />
+      </div>
 
-//       {/* Error and Success Messages */}
-//       {error && <p className="text-red-500">{error}</p>}
-//       {success && <p className="text-green-500">{success}</p>}
+      {/* Error and Success Messages */}
+      {error && <p className="text-red-500">{error}</p>}
+      {success && <p className="text-green-500">{success}</p>}
 
-//         {/* Submit Button */}
-//         <button
-//           type="submit"
-//           className="rounded bg-orange-500 px-4 py-2 text-white hover:bg-orange-700"
-//         >
-//           Update Password
-//         </button>
-//       </form>
-//       <ToastContainer />
-//     </>
-//   );
-// };
+        {/* Submit Button */}
+        <button
+          type="submit"
+          className="rounded bg-orange-500 px-4 py-2 text-white hover:bg-orange-700"
+        >
+          Update Password
+        </button>
+      </form>
+      <ToastContainer />
+    </>
+  );
+};
 
 
 // PersonalSettings Component
@@ -276,14 +275,14 @@ const PersonalSettings = () => {
         </div>
 
         {/* Password Update */}
-        {/* <div className="flex-1 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+        <div className="flex-1 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
             <h3 className="font-medium text-black dark:text-white">Update Password</h3>
           </div>
           <div className="p-7">
             <PasswordUpdate />
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   );
