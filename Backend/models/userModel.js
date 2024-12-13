@@ -71,20 +71,23 @@ const userSchema = new mongoose.Schema(
     },
     resetPasswordExpires: {
       type: Date,
-      default: null, // Null by default
+      default: null,
     },
   },
-  { timestamps: true } // Automatically adds createdAt and updatedAt fields
+  { timestamps: true } 
 );
 
-// Instance method to set password
-userSchema.methods.setPassword = async function (password) {
-  const salt = 10;
-  const hashedPassword = await bcrypt.hash(password, salt);
-  console.log('Salt:', salt);
-  console.log('Hashed Password:', hashedPassword);
-  this.personalDetails.password = hashedPassword;
-};
+
+userSchema.pre('save',async function(next) {
+    const hashRound = 10;
+    if(this.personalDetails.password && (this.isModified('personalDetails.password') || this.isNew)){
+        this.personalDetails.password = await bcrypt.hash(this.personalDetails.password,hashRound)
+        console.log("password is hashing")
+        console.log("password ",this.isModified('personalDetails.password'))
+
+    }
+    next()
+})
 
 // Instance method to compare passwords
 userSchema.methods.isValidPassword = async function (candidatePassword, hashedPassword) {
