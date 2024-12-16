@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import useUserInfo from '../../hooks/useUserInfo';
 
 interface ProductData {
+  name: string; // Add username field
   title: string;
   brand: string;
   imageUrls: string[];
@@ -73,7 +75,9 @@ interface AddNewProductProps {
 }
 
 const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
+  const { userInfo } = useUserInfo(); // Fetch user info
   const [productData, setProductData] = useState<ProductData>({
+    name: userInfo?.personalDetails?.fullName || '', // Initialize username
     title: '',
     brand: '',
     imageUrls: ['', '', '', ''],
@@ -175,6 +179,7 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
       alert('Product added successfully!');
 
       setProductData({
+        name: userInfo?.personalDetails?.fullName || '', // Reset username
         title: '',
         brand: '',
         imageUrls: ['', '', '', ''],
@@ -282,6 +287,13 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
       <div className="max-w-full">
         <div className="bg-[#24303f] border rounded-lg p-6 shadow-lg text-white">
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Username */}
+            <div>
+              <h3 className="mb-2 text-2xl font-bold text-gray-900 dark:text-gray-100">
+                {userInfo?.personalDetails?.fullName ? userInfo?.personalDetails?.fullName.charAt(0).toUpperCase() + userInfo?.personalDetails?.fullName.slice(1) : 'Name not available'}
+              </h3>
+            </div>
+
             {/* Basic Information */}
             <div className="mb-8">
               <h2 className="text-xl font-semibold mb-4 text-white">Basic Information</h2>
@@ -353,6 +365,7 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
                     required
                   >
                     <option value="">Select Category</option>
+                    <option value="first-aid">First Aid</option>
                     <option value="gym-essentials">Gym Essentials</option>
                     <option value="outdoor-fitness">Outdoor Fitness Gear</option>
                     <option value="yoga">Yoga & Meditation</option>
@@ -373,15 +386,45 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
                     <option value="athletic-care">Athletic Care & Recovery</option>
                     <option value="sports-nutrition">Sports Nutrition</option>
                     <option value="dry-fruits">Dry Fruits</option>
+                    <option value="cooking-essentials">Cooking Essentials</option>
                     <option value="training-equipment">Training Equipment</option>
                     <option value="sports-accessories">Sports Accessories</option>
                   </select>
                 </div>
 
+                {productData.category === 'first-aid' && (
+                  <div>
+                    <label className="mb-2.5 block text-white">First Aid Kit Type</label>
+                    <select
+                      name="subcategory"
+                    
+                      value={productData.subcategory}
+                      onChange={handleChange}
+                      className="w-full rounded border-[1.5px] border-[#dc651d] bg-[#24303f] py-3 px-5 text-white outline-none transition focus:border-[#dc651d]"
+                    >
+                      <option value="">Select Type</option>
+                      <option value="first-aid-kits">First Aid Kits</option>
+                      <option value="bandages">Bandages</option>
+                      <option value="gauze">Gauze</option>
+                      <option value="tapes">Tapes</option>
+                      <option value="massagers">Massagers</option>
+                      <option value="disinfectants">Disinfectants</option>
+                      <option value="antiseptics">Antiseptics</option>
+                      <option value="pain-relief">Pain Relief</option>
+                      <option value="burn-care">Burn Care</option>
+                      <option value="eye-care">Eye Care</option>
+                      <option value="splints">Splints</option>
+                      <option value="cold-packs">Cold Packs</option>
+                      <option value="hot-packs">Hot Packs</option>
+                      <option value="first-aid-bags">First Aid Bags</option>
+                    </select>
+                  </div>
+                )}
+
 
                 {productData.category === 'gym-essentials' && (
                   <div>
-                    <label className="mb-2.5 block text-white">Gym Equipments</label>
+                    <label className="mb-2.5 block text-white">Gym Equipment</label>
                     <select
                       name="subcategory"
                       value={productData.subcategory}
@@ -395,11 +438,26 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
                       <option value="mats">Yoga Mats</option>
                       <option value="weights">Free Weights</option>
                       <option value="ropes">Jumping Ropes</option>
-                      <option value="rollers">foam Rollers</option>
+                      <option value="rollers">Foam Rollers</option>
                       <option value="bags">Gym Bags</option>
+                      <option value="kettlebells">Kettlebells</option>
+                      <option value="medicine-balls">Medicine Balls</option>
+                      <option value="ab-wheel">Ab Wheel</option>
+                      <option value="pull-up-bars">Pull-up Bars</option>
+                      <option value="stretching-tools">Stretching Tools</option>
+                      <option value="balance-boards">Balance Boards</option>
+                      <option value="barbells">Barbells</option>
+                      <option value="dumbbells">Dumbbells</option>
+                      <option value="stepper">Step Platforms</option>
+                      <option value="agility-equipment">Agility Training Equipment</option>
+                      <option value="plyometric-boxes">Plyometric Boxes</option>
+                      <option value="sleds">Sleds</option>
+                      <option value="weight-vests">Weight Vests</option>
+                      <option value="jumping-jacks">Jumping Jacks</option>
                     </select>
                   </div>
                 )}
+
 
 
 
@@ -473,10 +531,22 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
                       <option value="cricket-clothing">Cricket Clothing</option>
                       <option value="cricket-shoes">Cricket Shoes</option>
                       <option value="cricket-bags">Cricket Bags</option>
-                      <option value="training-equipment">Training Equipment </option>
+                      <option value="training-equipment">Training Equipment</option>
+                      <option value="bowling-gloves">Bowling Gloves</option>
+                      <option value="cricket-stumps">Cricket Stumps</option>
+                      <option value="cricket-pads">Cricket Pads</option>
+                      <option value="cricket-guards">Cricket Guards (Thigh, Chest, etc.)</option>
+                      <option value="cricket-grip">Cricket Bat Grips</option>
+                      <option value="cricket-caps">Cricket Caps</option>
+                      <option value="cricket-tapes">Cricket Tapes</option>
+                      <option value="cricket-arm-guards">Cricket Arm Guards</option>
+                      <option value="cricket-bowling-machines">Bowling Machines</option>
+                      <option value="cricket-protection">Cricket Protective Gear</option>
+                      <option value="cricket-accessories">Cricket Accessories</option>
                     </select>
                   </div>
                 )}
+
 
 
                 {productData.category === 'squash' && (
@@ -786,9 +856,24 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
                       <option value="pain-relief">Pain Relief Products</option>
                       <option value="recovery-tools">Recovery Tools</option>
                       <option value="foot-care">Foot Care Products</option>
+                      <option value="shin-splints">Shin Splint Supports</option>
+                      <option value="joint-support">Joint Support</option>
+                      <option value="muscle-relief">Muscle Relaxants</option>
+                      <option value="ankle-support">Ankle Supports</option>
+                      <option value="knee-support">Knee Supports</option>
+                      <option value="elbow-support">Elbow Supports</option>
+                      <option value="wrist-support">Wrist Supports</option>
+                      <option value="neck-support">Neck Supports</option>
+                      <option value="stretching-tools">Stretching Tools</option>
+                      <option value="orthotics">Orthotics/Insoles</option>
+                      <option value="massagers">Massagers</option>
+                      <option value="massage-balls">Massage Balls</option>
+                      <option value="foam-rollers">Foam Rollers</option>
+                      <option value="cupping">Cupping Therapy</option>
                     </select>
                   </div>
                 )}
+
 
                 {productData.category === 'sports-nutrition' && (
                   <div>
@@ -809,9 +894,22 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
                       <option value="weight-gainers">Weight Gainers</option>
                       <option value="meal-replacement">Meal Replacement</option>
                       <option value="hydration">Hydration Products</option>
+                      <option value="creatine">Creatine Supplements</option>
+                      <option value="testosterone-boosters">Testosterone Boosters</option>
+                      <option value="fat-burners">Fat Burners</option>
+                      <option value="probiotics">Probiotics</option>
+                      <option value="collagen">Collagen Supplements</option>
+                      <option value="superfoods">Superfood Powders</option>
+                      <option value="joint-support">Joint Support</option>
+                      <option value="plant-based">Plant-Based Supplements</option>
+                      <option value="vegan-protein">Vegan Protein</option>
+                      <option value="digestive-health">Digestive Health Supplements</option>
+                      <option value="detox">Detox Products</option>
+                      <option value="electrolytes">Electrolyte Supplements</option>
                     </select>
                   </div>
                 )}
+
 
                 {productData.category === 'dry-fruits' && (
                   <div>
@@ -826,72 +924,152 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
                       <option value="almonds">Almonds</option>
                       <option value="cashews">Cashews</option>
                       <option value="walnuts">Walnuts</option>
+                      <option value="berries-nuts">Berries and Nuts</option>
                       <option value="pistachios">Pistachios</option>
+                      <option value="peanuts">Peanuts</option>
+                      <option value="pumpkin-seeds">Pumpkin Seeds</option>
+                      <option value="sunflower-seeds">Sunflower Seeds</option>
+                      <option value="chia-seeds">Chia Seeds</option>
+                      <option value="flax-seeds">Flax Seeds</option>
+                      <option value="seven-seeds">Seven Seeds Mix</option>
                       <option value="raisins">Raisins</option>
                       <option value="dates">Dates</option>
                       <option value="apricots">Apricots</option>
                       <option value="figs">Figs</option>
                       <option value="prunes">Prunes</option>
                       <option value="mixed">Mixed Dry Fruits</option>
+                      <option value="dried-guava">Dried Guava</option>
+                      <option value="dried-mango">Dried Mango</option>
+                      <option value="dried-pineapple">Dried Pineapple</option>
+                      <option value="dried-amia">Dried Amia</option>
                     </select>
                   </div>
                 )}
 
-
-                {productData.category === 'training-equipment' && (
+                {productData.category === 'cooking-essentials' && (
                   <div>
-                    <label className="mb-2.5 block text-white">Training Equipment</label>
+                    <label className="mb-2.5 block text-white">Cooking Essentials</label>
                     <select
                       name="subcategory"
                       value={productData.subcategory}
                       onChange={handleChange}
                       className="w-full rounded border-[1.5px] border-[#dc651d] bg-[#24303f] py-3 px-5 text-white outline-none transition focus:border-[#dc651d]"
-                    >
-                      <option value="">Select Type</option>
-                      <option value="resistance-bands">Resistance Bands</option>
-                      <option value="weights">Free Weights</option>
-                      <option value="kettlebells">Kettlebells</option>
-                      <option value="medicine-balls">Medicine Balls</option>
-                      <option value="foam-rollers">Foam Rollers</option>
-                      <option value="agility">Agility Training Equipment</option>
-                      <option value="balance">Balance Training Tools</option>
-                      <option value="plyometric">Plyometric Equipment</option>
-                      <option value="strength">Strength Training Gear</option>
-                    </select>
-                  </div>
-                )}
+                      > 
+                        <option value="">Select Type</option>
+                        <option value="cookware">Cookware</option>
+                        <option value="cutlery">Cutlery</option>
+                        <option value="baking-tools">Baking Tools</option>
+                        <option value="graters">Graters</option>
+                        <option value="peelers">Peelers</option>
+                        <option value="choppers">Choppers</option>
+                        <option value="spatulas">Spatulas</option>
+                        <option value="tongs">Tongs</option>
+                        <option value="spoons">Spoons</option>
+                        <option value="knives">Knives</option>
+                        <option value="forks">Forks</option>
+                        <option value="plates">Plates</option>
+                        <option value="bowls">Bowls</option>
+                        <option value="cups">Cups</option>
+                        <option value="peanut-butter">Peanut Butter</option>
+                        <option value="butter">Butter</option>
+                        <option value="cheese">Cheese</option>
+                        <option value="atta">Multigrain Atta</option>
+                        <option value="rice">Basmati Rice</option>
+                        <option value="pulses">Pulses</option>
+                        <option value="spices">Spices</option>
+                        <option value="oils">Cooking Oils</option>
+                        <option value="corn">Corn</option>
+                        <option value="honey">Honey</option>
+                        <option value="ghee">Ghee</option>
+                        <option value="vegetables">Vegetables</option>
+                        <option value="fruits">Fruits</option>
+                      </select>
+                    </div>
+                  )}
 
-                {productData.category === 'sports-accessories' && (
-                  <div>
-                    <label className="mb-2.5 block text-white">Sports Accessories</label>
-                    <select
-                      name="subcategory"
-                      value={productData.subcategory}
-                      onChange={handleChange}
-                      className="w-full rounded border-[1.5px] border-[#dc651d] bg-[#24303f] py-3 px-5 text-white outline-none transition focus:border-[#dc651d]"
-                    >
-                      <option value="">Select Type</option>
-                      <option value="bags">Sports Bags</option>
-                      <option value="water-bottles">Water Bottles</option>
-                      <option value="towels">Sports Towels</option>
-                      <option value="headbands">Headbands/Wristbands</option>
-                      <option value="socks">Sports Socks</option>
-                      <option value="caps">Sports Caps/Visors</option>
-                      <option value="sunglasses">Sports Sunglasses</option>
-                      <option value="watches">Sports Watches</option>
-                      <option value="storage">Equipment Storage</option>
-                      <option value="misc">Miscellaneous Accessories</option>
-                    </select>
-                  </div>
-                )}
+
+                  {productData.category === 'training-equipment' && (
+                    <div>
+                      <label className="mb-2.5 block text-white">Training Equipment</label>
+                      <select
+                        name="subcategory"
+                        value={productData.subcategory}
+                        onChange={handleChange}
+                        className="w-full rounded border-[1.5px] border-[#dc651d] bg-[#24303f] py-3 px-5 text-white outline-none transition focus:border-[#dc651d]"
+                      >
+                        <option value="">Select Type</option>
+                        <option value="resistance-bands">Resistance Bands</option>
+                        <option value="weights">Free Weights</option>
+                        <option value="kettlebells">Kettlebells</option>
+                        <option value="medicine-balls">Medicine Balls</option>
+                        <option value="foam-rollers">Foam Rollers</option>
+                        <option value="agility">Agility Training Equipment</option>
+                        <option value="balance">Balance Training Tools</option>
+                        <option value="plyometric">Plyometric Equipment</option>
+                        <option value="strength">Strength Training Gear</option>
+                        <option value="dumbbells">Dumbbells</option>
+                        <option value="barbells">Barbells</option>
+                        <option value="resistance-tubes">Resistance Tubes</option>
+                        <option value="jump-ropes">Jump Ropes</option>
+                        <option value="pull-up-bars">Pull-Up Bars</option>
+                        <option value="sleds">Sleds</option>
+                        <option value="sandbags">Sandbags</option>
+                        <option value="battle-ropes">Battle Ropes</option>
+                        <option value="push-up-bars">Push-Up Bars</option>
+                        <option value="treadmills">Treadmills</option>
+                        <option value="exercise-bikes">Exercise Bikes</option>
+                        <option value="rowing-machines">Rowing Machines</option>
+                        <option value="stepper-machines">Stepper Machines</option>
+                        <option value="ab-rollers">Ab Rollers</option>
+                        <option value="stretching-straps">Stretching Straps</option>
+                        <option value="strength-plates">Weight Plates</option>
+                      </select>
+                    </div>
+                  )}
+
+
+                  {productData.category === 'sports-accessories' && (
+                    <div>
+                      <label className="mb-2.5 block text-white">Sports Accessories</label>
+                      <select
+                        name="subcategory"
+                        value={productData.subcategory}
+                        onChange={handleChange}
+                        className="w-full rounded border-[1.5px] border-[#dc651d] bg-[#24303f] py-3 px-5 text-white outline-none transition focus:border-[#dc651d]"
+                      >
+                        <option value="">Select Type</option>
+                        <option value="bags">Sports Bags</option>
+                        <option value="water-bottles">Water Bottles</option>
+                        <option value="towels">Sports Towels</option>
+                        <option value="headbands">Headbands/Wristbands</option>
+                        <option value="socks">Sports Socks</option>
+                        <option value="caps">Sports Caps/Visors</option>
+                        <option value="sunglasses">Sports Sunglasses</option>
+                        <option value="watches">Sports Watches</option>
+                        <option value="storage">Equipment Storage</option>
+                        <option value="misc">Miscellaneous Accessories</option>
+                        <option value="gloves">Sports Gloves</option>
+                        <option value="knee-pads">Knee Pads/Elbow Pads</option>
+                        <option value="arm-bands">Arm Bands</option>
+                        <option value="shin-guards">Shin Guards</option>
+                        <option value="mouthguards">Mouthguards</option>
+                        <option value="compression-sleeves">Compression Sleeves</option>
+                        <option value="belts">Weight Lifting Belts</option>
+                        <option value="gym-straps">Gym Straps</option>
+                        <option value="neck-braces">Neck Braces</option>
+                        <option value="sports-tape">Sports Tape</option>
+                        <option value="pumps">Ball Pumps</option>
+                        <option value="protective-gear">Protective Gear</option>
+                        <option value="training-accessories">Training Accessories</option>
+                        <option value="hydration-packs">Hydration Packs</option>
+                      </select>
+                    </div>
+                  )}
+
 
                 {renderSizeField()}
               </div>
             </div>
-
-
-
-
 
 
             {/* Pricing and Inventory */}
@@ -950,10 +1128,6 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
 
 
 
-
-
-
-
             {/* Additional Information */}
             <div className="mb-8">
               <h2 className="text-xl font-semibold mb-4 text-white">Additional Information</h2>
@@ -981,9 +1155,6 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
                 </div>
               </div>
             </div>
-
-
-
 
 
 
@@ -1022,10 +1193,6 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
 
 
 
-
-
-
-
             {/* Description and Shipping */}
             <div className="mb-8">
               <h2 className="text-xl font-semibold mb-4 text-white">Description & Shipping</h2>
@@ -1054,9 +1221,6 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
                 </div>
               </div>
             </div>
-
-
-
 
 
 

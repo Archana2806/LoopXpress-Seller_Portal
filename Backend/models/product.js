@@ -1,6 +1,15 @@
 import mongoose from 'mongoose';
 
 const productSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: true,
+    default: function() {
+      return this.userInfo?.personalDetails?.fullName 
+        ? this.userInfo.personalDetails.fullName.charAt(0).toUpperCase() + this.userInfo.personalDetails.fullName.slice(1) 
+        : 'Name not available';
+    }
+  },
   title: {
     type: String,
     required: [true, 'Title is required'],
@@ -61,7 +70,10 @@ const productSchema = new mongoose.Schema({
       'athletic-care',
       'sports-nutrition',
       'training-equipment',
-      'sports-accessories'
+      'sports-accessories',
+      'dry-fruits',
+      'first-aid',
+      'cooking-essentials'
     ]
   },
   subcategory: {
@@ -133,4 +145,6 @@ productSchema.index({
   description: 'text' 
 });
 
-export const Product = mongoose.model('Product', productSchema);
+const Product = mongoose.model('Product', productSchema);
+
+export { Product };

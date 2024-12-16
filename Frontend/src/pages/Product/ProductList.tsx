@@ -18,7 +18,7 @@ const ProductList = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(0);
-  const rowsPerPage = 5;
+  const rowsPerPage = 8; 
   const navigate = useNavigate();
 
   const fetchProducts = async () => {

@@ -80,7 +80,7 @@ router.get('/user-info', authenticate, async (req, res) => {
 // Update perssonal info route
 router.put('/update-personal-info', authenticate, async (req, res) => {
   try {
-    const { personalDetails } = req.body;
+    const { personalDetails, businessDetails } = req.body;
 
     // Update using findByIdAndUpdate to avoid triggering save middleware
     const updatedUser = await User.findByIdAndUpdate(
@@ -156,11 +156,13 @@ router.put('/update-business-info', authenticate, async (req, res) => {
 //       return res.status(404).json({ message: 'User not found' });
 //     }
 
-//     const isMatch = await user.isValidate(currentPassword, user.personalDetails.password);
+//     const isMatch = await bcrypt.compare(currentPassword, user.personalDetails.password);
 //     if (!isMatch) {
 //       return res.status(400).json({ message: 'Current password is incorrect.' });
 //     }
 
+//     const salt = await bcrypt.genSalt(10);
+//     const hashedNewPassword = await bcrypt.hash(newPassword, salt);
 //     user.personalDetails.password = hashedNewPassword;
 //     await user.save();
 
@@ -235,7 +237,14 @@ router.post('/reset-password/:token', async (req, res) => {
       return res.status(400).json({ message: 'Invalid or expired token.' });
     }
 
-    user.personalDetails.password = newPassword;
+    
+    console.log('Token found:', token);
+    console.log('Token expires at:', user.resetPasswordExpires);
+    // Hash the new password and update the user
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    console.log("hashedpassword",hashedPassword);
+    console.log("newpass",newPassword);
+    user.personalDetails.password = hashedPassword;
     user.resetPasswordToken = null; // Clear the token
     user.resetPasswordExpires = null;
 
