@@ -1,9 +1,11 @@
 import express from 'express';
 import { Product } from '../models/Product.js';
+import authenticate from '../middleware/authenticate.js';
+
 const router = express.Router();
 
 // Add a new product
-router.post('/add-product', async (req, res) => {
+router.post('/add-product', authenticate, async (req, res) => {
   try {
     const {
       title,
@@ -32,7 +34,7 @@ router.post('/add-product', async (req, res) => {
       return res.status(400).json({ message: 'Required fields are missing' });
     }
 
-    // Create new product
+    // Create new product with seller information
     const product = new Product({
       title,
       brand,
@@ -51,7 +53,10 @@ router.post('/add-product', async (req, res) => {
       warranty,
       shippingInfo,
       highlights,
-      stockAlert
+      stockAlert,
+      sellerName: req.user.username,
+      sellerEmail: req.user.email,
+      user: req.user.id
     });
 
     await product.save();
@@ -59,6 +64,16 @@ router.post('/add-product', async (req, res) => {
   } catch (error) {
     // console.error('Error adding product:', error);
     res.status(500).json({ message: 'Error adding product', error: error.message });
+  }
+});
+
+// Add a new route to get products for the logged-in user
+router.get('/my-products', authenticate, async (req, res) => {
+  try {
+    const products = await Product.find({ user: req.user.id });
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching products', error: error.message });
   }
 });
 

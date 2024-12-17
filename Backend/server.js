@@ -1,26 +1,30 @@
 import express from 'express';
-import dotenv from 'dotenv';
 import cors from 'cors';
-import gstRoutes from './routes/gstRoutes.js';
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+import userRoutes from './routes/userRoutes.js';
+import sellerRoutes from './routes/sellerRoutes.js';
 
-// Load environment variables
 dotenv.config();
 
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Routes
-app.use('/api/gst', gstRoutes);
+// Test route to verify server is working
+app.get('/test', (req, res) => {
+  res.json({ message: 'Server is working' });
+});
+
+app.use('/api/users', userRoutes);
+app.use('/api/seller', sellerRoutes);
+
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
 const PORT = process.env.PORT || 5000;
-
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-    console.log('Environment Check:', {
-        hasRapidApiKey: !!process.env.RAPID_API_KEY,
-        hasRapidApiHost: !!process.env.RAPID_API_HOST
-    });
+  console.log(`Server running on port ${PORT}`);
 }); 

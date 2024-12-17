@@ -1,15 +1,6 @@
 import mongoose from 'mongoose';
 
 const productSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-    default: function() {
-      return this.userInfo?.personalDetails?.fullName 
-        ? this.userInfo.personalDetails.fullName.charAt(0).toUpperCase() + this.userInfo.personalDetails.fullName.slice(1) 
-        : 'Name not available';
-    }
-  },
   title: {
     type: String,
     required: [true, 'Title is required'],
@@ -73,7 +64,8 @@ const productSchema = new mongoose.Schema({
       'sports-accessories',
       'dry-fruits',
       'first-aid',
-      'cooking-essentials'
+      'cooking-essentials',
+      'food' // Add 'food' as a valid category
     ]
   },
   subcategory: {
@@ -131,6 +123,24 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: [true, 'Stock alert level is required'],
     min: [0, 'Stock alert level cannot be negative']
+  },
+  sellerName: {
+    type: String,
+    required: true
+  },
+  sellerEmail: {
+    type: String,
+    required: true
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  seller: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Seller',
+    required: true
   }
 }, {
   timestamps: true
@@ -142,7 +152,8 @@ productSchema.index({
   brand: 'text', 
   category: 'text', 
   subcategory: 'text',
-  description: 'text' 
+  description: 'text',
+  seller: 1  // Add index for seller
 });
 
 const Product = mongoose.model('Product', productSchema);
