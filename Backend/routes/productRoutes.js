@@ -1,79 +1,50 @@
 import express from 'express';
-import { Product } from '../models/Product.js';
-import authenticate from '../middleware/authenticate.js';
+import Product from '../models/Product.js';
+import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 
-// Add a new product
-router.post('/add-product', authenticate, async (req, res) => {
+// Add new product
+router.post('/add-product', async (req, res) => {
   try {
-    const {
-      title,
-      brand,
-      imageUrls,
-      originalPrice,
-      discountedPrice,
-      category,
-      subcategory,
-      quantity,
-      size,
-      description,
-      material,
-      weight,
-      dimensions,
-      manufacturingDate,
-      warranty,
-      shippingInfo,
-      highlights,
-      stockAlert
-    } = req.body;
+    const authToken = req.headers.authorization?.split(' ')[1];
+    const decoded = jwt.verify(authToken, process.env.JWT_SECRET);
 
-    // Basic validation
-    if (!title || !brand || !imageUrls || !originalPrice || !discountedPrice ||
-      !category || !subcategory || !quantity || !description || !stockAlert) {
-      return res.status(400).json({ message: 'Required fields are missing' });
-    }
-
-    // Create new product with seller information
+    // Create product with exact fields from your form
     const product = new Product({
-      title,
-      brand,
-      imageUrls,
-      originalPrice,
-      discountedPrice,
-      category,
-      subcategory,
-      quantity,
-      size,
-      description,
-      material,
-      weight,
-      dimensions,
-      manufacturingDate: manufacturingDate ? new Date(manufacturingDate) : undefined,
-      warranty,
-      shippingInfo,
-      highlights,
-      stockAlert,
-      sellerName: req.user.username,
-      sellerEmail: req.user.email,
-      user: req.user.id
+      title: req.body.title,
+      brand: req.body.brand,
+      imageUrls: req.body.imageUrls,
+      originalPrice: req.body.originalPrice,
+      discountedPrice: req.body.discountedPrice,
+      category: req.body.category,
+      subcategory: req.body.subcategory,
+      quantity: req.body.quantity,
+      description: req.body.description,
+      highlights: req.body.highlights,
+      stockAlert: req.body.stockAlert,
+      user: decoded.id
     });
 
-    await product.save();
-    res.status(201).json({ message: 'Product added successfully', product });
+    const savedProduct = await product.save();
+    res.status(201).json({ message: 'Product added successfully', product: savedProduct });
   } catch (error) {
-    // console.error('Error adding product:', error);
+    console.error('Server error:', error);
     res.status(500).json({ message: 'Error adding product', error: error.message });
   }
 });
 
-// Add a new route to get products for the logged-in user
-router.get('/my-products', authenticate, async (req, res) => {
+// Get user's products
+router.get('/my-products', async (req, res) => {
   try {
-    const products = await Product.find({ user: req.user.id });
+    const authToken = req.headers.authorization?.split(' ')[1];
+    const decoded = jwt.verify(authToken, process.env.JWT_SECRET);
+
+    const products = await Product.find({ user: decoded.id });
     res.json(products);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching products', error: error.message });
+    console.error('Error fetching products:', error);
+    res.status(500).json({ message: 'Error fetching products' });
   }
 });
 

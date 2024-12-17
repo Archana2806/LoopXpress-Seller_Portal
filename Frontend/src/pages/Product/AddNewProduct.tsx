@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import useUserInfo from '../../hooks/useUserInfo';
 import { ProductData, subcategorySizeMap, categories, sizeOptionsMap } from '../../constant/ProductData';
@@ -10,6 +11,7 @@ interface AddNewProductProps {
 }
 
 const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
+  const navigate = useNavigate();
   const { userInfo } = useUserInfo(); // Fetch user info
   const [productData, setProductData] = useState<ProductData>({
     name: userInfo?.personalDetails?.fullName || '', // Initialize username
@@ -80,6 +82,10 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const authToken = localStorage.getItem("authToken");
+    console.log('Using token:', authToken);
+    console.log('Sending data:', productData); // Log what we're sending
+    
     try {
       const formattedData = {
         ...productData,
@@ -91,28 +97,36 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
         highlights: productData.highlights.filter(highlight => highlight.trim() !== '')
       };
 
-      const token = localStorage.getItem('token');
-      
-      const response = await fetch('http://localhost:5000/api/seller/add-product', {
+      const response = await fetch('http://localhost:5000/api/products/add-product', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${authToken}`
         },
         body: JSON.stringify(formattedData),
       });
 
+      const data = await response.json();
+      console.log('Server response:', data);
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to add product');
+        if (data.details) {
+          // If we have detailed validation errors, show them
+          const errorMessage = Array.isArray(data.details) 
+            ? data.details.map((err: any) => `${err.field}: ${err.message}`).join('\n')
+            : data.details;
+          throw new Error(errorMessage);
+        }
+        throw new Error(data.message || 'Failed to add product');
       }
 
-      const result = await response.json();
       alert('Product added successfully!');
-      // Reset form or redirect
+      if (onProductAdded) {
+        onProductAdded();
+      }
     } catch (error) {
-      console.error('Error submitting product:', error);
-      alert(error instanceof Error ? error.message : 'An error occurred while adding the product');
+      console.error('Error details:', error);
+      alert(error instanceof Error ? error.message : 'Failed to add product');
     }
   };
 

@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import userRoutes from './routes/userRoutes.js';
 import sellerRoutes from './routes/sellerRoutes.js';
+import productRoutes from './routes/productRoutes.js';
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.get('/test', (req, res) => {
 
 app.use('/api/users', userRoutes);
 app.use('/api/seller', sellerRoutes);
+app.use('/api/products', productRoutes);
 
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))
