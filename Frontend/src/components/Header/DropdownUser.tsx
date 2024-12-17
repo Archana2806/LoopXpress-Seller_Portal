@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ClickOutside from '../ClickOutside';
-import UserOne from '../../images/user/user-01.png'; // Placeholder
 import useUserInfo from '../../hooks/useUserInfo';
 
 interface User {
@@ -35,8 +34,14 @@ const DropdownUser: React.FC<DropdownUserProps> = ({ user, onLogout }) => {
           </span>
         </span>
 
-        <span className="h-12 w-12 rounded-full">
-          <img src={user?.profilePic || UserOne} alt="User" />
+        <span className="h-12 w-12 rounded-full flex items-center justify-center bg-gray-200 text-black">
+          {user?.profilePic ? (
+            <img src={user.profilePic} alt="User" />
+          ) : (
+            <span className="text-lg font-bold">
+              {userInfo?.personalDetails?.fullName ? userInfo.personalDetails.fullName.charAt(0).toUpperCase() : 'G'}
+            </span>
+          )}
         </span>
 
         <svg

@@ -6,7 +6,7 @@ interface PersonalDetails {
   phoneNumber: string;
   address: string;
   password: string;
-
+  profilePic:string;
 }
 interface BusinessDetails {
   businessName: string;

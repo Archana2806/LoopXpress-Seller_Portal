@@ -24,7 +24,7 @@ const Profile = () => {
           {/* Profile Image */}
           <div className="mx-auto h-24 w-24 overflow-hidden rounded-full border-4 border-orange-400 shadow-lg">
             <img
-              src="https://via.placeholder.com/100"
+              src={`https://ui-avatars.com/api/?name=${userInfo?.personalDetails?.fullName?.charAt(0) || 'U'}`}
               alt="User"
               className="h-full w-full object-cover"
             />
@@ -59,7 +59,7 @@ const Profile = () => {
               </p>
             </div>
           </div>
-        </div>
+        </div>x 
       </div>
     </>
   );

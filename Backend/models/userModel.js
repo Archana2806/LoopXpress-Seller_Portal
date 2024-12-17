@@ -28,6 +28,10 @@ const userSchema = new mongoose.Schema(
         required: true,
         select: false,
       },
+      profilePic: {
+        type: String,
+        default: '',
+      },
     },
     businessDetails: {
       businessName: {

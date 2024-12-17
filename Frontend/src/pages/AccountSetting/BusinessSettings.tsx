@@ -136,8 +136,8 @@ const BusinessSettings = () => {
                 readOnly
                 className="w-full rounded border border-stroke  py-3 px-4.5 text-black focus:border-orange-500 focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-orange-500"
                 placeholder="Enter your GST number"
-                onFocus={() => toast.info("Changes to the GST Number are not allowed.")}
               />
+              <p className="text-sm text-gray-500 mt-2">GST Number cannot be changed.</p>
             </div>
 
             <div className="mb-5.5">

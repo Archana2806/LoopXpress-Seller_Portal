@@ -160,7 +160,7 @@ const PersonalSettings = () => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value.trim(),
+      [name]: value,
     }));
   };
 
@@ -247,7 +247,10 @@ const PersonalSettings = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   className="w-full rounded border py-3 px-4 focus:border-orange-500 focus-visible:outline-none"
+                  disabled
+                  title="Email address cannot be changed"
                 />
+                <p className="text-sm text-gray-500">Email address cannot be changed.</p>
               </div>
               <div className="mb-5.5">
                 <label className="mb-3 block text-sm font-medium" htmlFor="address">

@@ -1029,11 +1029,6 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
               </div>
             </div>
 
-
-
-
-
-
             {/* Submit Button */}
             <button
               type="submit"
