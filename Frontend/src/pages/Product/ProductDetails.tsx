@@ -222,7 +222,7 @@ const ProductDetails = () => {
               {/* Action Buttons */}
               <div className="flex gap-4">
                 <button
-                  onClick={() => navigate(`/edit-product/${product._id}`)}
+                  onClick={() => navigate(`/seller/edit-product/${product._id}`)}
                   className="flex-1 bg-[#dc651d] text-white px-6 py-3 rounded-md hover:bg-opacity-90 transition-colors flex items-center justify-center gap-2"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -231,7 +231,7 @@ const ProductDetails = () => {
                   Edit Product
                 </button>
                 <button
-                  onClick={() => navigate('/product-list')}
+                  onClick={() => navigate('/seller/product-list')}
                   className="flex-1 bg-[#24303f] text-white px-6 py-3 rounded-md hover:bg-opacity-90 transition-colors flex items-center justify-center gap-2"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

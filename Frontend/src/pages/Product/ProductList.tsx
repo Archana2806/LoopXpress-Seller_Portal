@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface Product {
   _id: string;
@@ -16,6 +16,7 @@ const ProductList = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchProducts();
@@ -91,10 +92,36 @@ const ProductList = () => {
               <span className="text-gray-500 line-through">₹{product.originalPrice}</span>
               <span className="text-green-600 font-bold">₹{product.discountedPrice}</span>
             </div>
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center mb-4">
               <span className="text-sm text-gray-600">Category: {product.category}</span>
               <span className="text-sm text-gray-600">Stock: {product.quantity}</span>
             </div>
+            
+            <button
+              onClick={() => navigate(`/product/${product._id}`)}
+              className="w-full bg-[#dc651d] text-white px-4 py-2 rounded hover:bg-opacity-90 transition-colors flex items-center justify-center gap-2"
+            >
+              <svg 
+                className="w-5 h-5" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={2} 
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" 
+                />
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={2} 
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" 
+                />
+              </svg>
+              View Details
+            </button>
           </div>
         ))}
       </div>
