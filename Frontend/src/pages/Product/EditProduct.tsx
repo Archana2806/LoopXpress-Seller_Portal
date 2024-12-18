@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import DefaultLayout from '../../layout/DefaultLayout';
 
-const EditProduct = () => {
+const EditProduct: React.FC  = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState<any>(null);
@@ -79,7 +80,6 @@ const EditProduct = () => {
   return (
     <>
       <Breadcrumb pageName="Edit Product" />
-
       <div className="max-w-full">
         <div className="bg-[#24303f] border rounded-lg p-6 shadow-lg text-white">
           <form onSubmit={handleSubmit} className="space-y-6">

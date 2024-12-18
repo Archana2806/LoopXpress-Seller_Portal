@@ -148,7 +148,7 @@ const ProductDetails = () => {
                     <p className="text-gray-600 text-sm">{product.brand}</p>
                     <h1 className="text-3xl font-bold text-gray-800 mt-2">{product.title}</h1>
                   </div>
-                  <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                  <span className="bg-green-100 text-green-800 text-xs font-medium px-4 py-1 rounded-full ">
                     In Stock: {product.quantity}
                   </span>
                 </div>

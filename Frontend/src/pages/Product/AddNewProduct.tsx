@@ -218,7 +218,7 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Username */}
             <div>
-              <h3 className="mb-2 text-2xl font-bold text-gray-900 dark:text-gray-100">
+              <h3 className="mb-2 text-2xl font-bold text-orange-500">
                 {userInfo?.personalDetails?.fullName ? userInfo?.personalDetails?.fullName.charAt(0).toUpperCase() + userInfo?.personalDetails?.fullName.slice(1) : 'Name not available'}
               </h3>
             </div>
