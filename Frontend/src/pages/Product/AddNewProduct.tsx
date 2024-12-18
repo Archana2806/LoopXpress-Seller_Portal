@@ -129,7 +129,6 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
       }
     } catch (error) {
       console.error('Error details:', error);
-      alert(error instanceof Error ? error.message : 'Failed to add product');
       toast.error(error instanceof Error ? error.message : 'Failed to add product');
     }
   };

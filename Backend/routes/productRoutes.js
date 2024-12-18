@@ -1,16 +1,14 @@
 import express from 'express';
 import Product from '../models/Product.js';
-import jwt from 'jsonwebtoken';
+import verifyAuth from '../middleware/verifyAuth .js';
+
 
 const router = express.Router();
 
 // Add new product
-router.post('/add-product', async (req, res) => {
+router.post('/add-product', verifyAuth, async (req, res) => {
   try {
-    const authToken = req.headers.authorization?.split(' ')[1];
-    const decoded = jwt.verify(authToken, process.env.JWT_SECRET);
-
-    // Create product with exact fields from your form
+    // The auth token is already verified by the middleware
     const product = new Product({
       title: req.body.title,
       brand: req.body.brand,
@@ -23,7 +21,7 @@ router.post('/add-product', async (req, res) => {
       description: req.body.description,
       highlights: req.body.highlights,
       stockAlert: req.body.stockAlert,
-      user: decoded.id
+      user: req.user.id  // Use user from the verified token
     });
 
     const savedProduct = await product.save();
@@ -35,12 +33,9 @@ router.post('/add-product', async (req, res) => {
 });
 
 // Get user's products
-router.get('/my-products', async (req, res) => {
+router.get('/my-products', verifyAuth, async (req, res) => {
   try {
-    const authToken = req.headers.authorization?.split(' ')[1];
-    const decoded = jwt.verify(authToken, process.env.JWT_SECRET);
-
-    const products = await Product.find({ user: decoded.id });
+    const products = await Product.find({ user: req.user.id });
     res.json(products);
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -72,12 +67,9 @@ router.get('/product/:id', async (req, res) => {
 });
 
 // Update product by ID
-router.put('/update-product/:id', async (req, res) => {
+router.put('/update-product/:id', verifyAuth, async (req, res) => {
   try {
     console.log('Request received to update product with ID:', req.params.id);  // Log the ID
-    const authToken = req.headers.authorization?.split(' ')[1];
-
-    jwt.verify(authToken, process.env.JWT_SECRET);
 
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
@@ -92,11 +84,8 @@ router.put('/update-product/:id', async (req, res) => {
 
     res.json({ message: 'Product updated successfully', product: updatedProduct });
   } catch (error) {
- 
     res.status(500).json({ message: 'Error updating product', error: error.message });
   }
 });
-
-
 
 export default router;

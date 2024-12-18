@@ -72,9 +72,8 @@ const ProductDetails = () => {
 
   return (
     <>
-      <Breadcrumb pageName="Product Details" />
-      
       <div className="container mx-auto px-4 py-8">
+      <Breadcrumb pageName="Product Details" />
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="md:flex">
             {/* Product Images Section */}
