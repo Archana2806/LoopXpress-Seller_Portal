@@ -17,6 +17,7 @@ import ViewOrders from './pages/OrdersManagement/ViewOrders';
 import OrderStatus from './pages/OrdersManagement/OrderStatus';
 import ReturnAndRefund from './pages/OrdersManagement/ReturnAndRefund';
 import ProductDetails from './pages/Product/ProductDetails';
+import EditProduct from './pages/Product/EditProduct';
 import ForgotPassword from './pages/Authentication/ForgetPassword';
 import ResetPassword from './pages/Authentication/ResetPassword';
 import Payouts from './pages/Payouts/Payouts';
@@ -91,6 +92,7 @@ function App() {
         <Route path="/order-status" element={<OrderStatus />} />
         <Route path="/return-or-refund" element={<ReturnAndRefund />} />
         <Route path="/product/:id" element={<ProductDetails />} />
+        <Route path="/edit-product/:id" element={<EditProduct />} />
       </Route>
 
       {/* Catch-all for undefined routes */}

@@ -79,7 +79,7 @@ router.get('/user-info', authenticate, async (req, res) => {
 // Update perssonal info route
 router.put('/update-personal-info', authenticate, async (req, res) => {
   try {
-    const { personalDetails } = req.body;
+    const { personalDetails, businessDetails } = req.body;
 
     // Update using findByIdAndUpdate to avoid triggering save middleware
     const updatedUser = await User.findByIdAndUpdate(

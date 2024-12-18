@@ -16,47 +16,42 @@ const SignIn: React.FC = () => {
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault(); // Prevent form from reloading the page
-
-        // Client-side validation
-        if (!email || !password) {
-            setErrorMessage("Please enter both email and password.");
-            return;
-        }
+        e.preventDefault();
 
         try {
-            setIsSubmitting(true); // Disable form while submitting
-            setErrorMessage(""); // Clear previous errors
+            setIsSubmitting(true);
+            setErrorMessage("");
 
             const response = await axios.post("http://localhost:5000/api/users/signin", {
                 email,
                 password,
             });
 
-            console.log(response);
-
-            // Assuming the backend sends back a JWT token
             const { token } = response.data;
             if (!token) {
                 throw new Error("No token received from the server.");
             }
 
-            // Save token to localStorage
             localStorage.setItem("authToken", token);
 
-            // Redirect to dashboard
+            console.log('Checking localStorage after login:');
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key) {
+                    console.log(`${key}:`, localStorage.getItem(key));
+                }
+            }
+
             window.location.href = "/dashboard";
         } catch (error: any) {
             console.error("Error logging in:", error);
-
-            // Set an appropriate error message
-            if (error.response && error.response.data && error.response.data.message) {
+            if (error.response?.data?.message) {
                 setErrorMessage(error.response.data.message);
             } else {
                 setErrorMessage("Something went wrong. Please try again.");
             }
         } finally {
-            setIsSubmitting(false); // Re-enable form after submission
+            setIsSubmitting(false);
         }
     };
 

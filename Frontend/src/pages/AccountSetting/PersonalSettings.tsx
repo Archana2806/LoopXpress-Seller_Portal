@@ -65,7 +65,7 @@ const PasswordUpdate = () => {
             id="currentPassword"
             value={currentPassword}
             onChange={(e) => setCurrentPassword(e.target.value)}
-            className="w-full rounded border py-3 px-4 pr-12 focus:border-orange-500 focus-visible:outline-none"
+            className="w-full rounded border py-3 px-4 pr-12 focus:border-orange-500 focus-visible:outline-none dark:bg-meta-4"
             required
           />
           <button
@@ -87,7 +87,7 @@ const PasswordUpdate = () => {
           id="newPassword"
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
-          className="w-full rounded border py-3 px-4 pr-12 focus:border-orange-500 focus-visible:outline-none"
+          className="w-full rounded border py-3 px-4 pr-12 focus:border-orange-500 focus-visible:outline-none dark:bg-meta-4"
           required
         />
         <button
@@ -109,7 +109,7 @@ const PasswordUpdate = () => {
           id="confirmPassword"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
-          className="w-full rounded border py-3 px-4 pr-12 focus:border-orange-500 focus-visible:outline-none"
+          className="w-full rounded border py-3 px-4 pr-12 focus:border-orange-500 focus-visible:outline-none dark:bg-meta-4"
           required
         />
       </div>
@@ -218,7 +218,7 @@ const PersonalSettings = () => {
                     id="fullName"
                     value={formData.fullName}
                     onChange={handleInputChange}
-                    className="w-full rounded border py-3 px-4 focus:border-orange-500 focus-visible:outline-none"
+                    className="w-full rounded border py-3 px-4 focus:border-orange-500 focus-visible:outline-none dark:bg-meta-4"
                     required
                   />
                 </div>
@@ -232,7 +232,7 @@ const PersonalSettings = () => {
                     id="phoneNumber"
                     value={formData.phoneNumber}
                     onChange={handleInputChange}
-                    className="w-full rounded border py-3 px-4 focus:border-orange-500 focus-visible:outline-none"
+                    className="w-full rounded border py-3 px-4 focus:border-orange-500 focus-visible:outline-none dark:bg-meta-4"
                   />
                 </div>
               </div>
@@ -246,7 +246,7 @@ const PersonalSettings = () => {
                   id="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full rounded border py-3 px-4 focus:border-orange-500 focus-visible:outline-none"
+                  className="w-full rounded border py-3 px-4 focus:border-orange-500 focus-visible:outline-none dark:bg-meta-4"
                   disabled
                   title="Email address cannot be changed"
                 />
@@ -262,7 +262,7 @@ const PersonalSettings = () => {
                   id="address"
                   value={formData.address}
                   onChange={handleInputChange}
-                  className="w-full rounded border py-3 px-4 focus:border-orange-500 focus-visible:outline-none"
+                  className="w-full rounded border py-3 px-4 focus:border-orange-500 focus-visible:outline-none dark:bg-meta-4"
                 />
               </div>
               <div className="flex justify-between gap-5">
