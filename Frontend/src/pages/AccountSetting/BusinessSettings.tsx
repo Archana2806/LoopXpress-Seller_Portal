@@ -70,7 +70,7 @@ const BusinessSettings = () => {
             <div className="mb-5.5">
               <label
                 htmlFor="businessName"
-                className="mb-3 block text-sm font-medium text-black dark:text-white"
+                className="mb-3 block text-sm font-medium text-gray-500 dark:text-white"
               >
                 Business Name
               </label>
@@ -80,7 +80,7 @@ const BusinessSettings = () => {
                 type="text"
                 value={formData.businessName}
                 onChange={handleInputChange}
-                className="w-full rounded border border-stroke  py-3 px-4.5 text-black focus:border-orange-500 focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-orange-500"
+                className="w-full rounded border border-stroke  py-3 px-4.5 text-gray-500 focus:border-orange-500 focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-orange-500"
                 placeholder="Enter your business name"
               />
             </div>
@@ -88,7 +88,7 @@ const BusinessSettings = () => {
             <div className="mb-5.5">
               <label
                 htmlFor="businessEmail"
-                className="mb-3 block text-sm font-medium text-black dark:text-white"
+                className="mb-3 block text-sm font-medium text-gray-500 dark:text-white"
               >
                 Business Email
               </label>
@@ -98,7 +98,7 @@ const BusinessSettings = () => {
                 type="email"
                 value={formData.businessEmail}
                 onChange={handleInputChange}
-                className="w-full rounded border border-stroke  py-3 px-4.5 text-black focus:border-orange-500 focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-orange-500"
+                className="w-full rounded border border-stroke  py-3 px-4.5 text-gray-500 focus:border-orange-500 focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-orange-500"
                 placeholder="Enter your business email"
               />
             </div>
@@ -106,7 +106,7 @@ const BusinessSettings = () => {
             <div className="mb-5.5">
               <label
                 htmlFor="businessPhone"
-                className="mb-3 block text-sm font-medium text-black dark:text-white"
+                className="mb-3 block text-sm font-medium text-gray-500 dark:text-white"
               >
                 Business Phone
               </label>
@@ -116,7 +116,7 @@ const BusinessSettings = () => {
                 type="text"
                 value={formData.businessPhone}
                 onChange={handleInputChange}
-                className="w-full rounded border border-stroke  py-3 px-4.5 text-black focus:border-orange-500 focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-orange-500"
+                className="w-full rounded border border-stroke  py-3 px-4.5 text-gray-500 focus:border-orange-500 focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-orange-500"
                 placeholder="Enter your business phone"
               />
             </div>
@@ -124,7 +124,7 @@ const BusinessSettings = () => {
             <div className="mb-5.5">
               <label
                 htmlFor="gstNumber"
-                className="mb-3 block text-sm font-medium text-black dark:text-white"
+                className="mb-3 block text-sm font-medium text-gray-500 dark:text-white"
               >
                 GST Number
               </label>
@@ -134,7 +134,7 @@ const BusinessSettings = () => {
                 type="text"
                 value="GST123456789"
                 readOnly
-                className="w-full rounded border border-stroke  py-3 px-4.5 text-black focus:border-orange-500 focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-orange-500"
+                className="w-full rounded border border-stroke  py-3 px-4.5 text-gray-500 focus:border-orange-500 focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-orange-500"
                 placeholder="Enter your GST number"
               />
               <p className="text-sm text-gray-500 mt-2">GST Number cannot be changed.</p>
@@ -143,7 +143,7 @@ const BusinessSettings = () => {
             <div className="mb-5.5">
               <label
                 htmlFor="businessType"
-                className="mb-3 block text-sm font-medium text-black dark:text-white"
+                className="mb-3 block text-sm font-medium text-gray-500 dark:text-white"
               >
                 Business Type
               </label>
@@ -152,7 +152,7 @@ const BusinessSettings = () => {
                 name="businessType"
                 value={formData.businessType}
                 onChange={handleInputChange}
-                className="w-full rounded border border-stroke  py-3 px-4.5 text-black focus:border-orange-500 focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-orange-500"
+                className="w-full rounded border border-stroke  py-3 px-4.5 text-gray-500 focus:border-orange-500 focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-orange-500"
               >
                 <option value="" disabled>
                   Select your business type

@@ -90,16 +90,16 @@ const BankDetails: React.FC<{
     };
 
     return (
-        <div className="rounded-sm  flex items-center justify-center w-full">
+        <div className="rounded-sm flex items-center justify-center w-full">
             <div className="w-full mx-auto max-w-180 shadow-default bg-white dark:border-strokedark h-full dark:bg-boxdark">
-                <div className="w-full sm:p-8 xl:p-10">
+                <div className="w-full p-4 sm:p-8 xl:p-10">
                     <h2 className="mb-6 text-2xl font-bold text-orange-500 dark:text-white sm:text-title-xl2">
                         Sign Up to Loop
                     </h2>
                     <form>
-                    <span className="mb-1.5 block font-medium">Seller Bank Details</span>
+                        <span className="mb-1.5 block font-medium">Seller Bank Details</span>
                         <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                            <div className="col-span-12 lg:col-span-3">
+                            <div className="col-span-12 sm:col-span-6 lg:col-span-3">
                                 <label className="mb-2.5 block font-medium text-black dark:text-white">
                                     Account Holder Name
                                 </label>
@@ -114,7 +114,7 @@ const BankDetails: React.FC<{
                                 {errors.accountHolderName && <p className="text-red-500 text-sm">{errors.accountHolderName}</p>}
                             </div>
 
-                            <div className="col-span-12 lg:col-span-3">
+                            <div className="col-span-12 sm:col-span-6 lg:col-span-3">
                                 <label className="mb-2.5 block font-medium text-black dark:text-white">
                                     Account holder's Phone
                                 </label>
@@ -130,7 +130,7 @@ const BankDetails: React.FC<{
                             </div>
                         </div>
                         <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                            <div className="col-span-12 lg:col-span-3">
+                            <div className="col-span-12 sm:col-span-6 lg:col-span-3">
                                 <label className="mb-2.5 block font-medium text-black dark:text-white">
                                     Bank Account Type
                                 </label>
@@ -150,8 +150,7 @@ const BankDetails: React.FC<{
                                 {errors.accountType && <p className="text-red-500 text-sm">{errors.accountType}</p>}
                             </div>
 
-
-                            <div className="col-span-12 lg:col-span-3">
+                            <div className="col-span-12 sm:col-span-6 lg:col-span-3">
                                 <label className="mb-2.5 block font-medium text-black dark:text-white">
                                     Bank IFSC Code
                                 </label>
@@ -168,7 +167,7 @@ const BankDetails: React.FC<{
                         </div>
 
                         <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                            <div className="col-span-12 lg:col-span-3">
+                            <div className="col-span-12 sm:col-span-6 lg:col-span-3">
                                 <label className="mb-2.5 block font-medium text-black dark:text-white">
                                     Bank Name
                                 </label>
@@ -179,11 +178,11 @@ const BankDetails: React.FC<{
                                     onChange={handleInputChange}
                                     placeholder="Enter your Bank name"
                                     className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-orange-500 dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-orange-500"
-                                    disabled // Disable since it is fetched
+                                    disabled
                                 />
                                 {errors.bankName && <p className="text-red-500 text-sm">{errors.bankName}</p>}
                             </div>
-                            <div className="col-span-12 lg:col-span-3">
+                            <div className="col-span-12 sm:col-span-6 lg:col-span-3">
                                 <label className="mb-2.5 block font-medium text-black dark:text-white">
                                     Branch Name
                                 </label>
@@ -194,12 +193,11 @@ const BankDetails: React.FC<{
                                     onChange={handleInputChange}
                                     placeholder="Enter your Branch Name"
                                     className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-orange-500 dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-orange-500"
-                                    disabled // Disable since it is fetched
+                                    disabled
                                 />
                                 {errors.branchName && <p className="text-red-500 text-sm">{errors.branchName}</p>}
                             </div>
                         </div>
-
 
                         <div className="mt-4">
                             <label className="mb-2.5 block font-medium text-black dark:text-white">
@@ -216,7 +214,6 @@ const BankDetails: React.FC<{
                             {errors.accountNumber && <p className="text-red-500 text-sm">{errors.accountNumber}</p>}
                         </div>
 
-                        {/* Checkbox for Verification */}
                         <div className="my-4">
                             <label className="flex items-center gap-x-2 font-medium text-black dark:text-white">
                                 <input
@@ -231,19 +228,18 @@ const BankDetails: React.FC<{
                             {errors.isVerified && <p className="text-red-500 text-sm">{errors.isVerified}</p>}
                         </div>
 
-                        {/* Navigation Buttons */}
-                        <div className="flex justify-between">
+                        <div className="flex flex-col sm:flex-row justify-between">
                             <button
                                 type="button"
                                 onClick={onPrevious}
-                                className="w-1/4 py-3 px-4 bg-gray-300 text-black rounded-lg"
+                                className="w-full sm:w-1/4 py-3 px-4 mb-2 sm:mb-0 bg-gray-300 text-black rounded-lg"
                             >
                                 Previous
                             </button>
                             <button
                                 type="button"
                                 onClick={handleNext}
-                                className="w-1/4 py-3 px-4 bg-orange-500 text-white rounded-lg"
+                                className="w-full sm:w-1/4 py-3 px-4 bg-orange-500 text-white rounded-lg"
                             >
                                 Next
                             </button>

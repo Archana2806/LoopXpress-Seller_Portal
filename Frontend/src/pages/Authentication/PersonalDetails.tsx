@@ -54,10 +54,10 @@ const PersonalDetails: React.FC<{
   };
 
   return (
-    <div className="rounded-sm  flex items-center justify-center w-full">
+    <div className="rounded-sm flex items-center justify-center w-full">
       <div className="w-full mx-auto max-w-180 shadow-default bg-white dark:border-strokedark h-full dark:bg-boxdark">
         <div className="w-full border-stroke dark:border-strokedark xl:border-l-2">
-          <div className="w-full sm:p-8 xl:p-10">
+          <div className="w-full p-4 sm:p-8 xl:p-10">
             <h2 className="mb-6 text-2xl font-bold text-orange-500 dark:text-white sm:text-title-xl2">
               Sign Up to Loop
             </h2>
@@ -65,8 +65,8 @@ const PersonalDetails: React.FC<{
             <form>
               <span className="mb-1.5 block font-medium">Seller Personal Details</span>
 
-              <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                <div className="col-span-12 lg:col-span-3">
+              <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="col-span-1">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Full Name
                   </label>
@@ -83,7 +83,7 @@ const PersonalDetails: React.FC<{
                     <p className="text-red-500 text-sm">{errors.fullName}</p>
                   )}
                 </div>
-                <div className="col-span-12 lg:col-span-3">
+                <div className="col-span-1">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Email Address
                   </label>
@@ -102,8 +102,8 @@ const PersonalDetails: React.FC<{
                 </div>
               </div>
 
-              <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                <div className="mb-4 col-span-12 lg:col-span-3">
+              <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="mb-4 col-span-1">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Password
                   </label>
@@ -130,8 +130,7 @@ const PersonalDetails: React.FC<{
                   )}
                 </div>
 
-
-                <div className="mb-4 col-span-12 lg:col-span-3">
+                <div className="mb-4 col-span-1">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Phone Number
                   </label>
@@ -150,8 +149,6 @@ const PersonalDetails: React.FC<{
                   )}
                 </div>
               </div>
-
-
 
               {/* Address */}
               <div className="mb-4">

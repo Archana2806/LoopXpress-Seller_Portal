@@ -93,19 +93,22 @@ const MultiStepForm: React.FC = () => {
   ];
 
   return (
-    <div className="container">
+    <div className="container px-4">
       <AuthHeader />
       {errorMessage && <div className="error-message">{errorMessage}</div>}
       {/* Stepper Navigation */}
-      <div className="flex items-center justify-center mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 mb-6">
         {steps.map((step) => (
           <div
             key={step.id}
-            onClick={() => setCurrentStep(step.id)}
-            className={`cursor-pointer text-center py-2 px-4 mx-2 rounded ${currentStep === step.id
+            onClick={() => setCurrentStep(step.id)} // Optional: Click to navigate
+            className={`cursor-pointer text-center py-2 px-4 rounded transition-all duration-300 
+            ${currentStep === step.id
               ? "bg-orange-700 font-semibold border-2 border-white text-white"
-              : "bg-gray-200 text-gray-600"
-              }`}
+              : "bg-gray-200 text-gray-600 hover:bg-gray-300"
+            }
+            w-full
+          `}
           >
             {step.name}
           </div>
@@ -113,36 +116,38 @@ const MultiStepForm: React.FC = () => {
       </div>
 
       {/* Step Components */}
-      {currentStep === 1 && (
-        <PersonalDetails
-          data={formData.personalDetails}
-          onChange={(data) => handleChange("personalDetails", data)}
-          onNext={handleNext}
-        />
-      )}
-      {currentStep === 2 && (
-        <BusinessDetails
-          data={formData.businessDetails}
-          onChange={(data) => handleChange("businessDetails", data)}
-          onNext={handleNext}
-          onPrevious={handlePrevious}
-        />
-      )}
-      {currentStep === 3 && (
-        <BankDetails
-          data={formData.bankDetails}
-          onChange={(data) => handleChange("bankDetails", data)}
-          onNext={handleNext}
-          onPrevious={handlePrevious}
-        />
-      )}
-      {currentStep === 4 && (
-        <PreviewForm
-          data={formData}
-          onPrevious={handlePrevious}
-          onSubmit={handleSubmit}
-        />
-      )}
+      <div className="flex flex-col items-center">
+        {currentStep === 1 && (
+          <PersonalDetails
+            data={formData.personalDetails}
+            onChange={(data) => handleChange("personalDetails", data)}
+            onNext={handleNext}
+          />
+        )}
+        {currentStep === 2 && (
+          <BusinessDetails
+            data={formData.businessDetails}
+            onChange={(data) => handleChange("businessDetails", data)}
+            onNext={handleNext}
+            onPrevious={handlePrevious}
+          />
+        )}
+        {currentStep === 3 && (
+          <BankDetails
+            data={formData.bankDetails}
+            onChange={(data) => handleChange("bankDetails", data)}
+            onNext={handleNext}
+            onPrevious={handlePrevious}
+          />
+        )}
+        {currentStep === 4 && (
+          <PreviewForm
+            data={formData}
+            onPrevious={handlePrevious}
+            onSubmit={handleSubmit}
+          />
+        )}
+      </div>
     </div>
   );
 };

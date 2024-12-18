@@ -192,11 +192,11 @@ const BusinessDetails: React.FC<{
   }, [data.gstDetails]);
 
   return (
-    <div className="rounded-sm flex items-center justify-center w-full">
-      <div className="w-full mx-auto max-w-180 shadow-default bg-white dark:border-strokedark h-full dark:bg-boxdark">
+    <div className="flex items-center justify-center w-full p-4 sm:p-6">
+      <div className="w-full max-w-lg mx-auto shadow-default bg-white dark:border-strokedark h-full dark:bg-boxdark">
         <div className="w-full border-stroke dark:border-strokedark xl:border-l-2">
-          <div className="w-full sm:p-8 xl:p-10">
-            <h2 className="mb-6 text-2xl font-bold text-orange-500 dark:text-white sm:text-title-xl2">
+          <div className="w-full p-4 sm:p-8 xl:p-10">
+            <h2 className="mb-6 text-xl sm:text-2xl font-bold text-orange-500 dark:text-white">
               Sign Up to Loop
             </h2>
 
@@ -204,8 +204,8 @@ const BusinessDetails: React.FC<{
               <span className="mb-1.5 block font-medium">
                 Seller Business Details
               </span>
-              <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                <div className="col-span-12 lg:col-span-3">
+              <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
+                <div className="col-span-1">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Business Name
                   </label>
@@ -216,7 +216,7 @@ const BusinessDetails: React.FC<{
                       value={data.businessName || ""}
                       onChange={handleInputChange}
                       placeholder="Enter your Business name"
-                      className="w-full rounded-lg border bg-transparent py-4 pl-6 pr-10"
+                      className="w-full rounded-lg border bg-transparent py-2 px-4"
                     />
                     {formErrors.businessName && (
                       <p className="text-red-500 text-sm mt-1">
@@ -226,7 +226,7 @@ const BusinessDetails: React.FC<{
                   </div>
                 </div>
 
-                <div className="col-span-12 lg:col-span-3">
+                <div className="col-span-1">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Business Type
                   </label>
@@ -235,7 +235,7 @@ const BusinessDetails: React.FC<{
                       name="businessType"
                       value={data.businessType || ""}
                       onChange={handleInputChange}
-                      className="w-full rounded-lg border bg-transparent py-4 pl-6 pr-10"
+                      className="w-full rounded-lg border bg-transparent py-2 px-4"
                     >
                       <option value="" disabled>
                         Select Business Type
@@ -256,8 +256,8 @@ const BusinessDetails: React.FC<{
                 </div>
               </div>
 
-              <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                <div className="col-span-12 lg:col-span-3">
+              <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
+                <div className="col-span-1">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Business Phone Number
                   </label>
@@ -268,7 +268,7 @@ const BusinessDetails: React.FC<{
                       value={data.businessPhone || ""}
                       onChange={handleInputChange}
                       placeholder="Enter your Business Phone"
-                      className="w-full rounded-lg border bg-transparent py-4 pl-6 pr-10"
+                      className="w-full rounded-lg border bg-transparent py-2 px-4"
                     />
                     {formErrors.businessPhone && (
                       <p className="text-red-500 text-sm mt-1">
@@ -278,7 +278,7 @@ const BusinessDetails: React.FC<{
                   </div>
                 </div>
 
-                <div className="col-span-12 lg:col-span-3">
+                <div className="col-span-1">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Business Email
                   </label>
@@ -289,7 +289,7 @@ const BusinessDetails: React.FC<{
                       value={data.businessEmail || ""}
                       onChange={handleInputChange}
                       placeholder="Enter your Business Email"
-                      className="w-full rounded-lg border bg-transparent py-4 pl-6 pr-10"
+                      className="w-full rounded-lg border bg-transparent py-2 px-4"
                     />
                     {formErrors.businessEmail && (
                       <p className="text-red-500 text-sm mt-1">
@@ -311,7 +311,7 @@ const BusinessDetails: React.FC<{
                     value={data.gstNumber || ""}
                     onChange={handleInputChange}
                     placeholder="Enter GST Number"
-                    className="w-full rounded-lg border bg-transparent py-4 pl-6 pr-10"
+                    className="w-full rounded-lg border bg-transparent py-2 px-4"
                   />
                   {isVerifying && (
                     <p className="text-blue-500 text-sm mt-1">Verifying GST...</p>
