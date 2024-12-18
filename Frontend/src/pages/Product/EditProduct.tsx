@@ -42,22 +42,29 @@ const EditProduct = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:5000/api/products/product/${id}`, {
+      const authToken = localStorage.getItem('authToken');
+      
+      const response = await fetch(`http://localhost:5000/api/products/update/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`
         },
         body: JSON.stringify(product),
       });
 
+      const data = await response.json();
+      
       if (!response.ok) {
-        throw new Error('Failed to update product');
+        throw new Error(data.message || 'Failed to update product');
       }
 
-      // Navigate back to ProductDetails to see the updated changes
-      navigate(`/product/${id}`);
+      alert('Product updated successfully!');
+      // Navigate back to product details page to see changes
+      navigate(`/seller/product/${id}`);
     } catch (error) {
       console.error('Error updating product:', error);
+      alert(error instanceof Error ? error.message : 'Failed to update product');
     }
   };
 
