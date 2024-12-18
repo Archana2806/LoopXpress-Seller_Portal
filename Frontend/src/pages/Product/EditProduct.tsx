@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
-import DefaultLayout from '../../layout/DefaultLayout';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EditProduct: React.FC  = () => {
   const { id } = useParams();
@@ -45,7 +46,7 @@ const EditProduct: React.FC  = () => {
     try {
       const authToken = localStorage.getItem('authToken');
       
-      const response = await fetch(`http://localhost:5000/api/products/update/${id}`, {
+      const response = await fetch(`http://localhost:5000/api/products/update-product/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -54,18 +55,20 @@ const EditProduct: React.FC  = () => {
         body: JSON.stringify(product),
       });
 
-      const data = await response.json();
-      
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to update product');
+        const errorText = await response.text(); 
+        throw new Error(`Failed to update product: ${response.statusText}`);
       }
 
-      alert('Product updated successfully!');
-      // Navigate back to product details page to see changes
-      navigate(`/seller/product/${id}`);
+      const data = await response.json();
+      toast.success('Product updated successfully!');
+  
+      setTimeout(() => {
+        navigate(`/seller/product/${id}`);
+      }, 1000);
     } catch (error) {
       console.error('Error updating product:', error);
-      alert(error instanceof Error ? error.message : 'Failed to update product');
+      toast.error(error instanceof Error ? error.message : 'Failed to update product');
     }
   };
 
@@ -79,81 +82,82 @@ const EditProduct: React.FC  = () => {
 
   return (
     <>
+      <ToastContainer />
       <Breadcrumb pageName="Edit Product" />
       <div className="max-w-full">
-        <div className="bg-[#24303f] border rounded-lg p-6 shadow-lg text-white">
+        <div className="bg-light-theme-bg border rounded-lg p-6 shadow-lg text-light-theme-text">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Basic Information */}
             <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4 text-white">Basic Information</h2>
+              <h2 className="text-xl font-semibold mb-4 text-light-theme-text">Basic Information</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div>
-                  <label className="mb-2.5 block text-white">Title</label>
+                  <label className="mb-2.5 block text-light-theme-text">Title</label>
                   <input
                     type="text"
                     name="title"
                     value={product.title}
                     onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-[#dc651d] bg-[#24303f] py-3 px-5 text-white outline-none transition focus:border-[#dc651d]"
+                    className="w-full rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2.5 block text-white">Brand</label>
+                  <label className="mb-2.5 block text-light-theme-text">Brand</label>
                   <input
                     type="text"
                     name="brand"
                     value={product.brand}
                     onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-[#dc651d] bg-[#24303f] py-3 px-5 text-white outline-none transition focus:border-[#dc651d]"
+                    className="w-full rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2.5 block text-white">Category</label>
+                  <label className="mb-2.5 block text-light-theme-text">Category</label>
                   <input
                     type="text"
                     name="category"
                     value={product.category}
                     onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-[#dc651d] bg-[#24303f] py-3 px-5 text-white outline-none transition focus:border-[#dc651d]"
+                    className="w-full rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2.5 block text-white">Quantity</label>
+                  <label className="mb-2.5 block text-light-theme-text">Quantity</label>
                   <input
                     type="number"
                     name="quantity"
                     value={product.quantity}
                     onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-[#dc651d] bg-[#24303f] py-3 px-5 text-white outline-none transition focus:border-[#dc651d]"
+                    className="w-full rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2.5 block text-white">Manufacturing Date</label>
+                  <label className="mb-2.5 block text-light-theme-text">Manufacturing Date</label>
                   <input
                     type="date"
                     name="manufacturingDate"
                     value={product.manufacturingDate}
                     onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-[#dc651d] bg-[#24303f] py-3 px-5 text-white outline-none transition focus:border-[#dc651d]"
+                    className="w-full rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2.5 block text-white">Warranty</label>
+                  <label className="mb-2.5 block text-light-theme-text">Warranty</label>
                   <input
                     type="text"
                     name="warranty"
                     value={product.warranty}
                     onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-[#dc651d] bg-[#24303f] py-3 px-5 text-white outline-none transition focus:border-[#dc651d]"
+                    className="w-full rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
                   />
                 </div>
               </div>
@@ -161,40 +165,40 @@ const EditProduct: React.FC  = () => {
 
             {/* Pricing and Inventory */}
             <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4 text-white">Pricing & Inventory</h2>
+              <h2 className="text-xl font-semibold mb-4 text-light-theme-text">Pricing & Inventory</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div>
-                  <label className="mb-2.5 block text-white">Original Price</label>
+                  <label className="mb-2.5 block text-light-theme-text">Original Price</label>
                   <input
                     type="number"
                     name="originalPrice"
                     value={product.originalPrice}
                     onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-[#dc651d] bg-[#24303f] py-3 px-5 text-white outline-none transition focus:border-[#dc651d]"
+                    className="w-full rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2.5 block text-white">Discounted Price</label>
+                  <label className="mb-2.5 block text-light-theme-text">Discounted Price</label>
                   <input
                     type="number"
                     name="discountedPrice"
                     value={product.discountedPrice}
                     onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-[#dc651d] bg-[#24303f] py-3 px-5 text-white outline-none transition focus:border-[#dc651d]"
+                    className="w-full rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2.5 block text-white">Stock Alert Level</label>
+                  <label className="mb-2.5 block text-light-theme-text">Stock Alert Level</label>
                   <input
                     type="number"
                     name="stockAlert"
                     value={product.stockAlert}
                     onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-[#dc651d] bg-[#24303f] py-3 px-5 text-white outline-none transition focus:border-[#dc651d]"
+                    className="w-full rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
                     required
                   />
                 </div>
@@ -203,25 +207,25 @@ const EditProduct: React.FC  = () => {
 
             {/* Additional Information */}
             <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4 text-white">Additional Information</h2>
+              <h2 className="text-xl font-semibold mb-4 text-light-theme-text">Additional Information</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="mb-2.5 block text-white">Shipping Info</label>
+                  <label className="mb-2.5 block text-light-theme-text">Shipping Info</label>
                   <textarea
                     name="shippingInfo"
                     value={product.shippingInfo}
                     onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-[#dc651d] bg-[#24303f] py-3 px-5 text-white outline-none transition focus:border-[#dc651d]"
+                    className="w-full rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2.5 block text-white">Highlights</label>
+                  <label className="mb-2.5 block text-light-theme-text">Highlights</label>
                   <textarea
                     name="highlights"
                     value={product.highlights.join(', ')}
                     onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-[#dc651d] bg-[#24303f] py-3 px-5 text-white outline-none transition focus:border-[#dc651d]"
+                    className="w-full rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
                   />
                 </div>
               </div>
@@ -229,16 +233,16 @@ const EditProduct: React.FC  = () => {
 
             {/* Description */}
             <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4 text-white">Description</h2>
+              <h2 className="text-xl font-semibold mb-4 text-light-theme-text">Description</h2>
               <div className="space-y-6">
                 <div>
-                  <label className="mb-2.5 block text-white">Product Description</label>
+                  <label className="mb-2.5 block text-light-theme-text">Product Description</label>
                   <textarea
                     name="description"
                     value={product.description}
                     onChange={handleInputChange}
                     rows={4}
-                    className="w-full rounded border-[1.5px] border-[#dc651d] bg-[#24303f] py-3 px-5 text-white outline-none transition focus:border-[#dc651d]"
+                    className="w-full rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
                     required
                   />
                 </div>
@@ -247,7 +251,7 @@ const EditProduct: React.FC  = () => {
 
             {/* Images */}
             <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4 text-white">Product Images</h2>
+              <h2 className="text-xl font-semibold mb-4 text-light-theme-text">Product Images</h2>
               <div className="space-y-3">
                 {product.imageUrls.map((url: string, index: number) => (
                   <div key={index} className="flex gap-2">
@@ -256,7 +260,7 @@ const EditProduct: React.FC  = () => {
                       name={`imageUrl-${index}`}
                       value={url}
                       onChange={handleInputChange}
-                      className="flex-1 rounded border-[1.5px] border-[#dc651d] bg-[#24303f] py-3 px-5 text-white outline-none transition focus:border-[#dc651d]"
+                      className="flex-1 rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
                       placeholder={index === 0 ? "Main product image URL (will be displayed in list)" : `Additional image URL ${index + 1}`}
                       required={index === 0}
                     />

@@ -52,10 +52,8 @@ router.get('/my-products', async (req, res) => {
 router.get('/products', async (req, res) => {
   try {
     const products = await Product.find().sort({ createdAt: -1 });
-    // console.log('Products being sent:', products);
     res.json(products);
   } catch (error) {
-    // console.error('Error in /products route:', error);
     res.status(500).json({ message: 'Error fetching products', error: error.message });
   }
 });
@@ -73,96 +71,32 @@ router.get('/product/:id', async (req, res) => {
   }
 });
 
-// Update product
-router.put('/product/:id', async (req, res) => {
+// Update product by ID
+router.put('/update-product/:id', async (req, res) => {
   try {
-    const {
-      title,
-      brand,
-      imageUrls,
-      originalPrice,
-      discountedPrice,
-      category,
-      subcategory,
-      quantity,
-      size,
-      description,
-      material,
-      weight,
-      dimensions,
-      manufacturingDate,
-      warranty,
-      shippingInfo,
-      highlights,
-      stockAlert
-    } = req.body;
+    console.log('Request received to update product with ID:', req.params.id);  // Log the ID
+    const authToken = req.headers.authorization?.split(' ')[1];
+
+    jwt.verify(authToken, process.env.JWT_SECRET);
 
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
-      {
-        title,
-        brand,
-        imageUrls,
-        originalPrice,
-        discountedPrice,
-        category,
-        subcategory,
-        quantity,
-        size,
-        description,
-        material,
-        weight,
-        dimensions,
-        manufacturingDate: manufacturingDate ? new Date(manufacturingDate) : undefined,
-        warranty,
-        shippingInfo,
-        highlights,
-        stockAlert
-      },
-      { new: true }
+      req.body,
+      { new: true, runValidators: true }
     );
 
     if (!updatedProduct) {
+      console.log('Product not found');
       return res.status(404).json({ message: 'Product not found' });
     }
 
     res.json({ message: 'Product updated successfully', product: updatedProduct });
   } catch (error) {
+ 
     res.status(500).json({ message: 'Error updating product', error: error.message });
   }
 });
 
-// Delete product
-router.delete('/delete-product/:id', async (req, res) => {
-  try {
-    const deletedProduct = await Product.findByIdAndDelete(req.params.id);
-    if (!deletedProduct) {
-      return res.status(404).json({ message: 'Product not found' });
-    }
-    res.json({ message: 'Product deleted successfully' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error deleting product', error: error.message });
-  }
-});
 
-// Get products by category
-router.get('/products/category/:category', async (req, res) => {
-  try {
-    const products = await Product.find({ category: req.params.category });
-    res.json(products);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching products', error: error.message });
-  }
-});
-
-// Get products by subcategory
-router.get('/products/subcategory/:subcategory', async (req, res) => {
-  try {
-    const products = await Product.find({ subcategory: req.params.subcategory });
-    res.json(products);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching products', error: error.message });
-  }
-});
 
 export default router;

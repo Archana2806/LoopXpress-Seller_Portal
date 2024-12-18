@@ -5,7 +5,6 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
 import gstRoutes from "./routes/gstRoutes.js";
-import sellerRoutes from './routes/sellerRoutes.js';
 import productRoutes from "./routes/productRoutes.js";
 
 dotenv.config();

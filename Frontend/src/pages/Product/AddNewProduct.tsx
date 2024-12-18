@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import useUserInfo from '../../hooks/useUserInfo';
 import { ProductData, subcategorySizeMap, categories, sizeOptionsMap } from '../../constant/ProductData';
@@ -121,12 +123,14 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
       }
 
       alert('Product added successfully!');
+      toast.success('Product added successfully!');
       if (onProductAdded) {
         onProductAdded();
       }
     } catch (error) {
       console.error('Error details:', error);
       alert(error instanceof Error ? error.message : 'Failed to add product');
+      toast.error(error instanceof Error ? error.message : 'Failed to add product');
     }
   };
 
@@ -211,6 +215,7 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
 
   return (
     <>
+      <ToastContainer />
       <Breadcrumb pageName="Add New Product" />
 
       <div className="max-w-full bg-white text-black dark:bg-[#24303f] dark:text-white">
