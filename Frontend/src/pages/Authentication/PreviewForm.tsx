@@ -22,61 +22,93 @@ interface PreviewFormProps {
 const PreviewForm: React.FC<PreviewFormProps> = ({ data, onPrevious, onSubmit }) => {
     const { personalDetails, businessDetails, bankDetails } = data;
 
-    console.log("Preview Form Data:", data);
-    console.log("Business Details:", businessDetails);
-
     return (
-        <div className="rounded-sm flex items-center justify-center w-full px-4 sm:px-6 lg:px-8">
-            <div className="w-full mx-auto max-w-180 shadow-default bg-white dark:border-strokedark h-full dark:bg-boxdark p-4 sm:p-6 lg:p-8">
-                <h2 className="text-center text-2xl sm:text-3xl font-bold text-orange-500 mb-4 sm:mb-6">Preview Your Details</h2>
+        <div className="flex items-center justify-center w-full px-4 sm:px-6 lg:px-8">
+            <div className="w-full mx-auto max-w-screen-sm shadow-default bg-white dark:border-strokedark dark:bg-boxdark p-4 sm:p-6 lg:p-8 rounded-md">
+                <h2 className="text-center text-xl sm:text-2xl font-bold text-orange-500 mb-6">
+                    Preview Your Details
+                </h2>
 
                 {/* Personal Details */}
-                <div className="mb-4 sm:mb-6">
-                    <h3 className="text-lg sm:text-xl font-semibold text-gray-800">Personal Details</h3>
-                    <div className="space-y-1 sm:space-y-2">
-                        <p className="flex justify-between text-sm sm:text-base"><strong>Full Name:</strong> {personalDetails.fullName}</p>
-                        <p className="flex justify-between text-sm sm:text-base"><strong>Email:</strong> {personalDetails.email}</p>
-                        <p className="flex justify-between text-sm sm:text-base"><strong>Phone Number:</strong> {personalDetails.phoneNumber}</p>
+                <div className="mb-6">
+                    <h3 className="text-lg font-semibold text-gray-800 mb-4">Personal Details</h3>
+                    <div className="space-y-4">
+                        <div className="flex flex-col text-sm sm:text-base">
+                            <span className="font-medium text-gray-600">Full Name:</span>
+                            <span>{personalDetails.fullName}</span>
+                        </div>
+                        <div className="flex flex-col text-sm sm:text-base">
+                            <span className="font-medium text-gray-600">Email:</span>
+                            <span>{personalDetails.email}</span>
+                        </div>
+                        <div className="flex flex-col text-sm sm:text-base">
+                            <span className="font-medium text-gray-600">Phone Number:</span>
+                            <span>{personalDetails.phoneNumber}</span>
+                        </div>
                     </div>
                 </div>
 
                 {/* Business Details */}
-                <div className="mb-4 sm:mb-6">
-                    <h3 className="text-lg sm:text-xl font-semibold text-gray-800">Business Details</h3>
-                    <div className="space-y-1 sm:space-y-2">
-                        <p className="flex justify-between text-sm sm:text-base"><strong>Business Name:</strong> {businessDetails.businessName}</p>
-                        <p className="flex justify-between text-sm sm:text-base"><strong>GST Number:</strong> {businessDetails.gstNumber}</p>
-                        <p className="flex flex-col text-sm sm:text-base">
-                            <strong>Business Address:</strong>
-                            <span className="mt-1">{businessDetails.gstDetails?.address || businessDetails.address || 'Address not available'}</span>
-                        </p>
+                <div className="mb-6">
+                    <h3 className="text-lg font-semibold text-gray-800 mb-4">Business Details</h3>
+                    <div className="space-y-4">
+                        <div className="flex flex-col text-sm sm:text-base">
+                            <span className="font-medium text-gray-600">Business Name:</span>
+                            <span>{businessDetails.businessName}</span>
+                        </div>
+                        <div className="flex flex-col text-sm sm:text-base">
+                            <span className="font-medium text-gray-600">GST Number:</span>
+                            <span>{businessDetails.gstNumber}</span>
+                        </div>
+                        <div className="flex flex-col text-sm sm:text-base">
+                            <span className="font-medium text-gray-600">Business Address:</span>
+                            <span>{businessDetails.gstDetails?.address || businessDetails.address || 'Address not available'}</span>
+                        </div>
                     </div>
                 </div>
 
                 {/* Bank Details */}
-                <div className="mb-4 sm:mb-6">
-                    <h3 className="text-lg sm:text-xl font-semibold text-gray-800">Bank Details</h3>
-                    <div className="space-y-1 sm:space-y-2">
-                        <p className="flex justify-between text-sm sm:text-base"><strong>Bank Name:</strong> {bankDetails.bankName}</p>
-                        <p className="flex justify-between text-sm sm:text-base"><strong>Account Number:</strong> {bankDetails.accountNumber}</p>
-                        <p className="flex justify-between text-sm sm:text-base"><strong>Account Type:</strong> {bankDetails.accountType}</p>
-                        <p className="flex justify-between text-sm sm:text-base"><strong>IFSC Code:</strong> {bankDetails.ifscCode}</p>
-                        <p className="flex justify-between text-sm sm:text-base"><strong>Branch Name:</strong> {bankDetails.branchName}</p>
-                        <p className="flex justify-between text-sm sm:text-base"><strong>Account Holder Name:</strong> {bankDetails.accountHolderName}</p>
+                <div className="mb-6">
+                    <h3 className="text-lg font-semibold text-gray-800 mb-4">Bank Details</h3>
+                    <div className="space-y-4">
+                        <div className="flex flex-col text-sm sm:text-base">
+                            <span className="font-medium text-gray-600">Bank Name:</span>
+                            <span>{bankDetails.bankName}</span>
+                        </div>
+                        <div className="flex flex-col text-sm sm:text-base">
+                            <span className="font-medium text-gray-600">Account Number:</span>
+                            <span>{bankDetails.accountNumber}</span>
+                        </div>
+                        <div className="flex flex-col text-sm sm:text-base">
+                            <span className="font-medium text-gray-600">Account Type:</span>
+                            <span>{bankDetails.accountType}</span>
+                        </div>
+                        <div className="flex flex-col text-sm sm:text-base">
+                            <span className="font-medium text-gray-600">IFSC Code:</span>
+                            <span>{bankDetails.ifscCode}</span>
+                        </div>
+                        <div className="flex flex-col text-sm sm:text-base">
+                            <span className="font-medium text-gray-600">Branch Name:</span>
+                            <span>{bankDetails.branchName}</span>
+                        </div>
+                        <div className="flex flex-col text-sm sm:text-base">
+                            <span className="font-medium text-gray-600">Account Holder Name:</span>
+                            <span>{bankDetails.accountHolderName}</span>
+                        </div>
                     </div>
                 </div>
 
                 {/* Buttons */}
-                <div className="flex flex-col sm:flex-row justify-between mt-4 sm:mt-6 space-y-2 sm:space-y-0">
+                <div className="flex flex-col sm:flex-row justify-between gap-4 mt-4">
                     <button
                         onClick={onPrevious}
-                        className="bg-gray-300 text-gray-700 px-4 sm:px-6 py-2 rounded-lg hover:bg-gray-400"
+                        className="w-full sm:w-auto bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400"
                     >
                         Previous
                     </button>
                     <button
                         onClick={onSubmit}
-                        className="bg-green-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:bg-green-600"
+                        className="w-full sm:w-auto bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600"
                     >
                         Submit
                     </button>

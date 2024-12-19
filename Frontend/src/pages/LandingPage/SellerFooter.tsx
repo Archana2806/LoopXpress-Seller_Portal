@@ -43,9 +43,9 @@ const Footer = () => {
                     <div>
                         <h3 className="text-white font-semibold mb-4">Contact Us</h3>
                         <ul>
-                            <li>Email: support@platform.com</li>
+                            <li>Email: loopexpress@gmail.com</li>
                             <li>Phone: +123 456 7890</li>
-                            <li>Location: 123 Business St., City</li>
+                            <li>Location: Ghaziabad</li>
                         </ul>
                     </div>
 

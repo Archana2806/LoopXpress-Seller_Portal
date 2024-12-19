@@ -76,8 +76,7 @@ const productSchema = new mongoose.Schema({
     type: Number,
     min: [0, 'Stock alert must be at least 0'],
     default: 0
-  },
-    default: 10 // Default stock alert threshold
+  }
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
