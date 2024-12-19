@@ -347,7 +347,7 @@ const EditProduct: React.FC = () => {
                   * You can upload multiple images. First image will be used as the main product image.
                 </p>
                 {product && (
-                  <div className="mt-4 w-full overflow-x-auto" style={{ maxHeight: '150px' }}>
+                  <div className="mt-4 w-full overflow-x-auto scrollbar" style={{ maxHeight: '150px' }}>
                     <div className="flex gap-4 pb-2">
                       {product.imageUrls.map((url: string, index: number) => (
                         <div key={index} className="relative flex-shrink-0">
