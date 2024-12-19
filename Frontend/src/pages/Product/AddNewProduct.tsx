@@ -19,7 +19,7 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
     name: userInfo?.personalDetails?.fullName || '', // Initialize username
     title: '',
     brand: '',
-    imageUrls: ['', '', '', ''],
+    imageUrls: [],
     originalPrice: '',
     discountedPrice: '',
     category: '',
@@ -87,7 +87,7 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
     const authToken = localStorage.getItem("authToken");
     console.log('Using token:', authToken);
     console.log('Sending data:', productData); // Log what we're sending
-    
+
     try {
       const formattedData = {
         ...productData,
@@ -114,7 +114,7 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
       if (!response.ok) {
         if (data.details) {
           // If we have detailed validation errors, show them
-          const errorMessage = Array.isArray(data.details) 
+          const errorMessage = Array.isArray(data.details)
             ? data.details.map((err: any) => `${err.field}: ${err.message}`).join('\n')
             : data.details;
           throw new Error(errorMessage);
@@ -158,6 +158,28 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
       });
     }
   };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+
+    const files = Array.from(e.target.files); 
+    const newImageUrls = files.map((file) => URL.createObjectURL(file)); // Create object URLs for preview
+
+    setProductData({
+      ...productData,
+      imageUrls: [...productData.imageUrls, ...newImageUrls], 
+    });
+  };
+
+  const removeUploadedImage = (index: number) => {
+    const newImageUrls = productData.imageUrls.filter((_, i) => i !== index);
+
+    setProductData({
+      ...productData,
+      imageUrls: newImageUrls,
+    });
+  };
+
 
   const renderSizeField = () => {
     const sizeType = subcategorySizeMap[productData.subcategory] || 'none';
@@ -257,37 +279,35 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
 
                 <div className="col-span-full">
                   <label className="mb-2.5 block text-black dark:text-white">Product Images</label>
-                  <div className="space-y-3">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleFileChange}
+                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-orange-500 file:text-white hover:file:bg-orange-600"
+                  />
+                  <p className="mt-2 text-sm text-gray-300">
+                    * You can upload multiple images. First image will be used as the main product image.
+                  </p>
+                  {productData && <div className="flex mt-4 gap-4 overflow-auto">
                     {productData.imageUrls.map((url, index) => (
-                      <div key={index} className="flex gap-2">
-                        <input
-                          type="text"
-                          value={url}
-                          onChange={(e) => handleImageUrlChange(index, e.target.value)}
-                          className="flex-1 rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
-                          placeholder={index === 0 ? "Main product image URL (will be displayed in list)" : `Additional image URL ${index + 1}`}
-                          required={index === 0}
+                      <div key={index} className="relative">
+                        <img
+                          src={url}
+                          alt={`Uploaded Preview ${index + 1}`}
+                          className="h-24 w-full object-cover rounded border"
                         />
-                        {url && (
-                          <div className="flex items-center">
-                            <img
-                              src={url}
-                              alt={`Preview ${index + 1}`}
-                              className="h-12 w-12 object-cover rounded"
-                              onError={(e) => {
-                                (e.target as HTMLImageElement).src = 'placeholder-image-url';
-                              }}
-                            />
-                          </div>
-                        )}
+                        <button
+                          type="button"
+                          onClick={() => removeUploadedImage(index)}
+                          className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded hover:bg-red-600"
+                        >
+                          Remove
+                        </button>
                       </div>
                     ))}
-                  </div>
-                  <p className="mt-2 text-sm text-gray-300">
-                    * First image will be displayed as the main product image in the list view
-                  </p>
+                  </div> }
                 </div>
-
                 <div>
                   <label className="mb-2.5 block text-black dark:text-white">Category</label>
                   <select

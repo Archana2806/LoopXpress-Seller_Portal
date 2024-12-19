@@ -18,6 +18,9 @@ const EditProduct: React.FC  = () => {
           throw new Error('Product not found');
         }
         const data = await response.json();
+        if (data.manufacturingDate) {
+          data.manufacturingDate = new Date(data.manufacturingDate).toISOString().split('T')[0];
+        }
         setProduct(data);
       } catch (error) {
         console.error('Error fetching product:', error);
@@ -36,8 +39,10 @@ const EditProduct: React.FC  = () => {
       const newImageUrls = [...product.imageUrls];
       newImageUrls[index] = value;
       setProduct({ ...product, imageUrls: newImageUrls });
+    } else if (name === 'manufacturingDate') {
+      setProduct({ ...product, [name]: value || null });
     } else {
-      setProduct({ ...product, [name]: value });
+      setProduct({ ...product, [name]: value || '' });
     }
   };
 
