@@ -3,8 +3,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { categories } from '../../constant/ProductData';
 
-const EditProduct: React.FC  = () => {
+const EditProduct: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState<any>(null);
@@ -85,10 +86,8 @@ const EditProduct: React.FC  = () => {
     const files = e.target.files;
     if (!files) return;
 
-    // Create a copy of existing image URLs
     const newImageUrls = [...product.imageUrls];
 
-    // Handle each selected file
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       try {
@@ -105,7 +104,7 @@ const EditProduct: React.FC  = () => {
         }
 
         const data = await response.json();
-        newImageUrls.push(data.imageUrl); // Assuming the server returns { imageUrl: "..." }
+        newImageUrls.push(data.imageUrl);
       } catch (error) {
         console.error('Error uploading image:', error);
         toast.error('Failed to upload image');
@@ -162,14 +161,20 @@ const EditProduct: React.FC  = () => {
 
                 <div>
                   <label className="mb-2.5 block text-light-theme-text">Category</label>
-                  <input
-                    type="text"
+                  <select
                     name="category"
                     value={product.category}
                     onChange={handleInputChange}
                     className="w-full rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
                     required
-                  />
+                  >
+                    <option value="">Select Category</option>
+                    {categories.map(category => (
+                      <option key={category.category} value={category.category}>
+                        {category.label}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 <div>

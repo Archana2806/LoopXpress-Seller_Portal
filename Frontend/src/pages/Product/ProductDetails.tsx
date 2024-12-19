@@ -143,13 +143,15 @@ const ProductDetails = () => {
               {/* Basic Info Section */}
               <div className="mb-6">
                 <div className="flex justify-between items-start">
-                  <div>
-                    <p className="text-gray-600 text-sm">{product.brand}</p>
-                    <h1 className="text-3xl font-bold text-gray-800 mt-2">{product.title}</h1>
+                  <div className="flex flex-col">
+                    <div className="flex justify-between items-center">
+                      <p className="text-gray-600 text-sm">{product.brand}</p>
+                      <span className="bg-green-100 text-green-800 text-xs font-medium px-4 py-1 rounded-full">
+                        In Stock: {product.quantity}
+                      </span>
+                    </div>
+                    <h1 className="text-2xl font-bold text-gray-800 mt-2 w-3/4">{product.title}</h1>
                   </div>
-                  <span className="bg-green-100 text-green-800 text-xs font-medium px-4 py-1 rounded-full ">
-                    In Stock: {product.quantity}
-                  </span>
                 </div>
                 
                 {/* Remove the SKU and only keep Category */}
@@ -214,7 +216,7 @@ const ProductDetails = () => {
                 </div>
                 <div className="bg-purple-50 p-3 rounded-lg text-center">
                   <p className="text-sm text-purple-600">Total Sales</p>
-                  <p className="font-bold text-purple-700">{product.salesCount}</p>
+                  <p className="font-bold text-purple-700">{product.salesCount === 0 ? 'Nil' : product.salesCount}</p>
                 </div>
               </div>
 

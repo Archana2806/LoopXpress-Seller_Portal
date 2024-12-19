@@ -1,6 +1,6 @@
 import express from 'express';
 import Product from '../models/Product.js';
-import verifyAuth from '../middleware/verifyAuth .js';
+import verifyAuth from '../middleware/verifyAuth.js';
 
 
 const router = express.Router();
@@ -85,6 +85,20 @@ router.put('/update-product/:id', verifyAuth, async (req, res) => {
     res.json({ message: 'Product updated successfully', product: updatedProduct });
   } catch (error) {
     res.status(500).json({ message: 'Error updating product', error: error.message });
+  }
+});
+
+// Delete product by ID
+router.delete('/product/:id', verifyAuth, async (req, res) => {
+  try {
+    const deletedProduct = await Product.findByIdAndDelete(req.params.id);
+    if (!deletedProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    res.json({ message: 'Product deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    res.status(500).json({ message: 'Error deleting product', error: error.message });
   }
 });
 
