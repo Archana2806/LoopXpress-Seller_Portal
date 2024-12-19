@@ -48,6 +48,7 @@ const ProductDetails = () => {
         // Combine image URLs and Base64 images into a single array for display
         const combinedImages = [...(data.imageUrls || []), ...(data.base64Images || [])];
         setImages(combinedImages);
+        console.log(combinedImages)
       } catch (error) {
         console.error('Error fetching product:', error);
       }

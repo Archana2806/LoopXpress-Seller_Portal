@@ -1,16 +1,37 @@
 import express from 'express';
 import Product from '../models/Product.js';
-import verifyAuth from "../middleware/verifyAuth .js"
+import verifyAuth from '../middleware/verifyAuth.js';
+import upload from '../middleware/upload.js';
+import cloudinary from '../config/cloudinary.js';
 
 const router = express.Router();
 
 // Add new product
-router.post('/add-product', verifyAuth, async (req, res) => {
+router.post('/add-product', verifyAuth, upload.array('images', 5), async (req, res) => {
   try {
+    // Upload images to Cloudinary
+    const uploadPromises = req.files.map(file => {
+      return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          {
+            folder: 'products',
+          },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result.secure_url);
+          }
+        );
+
+        uploadStream.end(file.buffer);
+      });
+    });
+
+    const imageUrls = await Promise.all(uploadPromises);
+
     const product = new Product({
       title: req.body.title,
       brand: req.body.brand,
-      imageUrls: req.body.imageUrls, // Ensure proper handling of image URLs (e.g., Base64 or static URLs)
+      imageUrls: imageUrls, // Now using Cloudinary URLs
       originalPrice: req.body.originalPrice,
       discountedPrice: req.body.discountedPrice,
       category: req.body.category,
@@ -19,7 +40,7 @@ router.post('/add-product', verifyAuth, async (req, res) => {
       description: req.body.description,
       highlights: req.body.highlights,
       stockAlert: req.body.stockAlert,
-      user: req.user.id, // Use user ID from the verified token
+      user: req.user.id,
     });
 
     const savedProduct = await product.save();
@@ -94,11 +115,5 @@ router.put('/update-product/:id', verifyAuth, async (req, res) => {
   }
 });
 
-// Helper function to handle blob URLs (optional, replace with actual logic)
-const processBlobUrl = (blobUrl) => {
-  // Example placeholder logic for processing blob URLs
-  console.warn('Blob URLs should be handled in the frontend or stored as static URLs');
-  return blobUrl;
-};
 
 export default router;

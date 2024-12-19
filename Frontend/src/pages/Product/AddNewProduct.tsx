@@ -38,6 +38,7 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
   });
 
   const [highlightInput, setHighlightInput] = useState<string>('');
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -84,28 +85,32 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const formData = new FormData();
+
+    // Append all text fields
+    Object.entries(productData).forEach(([key, value]) => {
+      if (key !== 'imageUrls' && key !== 'highlights') {
+        formData.append(key, value.toString());
+      }
+    });
+
+    // Append highlights as JSON string
+    formData.append('highlights', JSON.stringify(productData.highlights.filter(h => h.trim() !== '')));
+
+    // Append each file
+    uploadedFiles.forEach((file) => {
+      formData.append('images', file);
+    });
+
     const authToken = localStorage.getItem("authToken");
-    console.log('Using token:', authToken);
-    console.log('Sending data:', productData); // Log what we're sending
 
     try {
-      const formattedData = {
-        ...productData,
-        originalPrice: parseFloat(productData.originalPrice),
-        discountedPrice: parseFloat(productData.discountedPrice),
-        quantity: parseInt(productData.quantity),
-        stockAlert: parseInt(productData.stockAlert),
-        imageUrls: productData.imageUrls.filter(url => url.trim() !== ''),
-        highlights: productData.highlights.filter(highlight => highlight.trim() !== '')
-      };
-
       const response = await fetch('http://localhost:5000/api/products/add-product', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${authToken}`
+          'Authorization': `Bearer ${authToken}`,
         },
-        body: JSON.stringify(formattedData),
+        body: formData,
       });
 
       const data = await response.json();
@@ -113,7 +118,6 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
 
       if (!response.ok) {
         if (data.details) {
-          // If we have detailed validation errors, show them
           const errorMessage = Array.isArray(data.details)
             ? data.details.map((err: any) => `${err.field}: ${err.message}`).join('\n')
             : data.details;
@@ -121,6 +125,13 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
         }
         throw new Error(data.message || 'Failed to add product');
       }
+
+      // Clean up preview URLs
+      productData.imageUrls.forEach(url => {
+        if (url.startsWith('blob:')) {
+          URL.revokeObjectURL(url);
+        }
+      });
 
       alert('Product added successfully!');
       toast.success('Product added successfully!');
@@ -162,22 +173,33 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
 
-    const files = Array.from(e.target.files); 
-    const newImageUrls = files.map((file) => URL.createObjectURL(file)); // Create object URLs for preview
+    const files = Array.from(e.target.files);
+    setUploadedFiles(prevFiles => [...prevFiles, ...files]);
 
+    // Create temporary preview URLs
+    const newImageUrls = files.map((file) => URL.createObjectURL(file));
     setProductData({
       ...productData,
-      imageUrls: [...productData.imageUrls, ...newImageUrls], 
+      imageUrls: [...productData.imageUrls, ...newImageUrls],
     });
   };
 
   const removeUploadedImage = (index: number) => {
+    // Clean up blob URL if it exists
+    const removedUrl = productData.imageUrls[index];
+    if (removedUrl.startsWith('blob:')) {
+      URL.revokeObjectURL(removedUrl);
+    }
+
+    // Remove from both arrays
     const newImageUrls = productData.imageUrls.filter((_, i) => i !== index);
+    const newUploadedFiles = uploadedFiles.filter((_, i) => i !== index);
 
     setProductData({
       ...productData,
       imageUrls: newImageUrls,
     });
+    setUploadedFiles(newUploadedFiles);
   };
 
 

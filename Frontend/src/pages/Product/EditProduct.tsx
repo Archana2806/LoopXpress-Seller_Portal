@@ -9,6 +9,7 @@ const EditProduct: React.FC  = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState<any>(null);
   const [formErrors, setFormErrors] = useState<any>({});
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -51,13 +52,38 @@ const EditProduct: React.FC  = () => {
     try {
       const authToken = localStorage.getItem('authToken');
       
+      const newImageUrls = [...product.imageUrls];
+      for (let i = 0; i < uploadedFiles.length; i++) {
+        const file = uploadedFiles[i];
+        const formData = new FormData();
+        formData.append('image', file);
+
+        const uploadResponse = await fetch('http://localhost:5000/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!uploadResponse.ok) {
+          throw new Error('Failed to upload image');
+        }
+
+        const uploadData = await uploadResponse.json();
+        const blobIndex = product.imageUrls.findIndex(url => url.startsWith('blob:'));
+        if (blobIndex !== -1) {
+          URL.revokeObjectURL(product.imageUrls[blobIndex]);
+          newImageUrls[blobIndex] = uploadData.imageUrl;
+        }
+      }
+
+      const updatedProduct = { ...product, imageUrls: newImageUrls };
+
       const response = await fetch(`http://localhost:5000/api/products/update-product/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${authToken}`
         },
-        body: JSON.stringify(product),
+        body: JSON.stringify(updatedProduct),
       });
 
       if (!response.ok) {
@@ -85,40 +111,36 @@ const EditProduct: React.FC  = () => {
     const files = e.target.files;
     if (!files) return;
 
-    // Create a copy of existing image URLs
     const newImageUrls = [...product.imageUrls];
+    const newUploadedFiles = [...uploadedFiles];
 
-    // Handle each selected file
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       try {
-        const formData = new FormData();
-        formData.append('image', file);
-
-        const response = await fetch('http://localhost:5000/api/upload', {
-          method: 'POST',
-          body: formData,
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to upload image');
-        }
-
-        const data = await response.json();
-        newImageUrls.push(data.imageUrl); // Assuming the server returns { imageUrl: "..." }
+        const blobUrl = URL.createObjectURL(file);
+        newImageUrls.push(blobUrl);
+        newUploadedFiles.push(file);
       } catch (error) {
-        console.error('Error uploading image:', error);
-        toast.error('Failed to upload image');
+        console.error('Error creating preview:', error);
+        toast.error('Failed to create image preview');
       }
     }
 
     setProduct({ ...product, imageUrls: newImageUrls });
+    setUploadedFiles(newUploadedFiles);
   };
 
   const removeUploadedImage = (index: number) => {
-    const newImageUrls = [...product.imageUrls];
-    newImageUrls.splice(index, 1);
+    const removedUrl = product.imageUrls[index];
+    if (removedUrl.startsWith('blob:')) {
+      URL.revokeObjectURL(removedUrl);
+    }
+
+    const newImageUrls = product.imageUrls.filter((_, i) => i !== index);
+    const newUploadedFiles = uploadedFiles.filter((_, i) => i !== index);
+
     setProduct({ ...product, imageUrls: newImageUrls });
+    setUploadedFiles(newUploadedFiles);
   };
 
   if (!product) {
