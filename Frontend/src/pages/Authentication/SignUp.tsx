@@ -97,22 +97,24 @@ const MultiStepForm: React.FC = () => {
       <AuthHeader />
       {errorMessage && <div className="error-message">{errorMessage}</div>}
       {/* Stepper Navigation */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 mb-6">
-        {steps.map((step) => (
-          <div
-            key={step.id}
-            onClick={() => setCurrentStep(step.id)} // Optional: Click to navigate
-            className={`cursor-pointer text-center py-2 px-4 rounded transition-all duration-300 
-            ${currentStep === step.id
-              ? "bg-orange-700 font-semibold border-2 border-white text-white"
-              : "bg-gray-200 text-gray-600 hover:bg-gray-300"
-            }
-            w-full
-          `}
-          >
-            {step.name}
-          </div>
-        ))}
+      <div className="flex justify-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 mb-6 max-w-screen-lg w-full">
+          {steps.map((step) => (
+            <div
+              key={step.id}
+              onClick={() => setCurrentStep(step.id)} // Optional: Click to navigate
+              className={`cursor-pointer text-center py-3 px-6 rounded transition-all duration-300 
+              ${currentStep === step.id
+                ? "bg-orange-700 font-semibold border-2 border-white text-white"
+                : "bg-gray-200 text-gray-600 hover:bg-gray-300"
+              }
+              w-full
+            `}
+            >
+              {step.name}
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Step Components */}

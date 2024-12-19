@@ -23,16 +23,16 @@ const BusinessDetails: React.FC<{
       if (gstRegex.test(value)) {
         const originalGstNumber = value;
 
-        // const isGstExists = await checkGstInDatabase(value);
+         const isGstExists = await checkGstInDatabase(value);
 
-        // if (isGstExists) {
-        //   setFormErrors({
-        //     ...formErrors,
-        //     gstNumber: "This GST number is already registered with another account."
-        //   });
-        //   setGstDetails(null);
-        //   return;
-        // }
+         if (isGstExists) {
+           setFormErrors({
+             ...formErrors,
+             gstNumber: "This GST number is already registered with another account."
+           });
+           setGstDetails(null);
+           return;
+        }
 
         await verifyGstNumber(value);
 
@@ -193,15 +193,15 @@ const BusinessDetails: React.FC<{
 
   return (
     <div className="flex items-center justify-center w-full p-4 sm:p-6">
-      <div className="w-full max-w-lg mx-auto shadow-default bg-white dark:border-strokedark h-full dark:bg-boxdark">
+      <div className="w-full max-w-2xl rounded-lg shadow-md bg-white dark:bg-boxdark dark:border-strokedark">
         <div className="w-full border-stroke dark:border-strokedark xl:border-l-2">
           <div className="w-full p-4 sm:p-8 xl:p-10">
-            <h2 className="mb-6 text-xl sm:text-2xl font-bold text-orange-500 dark:text-white">
+            <h2 className="mb-6 text-xl sm:text-2xl font-bold text-orange-500 dark:text-white text-left">
               Sign Up to Loop
             </h2>
 
             <form>
-              <span className="mb-1.5 block font-medium">
+              <span className="mb-1.5 block font-medium text-left">
                 Seller Business Details
               </span>
               <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
@@ -263,7 +263,7 @@ const BusinessDetails: React.FC<{
                   </label>
                   <div className="relative">
                     <input
-                      type="number"
+                      type="tel"
                       name="businessPhone"
                       value={data.businessPhone || ""}
                       onChange={handleInputChange}

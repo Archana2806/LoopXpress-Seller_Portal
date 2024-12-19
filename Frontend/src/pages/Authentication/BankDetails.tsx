@@ -109,7 +109,7 @@ const BankDetails: React.FC<{
                                     value={data.accountHolderName || ""}
                                     onChange={handleInputChange}
                                     placeholder="Enter Account Holder Name"
-                                    className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-orange-500 dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-orange-500"
+                                    className="w-full rounded-lg border border-stroke bg-transparent py-2 pl-6 pr-10 text-black outline-none focus:border-orange-500 dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-orange-500"
                                 />
                                 {errors.accountHolderName && <p className="text-red-500 text-sm">{errors.accountHolderName}</p>}
                             </div>
@@ -124,7 +124,7 @@ const BankDetails: React.FC<{
                                     value={data.businessPhone || ""}
                                     onChange={handleInputChange}
                                     placeholder="Enter Your Phone Number"
-                                    className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-orange-500 dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-orange-500"
+                                    className="w-full rounded-lg border border-stroke bg-transparent py-2 pl-6 pr-10 text-black outline-none focus:border-orange-500 dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-orange-500"
                                 />
                                 {errors.businessPhone && <p className="text-red-500 text-sm">{errors.businessPhone}</p>}
                             </div>
@@ -138,7 +138,7 @@ const BankDetails: React.FC<{
                                     name="accountType"
                                     value={data.accountType || ""}
                                     onChange={handleInputChange}
-                                    className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-orange-500 dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-orange-500"
+                                    className="w-full rounded-lg border border-stroke bg-transparent py-2 pl-6 pr-10 text-black outline-none focus:border-orange-500 dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-orange-500"
                                 >
                                     <option value="" disabled>
                                         Select Account Type
@@ -160,7 +160,7 @@ const BankDetails: React.FC<{
                                     value={data.ifscCode || ""}
                                     onChange={handleInputChange}
                                     placeholder="Enter Your IFSC Code"
-                                    className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-orange-500 dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-orange-500"
+                                    className="w-full rounded-lg border border-stroke bg-transparent py-2 pl-6 pr-10 text-black outline-none focus:border-orange-500 dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-orange-500"
                                 />
                                 {errors.ifscCode && <p className="text-red-500 text-sm">{errors.ifscCode}</p>}
                             </div>
@@ -177,7 +177,7 @@ const BankDetails: React.FC<{
                                     value={data.bankName || ""}
                                     onChange={handleInputChange}
                                     placeholder="Enter your Bank name"
-                                    className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-orange-500 dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-orange-500"
+                                    className="w-full rounded-lg border border-stroke bg-transparent py-2 pl-6 pr-10 text-black outline-none focus:border-orange-500 dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-orange-500"
                                     disabled
                                 />
                                 {errors.bankName && <p className="text-red-500 text-sm">{errors.bankName}</p>}
@@ -192,7 +192,7 @@ const BankDetails: React.FC<{
                                     value={data.branchName || ""}
                                     onChange={handleInputChange}
                                     placeholder="Enter your Branch Name"
-                                    className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-orange-500 dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-orange-500"
+                                    className="w-full rounded-lg border border-stroke bg-transparent py-2 pl-6 pr-10 text-black outline-none focus:border-orange-500 dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-orange-500"
                                     disabled
                                 />
                                 {errors.branchName && <p className="text-red-500 text-sm">{errors.branchName}</p>}
@@ -209,7 +209,7 @@ const BankDetails: React.FC<{
                                 value={data.accountNumber || ""}
                                 onChange={handleInputChange}
                                 placeholder="Enter your Bank Account Number"
-                                className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-orange-500 dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-orange-500"
+                                className="w-full rounded-lg border border-stroke bg-transparent py-2 pl-6 pr-10 text-black outline-none focus:border-orange-500 dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-orange-500"
                             />
                             {errors.accountNumber && <p className="text-red-500 text-sm">{errors.accountNumber}</p>}
                         </div>
@@ -232,14 +232,14 @@ const BankDetails: React.FC<{
                             <button
                                 type="button"
                                 onClick={onPrevious}
-                                className="w-full sm:w-1/4 py-3 px-4 mb-2 sm:mb-0 bg-gray-300 text-black rounded-lg"
+                                className="w-full sm:w-1/4 py-2 px-4 mb-2 sm:mb-0 bg-gray-300 text-black rounded-lg"
                             >
                                 Previous
                             </button>
                             <button
                                 type="button"
                                 onClick={handleNext}
-                                className="w-full sm:w-1/4 py-3 px-4 bg-orange-500 text-white rounded-lg"
+                                className="w-full sm:w-1/4 py-2 px-4 bg-orange-500 text-white rounded-lg"
                             >
                                 Next
                             </button>

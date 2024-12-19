@@ -311,24 +311,28 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
                   <p className="mt-2 text-sm text-gray-300">
                     * You can upload multiple images. First image will be used as the main product image.
                   </p>
-                  {productData && <div className="flex mt-4 gap-4 overflow-auto">
-                    {productData.imageUrls.map((url, index) => (
-                      <div key={index} className="relative">
-                        <img
-                          src={url}
-                          alt={`Uploaded Preview ${index + 1}`}
-                          className="h-24 w-full object-cover rounded border"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => removeUploadedImage(index)}
-                          className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded hover:bg-red-600"
-                        >
-                          Remove
-                        </button>
+                  {productData && (
+                    <div className="mt-4 overflow-x-auto scrollbar">
+                      <div className="flex gap-4 pb-2">
+                        {productData.imageUrls.map((url, index) => (
+                          <div key={index} className="relative flex-shrink-0 w-32">
+                            <img
+                              src={url}
+                              alt={`Uploaded Preview ${index + 1}`}
+                              className="h-32 w-32 object-cover rounded border"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => removeUploadedImage(index)}
+                              className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded hover:bg-red-600"
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div> }
+                    </div>
+                  )}
                 </div>
                 <div>
                   <label className="mb-2.5 block text-black dark:text-white">Category</label>

@@ -48,7 +48,6 @@ const ProductDetails = () => {
         // Combine image URLs and Base64 images into a single array for display
         const combinedImages = [...(data.imageUrls || []), ...(data.base64Images || [])];
         setImages(combinedImages);
-        console.log(combinedImages)
       } catch (error) {
         console.error('Error fetching product:', error);
       }
@@ -192,9 +191,12 @@ const ProductDetails = () => {
             <div className="mb-6">
               <h2 className="text-lg font-semibold mb-3">Product Highlights</h2>
               <ul className="list-disc list-inside space-y-2 text-gray-600">
-                {product.highlights?.map((highlight, index) => (
-                  <li key={index}>{highlight}</li>
-                ))}
+                {Array.isArray(product.highlights) ? 
+                  product.highlights.map((highlight, index) => (
+                    <li key={index}>{String(highlight)}</li>
+                  ))
+                  : null
+                }
               </ul>
             </div>
 
@@ -206,21 +208,21 @@ const ProductDetails = () => {
             <div className="mb-6 grid grid-cols-3 gap-4">
               <div className="bg-blue-50 p-3 rounded-lg text-center">
                 <p className="text-sm text-blue-600">Stock Alert</p>
-                <p className="font-bold text-blue-700">{product.stockAlert} units</p>
+                <p className="font-bold text-blue-700">{String(product.stockAlert || 0)}</p>
               </div>
               <div className="bg-green-50 p-3 rounded-lg text-center">
                 <p className="text-sm text-green-600">Last Restocked</p>
                 <p className="font-bold text-green-700">
-                  {new Date(product.createdAt).toLocaleDateString('en-US', {
+                  {product.lastRestocked ? new Date(product.lastRestocked).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'short',
                     day: 'numeric',
-                  })}
+                  }) : 'Not available'}
                 </p>
               </div>
               <div className="bg-purple-50 p-3 rounded-lg text-center">
                 <p className="text-sm text-purple-600">Total Sales</p>
-                <p className="font-bold text-purple-700">{product.salesCount}</p>
+                <p className="font-bold text-purple-700">{String(product.salesCount || 0)}</p>
               </div>
             </div>
 
