@@ -10,6 +10,7 @@ const EditProduct: React.FC  = () => {
   const [product, setProduct] = useState<any>(null);
   const [formErrors, setFormErrors] = useState<any>({});
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const [isSaving, setSaving] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -49,46 +50,44 @@ const EditProduct: React.FC  = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSaving(true);
     try {
       const authToken = localStorage.getItem('authToken');
       
-      const newImageUrls = [...product.imageUrls];
-      for (let i = 0; i < uploadedFiles.length; i++) {
-        const file = uploadedFiles[i];
-        const formData = new FormData();
-        formData.append('image', file);
+      const formData = new FormData();
+      
+      uploadedFiles.forEach((file) => {
+        formData.append('images', file);
+      });
 
-        const uploadResponse = await fetch('http://localhost:5000/api/upload', {
-          method: 'POST',
-          body: formData,
-        });
+      const existingImages = product.imageUrls.filter(url => !url.startsWith('blob:'));
+      formData.append('existingImageUrls', JSON.stringify(existingImages));
 
-        if (!uploadResponse.ok) {
-          throw new Error('Failed to upload image');
+      const productDataToSend = { ...product };
+      delete productDataToSend.imageUrls;
+      delete productDataToSend.base64Images;
+
+      Object.keys(productDataToSend).forEach(key => {
+        if (productDataToSend[key] !== null && productDataToSend[key] !== undefined) {
+          formData.append(key, 
+            typeof productDataToSend[key] === 'object' ? 
+            JSON.stringify(productDataToSend[key]) : 
+            productDataToSend[key]
+          );
         }
-
-        const uploadData = await uploadResponse.json();
-        const blobIndex = product.imageUrls.findIndex(url => url.startsWith('blob:'));
-        if (blobIndex !== -1) {
-          URL.revokeObjectURL(product.imageUrls[blobIndex]);
-          newImageUrls[blobIndex] = uploadData.imageUrl;
-        }
-      }
-
-      const updatedProduct = { ...product, imageUrls: newImageUrls };
+      });
 
       const response = await fetch(`http://localhost:5000/api/products/update-product/${id}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
           'Authorization': `Bearer ${authToken}`
         },
-        body: JSON.stringify(updatedProduct),
+        body: formData,
       });
 
       if (!response.ok) {
-        const errorText = await response.text(); 
-        throw new Error(`Failed to update product: ${response.statusText}`);
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to update product');
       }
 
       const data = await response.json();
@@ -100,6 +99,8 @@ const EditProduct: React.FC  = () => {
     } catch (error) {
       console.error('Error updating product:', error);
       toast.error(error instanceof Error ? error.message : 'Failed to update product');
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -358,15 +359,17 @@ const EditProduct: React.FC  = () => {
               <button
                 type="button"
                 onClick={handleCancel}
-                className="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors"
+                disabled={isSaving}
+                className="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors disabled:opacity-50"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors"
+                disabled={isSaving}
+                className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50"
               >
-                Save Changes
+                {isSaving ? 'Saving...' : 'Save Changes'}
               </button>
             </div>
           </form>

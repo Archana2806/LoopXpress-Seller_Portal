@@ -96,11 +96,54 @@ router.get('/product/:id', async (req, res) => {
 });
 
 // Update product by ID
-router.put('/update-product/:id', verifyAuth, async (req, res) => {
+router.put('/update-product/:id', verifyAuth, upload.array('images', 5), async (req, res) => {
   try {
+    // Handle new image uploads if any
+    let newImageUrls = [];
+    if (req.files && req.files.length > 0) {
+      const uploadPromises = req.files.map(file => {
+        return new Promise((resolve, reject) => {
+          const uploadStream = cloudinary.uploader.upload_stream(
+            { folder: 'products' },
+            (error, result) => {
+              if (error) reject(error);
+              else resolve(result.secure_url);
+            }
+          );
+          uploadStream.end(file.buffer);
+        });
+      });
+      newImageUrls = await Promise.all(uploadPromises);
+    }
+
+    // Parse existing image URLs from the request
+    const existingImageUrls = JSON.parse(req.body.existingImageUrls || '[]');
+
+    // Combine existing and new image URLs
+    const updatedImageUrls = [...existingImageUrls, ...newImageUrls];
+
+    // Parse other fields that might be stringified
+    const highlights = typeof req.body.highlights === 'string' ? 
+      JSON.parse(req.body.highlights) : req.body.highlights;
+
+    // Create updated product object, explicitly setting base64Images to an empty array
+    const productData = {
+      ...req.body,
+      highlights,
+      imageUrls: updatedImageUrls,
+      base64Images: [] // Explicitly set to empty array to avoid validation error
+    };
+
+    // Remove any undefined or null values
+    Object.keys(productData).forEach(key => {
+      if (productData[key] === undefined || productData[key] === null) {
+        delete productData[key];
+      }
+    });
+
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      productData,
       { new: true, runValidators: true }
     );
 
