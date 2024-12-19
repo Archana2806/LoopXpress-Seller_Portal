@@ -93,6 +93,8 @@ function App() {
         <Route path="/return-or-refund" element={<ReturnAndRefund />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/seller/edit-product/:id" element={<EditProduct />} />
+        <Route path="/seller/product-list" element={<ProductList />} />
+        <Route path="/seller/product/:id" element={<ProductDetails />} />
       </Route>
 
      
@@ -100,8 +102,7 @@ function App() {
         path="*"
         element={<Navigate to={isAuthenticated ? "/dashboard" : "/auth/signin"} replace />}
       />
-      <Route path="/seller/product-list" element={<ProductList />} />
-      <Route path="/seller/product/:id" element={<ProductDetails />} />
+  
     </Routes>
   );
 }

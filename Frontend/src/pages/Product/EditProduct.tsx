@@ -81,6 +81,46 @@ const EditProduct: React.FC  = () => {
     navigate(`/product/${id}`);
   };
 
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    // Create a copy of existing image URLs
+    const newImageUrls = [...product.imageUrls];
+
+    // Handle each selected file
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      try {
+        const formData = new FormData();
+        formData.append('image', file);
+
+        const response = await fetch('http://localhost:5000/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to upload image');
+        }
+
+        const data = await response.json();
+        newImageUrls.push(data.imageUrl); // Assuming the server returns { imageUrl: "..." }
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        toast.error('Failed to upload image');
+      }
+    }
+
+    setProduct({ ...product, imageUrls: newImageUrls });
+  };
+
+  const removeUploadedImage = (index: number) => {
+    const newImageUrls = [...product.imageUrls];
+    newImageUrls.splice(index, 1);
+    setProduct({ ...product, imageUrls: newImageUrls });
+  };
+
   if (!product) {
     return <div>Loading...</div>;
   }
@@ -257,36 +297,38 @@ const EditProduct: React.FC  = () => {
             {/* Images */}
             <div className="mb-8">
               <h2 className="text-xl font-semibold mb-4 text-light-theme-text">Product Images</h2>
-              <div className="space-y-3">
-                {product.imageUrls.map((url: string, index: number) => (
-                  <div key={index} className="flex gap-2">
-                    <input
-                      type="text"
-                      name={`imageUrl-${index}`}
-                      value={url}
-                      onChange={handleInputChange}
-                      className="flex-1 rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
-                      placeholder={index === 0 ? "Main product image URL (will be displayed in list)" : `Additional image URL ${index + 1}`}
-                      required={index === 0}
-                    />
-                    {url && (
-                      <div className="flex items-center">
+              <div className="col-span-full">
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleFileChange}
+                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-blue-500 file:text-white hover:file:bg-blue-600"
+                />
+                <p className="mt-2 text-sm text-gray-300">
+                  * You can upload multiple images. First image will be used as the main product image.
+                </p>
+                {product && (
+                  <div className="flex mt-4 gap-4 overflow-auto">
+                    {product.imageUrls.map((url: string, index: number) => (
+                      <div key={index} className="relative">
                         <img
                           src={url}
-                          alt={`Preview ${index + 1}`}
-                          className="h-12 w-12 object-cover rounded"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src = 'placeholder-image-url';
-                          }}
+                          alt={`Uploaded Preview ${index + 1}`}
+                          className="h-24 w-24 object-cover rounded border"
                         />
+                        <button
+                          type="button"
+                          onClick={() => removeUploadedImage(index)}
+                          className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded hover:bg-red-600"
+                        >
+                          Remove
+                        </button>
                       </div>
-                    )}
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
-              <p className="mt-2 text-sm text-gray-300">
-                * First image will be displayed as the main product image in the list view
-              </p>
             </div>
 
             {/* Submit and Cancel Buttons */}
