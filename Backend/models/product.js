@@ -13,15 +13,17 @@ const productSchema = new mongoose.Schema({
     trim: true
   },
   imageUrls: [{
+    type: String
+  }], // Optional: URLs for externally stored images
+  base64Images: [{
     type: String,
     validate: {
-      validator: function (value) {
-        // Ensure URLs are valid
-        return /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-]*)*\/?$/.test(value);
+      validator: function (v) {
+        return /^data:image\/[a-z]+;base64,/.test(v); // Ensures valid Base64 image format
       },
-      message: 'Each image URL must be a valid URL'
+      message: props => `${props.value} is not a valid Base64 image string!`
     }
-  }],
+  }], // Array for storing Base64 encoded images
   originalPrice: {
     type: Number,
     required: [true, 'Original price is required'],
@@ -61,7 +63,7 @@ const productSchema = new mongoose.Schema({
     trim: true
   },
   highlights: {
-    type: [String],
+    type: [String], // Array of product highlights
     validate: {
       validator: function (value) {
         return value.length <= 10; // Limit to 10 highlights
@@ -70,15 +72,18 @@ const productSchema = new mongoose.Schema({
     }
   },
   stockAlert: {
+    type: {
     type: Number,
     min: [0, 'Stock alert must be at least 0'],
     default: 0
+  },
+    default: 10 // Default stock alert threshold
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: [true, 'User reference is required']
-  },
+  }
 }, { timestamps: true });
 
 const Product = mongoose.model('Product', productSchema);
