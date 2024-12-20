@@ -15,6 +15,7 @@ interface Product {
 
 const ProductList = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,6 +25,10 @@ const ProductList = () => {
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
 
   const fetchProducts = async () => {
     try {
@@ -97,9 +102,14 @@ const ProductList = () => {
   };
 
   // Pagination Logic
+  const filteredProducts = products.filter(product =>
+    product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    product.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    product.category.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
   if (loading) {
     return (
@@ -139,6 +149,15 @@ const ProductList = () => {
       <div className="mb-8">
         <div className="flex text-orange-500 flex-col sm:flex-col md:flex-row justify-between items-center bg-navy-800 p-6 rounded-lg shadow-md gap-4">
           <h1 className="text-3xl font-bold">My Products</h1>
+          <div className="w-full md:w-1/3">
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full px-4 py-2 rounded-lg bg-navy-700 text-black border border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
+            />
+          </div>
           <Link
             to="/add-new-product"
             className="w-full md:w-auto bg-orange-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-orange-600 transition text-center"
@@ -199,7 +218,7 @@ const ProductList = () => {
           Previous
         </button>
         <span className="text-orange-500 font-semibold mx-4 text-lg">
-          Page {currentPage} of {Math.ceil(products.length / productsPerPage)}
+          Page {currentPage} of {Math.ceil(filteredProducts.length / productsPerPage)}
         </span>
         <button
           onClick={() =>
