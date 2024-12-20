@@ -135,9 +135,9 @@ const ProductList = () => {
   }
 
   return (
-    <div className="container mx-auto p-6 bg-navy-900 text-neutral-200">
+    <div className="container mx-auto p-6 bg-navy-900 text-black-200">
       <div className="mb-8">
-        <div className="flex flex-col sm:flex-col md:flex-row justify-between items-center bg-navy-800 p-6 rounded-lg shadow-md gap-4">
+        <div className="flex text-orange-500 flex-col sm:flex-col md:flex-row justify-between items-center bg-navy-800 p-6 rounded-lg shadow-md gap-4">
           <h1 className="text-3xl font-bold">My Products</h1>
           <Link
             to="/add-new-product"
@@ -159,16 +159,16 @@ const ProductList = () => {
               alt={product.title}
               className="w-full h-40 object-cover rounded-md mb-2"
             />
-            <h2 className="text-lg font-semibold mb-2 overflow-hidden text-ellipsis whitespace-nowrap text-neutral-100">
+            <h2 className="text-lg font-semibold mb-2 overflow-hidden text-ellipsis whitespace-nowrap text-black-100">
               {product.title}
             </h2>
-            <p className="text-neutral-300 mb-2">Brand: {product.brand}</p>
-            <div className="flex justify-between items-center mb-2">
+            <p className="text-black-300 mb-2">Brand: {product.brand}</p>
+            <div className="flex items-center gap-1 mb-2">
               <span className="text-gray-400 line-through">₹{product.originalPrice}</span>
               <span className="text-orange-400 font-bold">₹{product.discountedPrice}</span>
             </div>
-            <div className="flex justify-between items-center text-sm text-neutral-400 mb-4">
-              <span>Category: {product.category}</span>
+            <div className="flex justify-between items-center text-sm text-black-400 mb-4">
+              <span>{product.category}</span>
               <span>Stock: {product.quantity}</span>
             </div>
 
@@ -190,15 +190,15 @@ const ProductList = () => {
         ))}
       </div>
 
-      <div className="flex justify-center items-center mt-8">
+      <div className="flex justify-center items-center mt-8 gap-2">
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
-          className="mx-2 px-4 py-2 bg-gray-700 text-neutral-300 rounded-lg disabled:opacity-50 hover:bg-gray-600 transition"
+          className="mx-2 px-6 py-2.5 bg-navy-700 text-orange-500 rounded-lg disabled:opacity-500  hover:bg-navy-600 border border-orange-500 font-medium transition-all duration-200"
         >
           Previous
         </button>
-        <span className="text-neutral-300 font-medium mx-4">
+        <span className="text-orange-500 font-semibold mx-4 text-lg">
           Page {currentPage} of {Math.ceil(products.length / productsPerPage)}
         </span>
         <button
@@ -206,7 +206,7 @@ const ProductList = () => {
             setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(products.length / productsPerPage)))
           }
           disabled={currentPage === Math.ceil(products.length / productsPerPage)}
-          className="mx-2 px-4 py-2 bg-gray-700 text-neutral-300 rounded-lg disabled:opacity-50 hover:bg-gray-600 transition"
+          className="mx-2 px-6 py-2.5 bg-navy-700 text-orange-500 rounded-lg disabled:opacity-500 hover:bg-navy-600 border border-orange-500 font-medium transition-all duration-200"
         >
           Next
         </button>

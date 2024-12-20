@@ -8,8 +8,8 @@ const verifyAuth = (req, res, next) => {
     }
 
     const decoded = jwt.verify(authToken, process.env.JWT_SECRET);
-    req.user = decoded;  // Store user info in the request object
-    next();  // Call the next middleware or route handler
+    req.user = decoded; 
+    next();  
   } catch (error) {
     res.status(401).json({ message: 'Unauthorized, invalid token', error: error.message });
   }

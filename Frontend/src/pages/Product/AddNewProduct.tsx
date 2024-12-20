@@ -39,6 +39,7 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
 
   const [highlightInput, setHighlightInput] = useState<string>('');
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -84,6 +85,7 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     const formData = new FormData();
 
@@ -133,14 +135,19 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
         }
       });
 
-      alert('Product added successfully!');
+      
       toast.success('Product added successfully!');
-      if (onProductAdded) {
-        onProductAdded();
-      }
+      setTimeout(() => {
+        if (onProductAdded) {
+          onProductAdded();
+        }
+      }, 1500); // 1.5 second delay
+
     } catch (error) {
       console.error('Error details:', error);
       toast.error(error instanceof Error ? error.message : 'Failed to add product');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -503,9 +510,10 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full p-4 rounded-md transition-colors bg-[#dc651d] text-white dark:text-white hover:bg-opacity-90"
+              disabled={isSubmitting}
+              className="w-full p-4 rounded-md transition-colors bg-[#dc651d] text-white dark:text-white hover:bg-opacity-90 disabled:opacity-70"
             >
-              Add Product
+              {isSubmitting ? 'Adding Product...' : 'Add Product'}
             </button>
           </form>
         </div>
