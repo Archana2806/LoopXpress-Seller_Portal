@@ -13,31 +13,30 @@ const productSchema = new mongoose.Schema({
     trim: true
   },
   imageUrls: [{
-    type: String
-  }], // Optional: URLs for externally stored images
+    type: String,
+    required: [true, 'Image is required'],
+  }],
   base64Images: [{
     type: String,
     validate: {
       validator: function (v) {
-        return /^data:image\/[a-z]+;base64,/.test(v); // Ensures valid Base64 image format
+        return /^data:image\/[a-z]+;base64,/.test(v);
       },
       message: props => `${props.value} is not a valid Base64 image string!`
     }
-  }], // Array for storing Base64 encoded images
+  }],
   originalPrice: {
     type: Number,
-    required: [true, 'Original price is required'],
-    min: [0, 'Original price must be at least 0'],
+    required: true,
   },
   discountedPrice: {
     type: Number,
-    required: [true, 'Discounted price is required'],
-    min: [0, 'Discounted price must be at least 0'],
+    required: true,
     validate: {
-      validator: function (value) {
-        return value <= this.originalPrice; // Discounted price must be <= original price
+      validator: function(value) {
+        return value <= this.originalPrice;
       },
-      message: 'Discounted price must be less than or equal to the original price'
+      message: props => `Discounted price must be less than or equal to original price`
     }
   },
   category: {
@@ -63,20 +62,17 @@ const productSchema = new mongoose.Schema({
     trim: true
   },
   highlights: {
-    type: [String], // Array of product highlights
+    type: [String],
     validate: {
       validator: function (value) {
-        return value.length <= 10; // Limit to 10 highlights
+        return value.length <= 10;
       },
       message: 'You can specify up to 10 highlights only'
     }
   },
   stockAlert: {
-    type: {
     type: Number,
-    min: [0, 'Stock alert must be at least 0'],
-    default: 0
-  }
+    required: true,
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
@@ -84,6 +80,19 @@ const productSchema = new mongoose.Schema({
     required: [true, 'User reference is required']
   }
 }, { timestamps: true });
+
+productSchema.pre('save', function(next) {
+  if (typeof this.originalPrice === 'string') {
+    this.originalPrice = Number(this.originalPrice);
+  }
+  if (typeof this.discountedPrice === 'string') {
+    this.discountedPrice = Number(this.discountedPrice);
+  }
+  if (typeof this.stockAlert === 'string') {
+    this.stockAlert = Number(this.stockAlert);
+  }
+  next();
+});
 
 const Product = mongoose.model('Product', productSchema);
 export default Product;

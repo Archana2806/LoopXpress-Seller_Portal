@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 interface Product {
   _id: string;
@@ -49,6 +50,31 @@ const ProductList = () => {
   };
 
   const deleteProduct = async (id: string) => {
+    toast((t) => (
+      <div className="flex flex-col gap-4">
+        <span>Are you sure you want to delete this product?</span>
+        <div className="flex gap-2">
+          <button
+            onClick={() => {
+              handleConfirmDelete(id);
+              toast.dismiss(t.id);
+            }}
+            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
+          >
+            Delete
+          </button>
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    ), { duration: 5000 });
+  };
+
+  const handleConfirmDelete = async (id: string) => {
     try {
       const authToken = localStorage.getItem('authToken');
       const response = await fetch(`http://localhost:5000/api/products/product/${id}`, {
@@ -63,9 +89,10 @@ const ProductList = () => {
       }
 
       setProducts(products.filter((product) => product._id !== id));
+      toast.success('Product deleted successfully');
     } catch (error) {
       console.error('Error deleting product:', error);
-      setError('Failed to delete product. Please try again.');
+      toast.error('Failed to delete product. Please try again.');
     }
   };
 
@@ -110,15 +137,15 @@ const ProductList = () => {
   return (
     <div className="container mx-auto p-6 bg-navy-900 text-neutral-200">
       <div className="mb-8">
-        <div className="flex justify-between items-center bg-navy-800 p-6 rounded-lg shadow-md">
+        <div className="flex flex-col sm:flex-col md:flex-row justify-between items-center bg-navy-800 p-6 rounded-lg shadow-md gap-4">
           <h1 className="text-3xl font-bold">My Products</h1>
           <Link
-            to="/seller/add-product"
-            className="bg-orange-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-orange-600 transition"
+            to="/add-new-product"
+            className="w-full md:w-auto bg-orange-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-orange-600 transition text-center"
           >
             Add New Product
           </Link>
-        </div>
+        </div>  
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">

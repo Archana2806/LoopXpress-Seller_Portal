@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation, Navigate } from 'react-router-dom';
-
+import { Toaster } from 'react-hot-toast';
 import Loader from './common/Loader';
 import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
@@ -42,6 +42,8 @@ function App() {
   }
 
   return (
+    <>
+    <Toaster position='top-center'/>
     <Routes>
       {/* Public Routes */}
       <Route
@@ -104,6 +106,7 @@ function App() {
       />
   
     </Routes>
+  </>
   );
 }
 

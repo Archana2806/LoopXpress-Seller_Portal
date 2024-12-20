@@ -35,6 +35,7 @@ const EditProduct: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+    
     if (name === 'highlights') {
       setProduct({ ...product, [name]: value.split(',').map((item) => item.trim()) });
     } else if (name.startsWith('imageUrl')) {
@@ -44,6 +45,9 @@ const EditProduct: React.FC = () => {
       setProduct({ ...product, imageUrls: newImageUrls });
     } else if (name === 'manufacturingDate') {
       setProduct({ ...product, [name]: value || null });
+    } else if (name === 'originalPrice' || name === 'discountedPrice') {
+      // Convert price inputs to numbers
+      setProduct({ ...product, [name]: value ? Number(value) : '' });
     } else {
       setProduct({ ...product, [name]: value || '' });
     }
@@ -51,6 +55,13 @@ const EditProduct: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate prices before submitting
+    if (Number(product.discountedPrice) > Number(product.originalPrice)) {
+      toast.error('Discounted price cannot be greater than original price');
+      return;
+    }
+
     setSaving(true);
     try {
       const authToken = localStorage.getItem('authToken');
@@ -109,7 +120,7 @@ const EditProduct: React.FC = () => {
     navigate(`/product/${id}`);
   };
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
 
@@ -118,14 +129,10 @@ const EditProduct: React.FC = () => {
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      try {
-        const blobUrl = URL.createObjectURL(file);
-        newImageUrls.push(blobUrl);
-        newUploadedFiles.push(file);
-      } catch (error) {
-        console.error('Error creating preview:', error);
-        toast.error('Failed to create image preview');
-      }
+      // Create temporary URL for preview
+      const previewUrl = URL.createObjectURL(file);
+      newImageUrls.push(previewUrl);
+      newUploadedFiles.push(file);
     }
 
     setProduct({ ...product, imageUrls: newImageUrls });
@@ -134,6 +141,7 @@ const EditProduct: React.FC = () => {
 
   const removeUploadedImage = (index: number) => {
     const removedUrl = product.imageUrls[index];
+    // Only revoke URL if it's a blob URL (temporary preview)
     if (removedUrl.startsWith('blob:')) {
       URL.revokeObjectURL(removedUrl);
     }
@@ -339,23 +347,25 @@ const EditProduct: React.FC = () => {
                   * You can upload multiple images. First image will be used as the main product image.
                 </p>
                 {product && (
-                  <div className="flex mt-4 gap-4 overflow-auto">
-                    {product.imageUrls.map((url: string, index: number) => (
-                      <div key={index} className="relative">
-                        <img
-                          src={url}
-                          alt={`Uploaded Preview ${index + 1}`}
-                          className="h-24 w-24 object-cover rounded border"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => removeUploadedImage(index)}
-                          className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded hover:bg-red-600"
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    ))}
+                  <div className="mt-4 w-full overflow-x-auto scrollbar" style={{ maxHeight: '150px' }}>
+                    <div className="flex gap-4 pb-2">
+                      {product.imageUrls.map((url: string, index: number) => (
+                        <div key={index} className="relative flex-shrink-0">
+                          <img
+                            src={url}
+                            alt={`Uploaded Preview ${index + 1}`}
+                            className="h-24 w-24 object-cover rounded border"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => removeUploadedImage(index)}
+                            className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded hover:bg-red-600"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>

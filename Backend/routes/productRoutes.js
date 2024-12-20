@@ -98,7 +98,6 @@ router.get('/product/:id', async (req, res) => {
 // Update product by ID
 router.put('/update-product/:id', verifyAuth, upload.array('images', 5), async (req, res) => {
   try {
-    // Handle new image uploads if any
     let newImageUrls = [];
     if (req.files && req.files.length > 0) {
       const uploadPromises = req.files.map(file => {
@@ -116,44 +115,53 @@ router.put('/update-product/:id', verifyAuth, upload.array('images', 5), async (
       newImageUrls = await Promise.all(uploadPromises);
     }
 
-    // Parse existing image URLs from the request
     const existingImageUrls = JSON.parse(req.body.existingImageUrls || '[]');
-
-    // Combine existing and new image URLs
     const updatedImageUrls = [...existingImageUrls, ...newImageUrls];
 
-    // Parse other fields that might be stringified
-    const highlights = typeof req.body.highlights === 'string' ? 
-      JSON.parse(req.body.highlights) : req.body.highlights;
+    const originalPrice = Number(req.body.originalPrice);
+    const discountedPrice = Number(req.body.discountedPrice);
+    const stockAlert = Number(req.body.stockAlert);
 
-    // Create updated product object, explicitly setting base64Images to an empty array
+    if (isNaN(originalPrice) || isNaN(discountedPrice) || isNaN(stockAlert)) {
+      return res.status(400).json({ message: 'Invalid numeric values' });
+    }
+
+    if (discountedPrice > originalPrice) {
+      return res.status(400).json({ 
+        message: 'Discounted price cannot be greater than original price'
+      });
+    }
+
     const productData = {
       ...req.body,
-      highlights,
+      originalPrice,
+      discountedPrice,
+      stockAlert,
+      highlights: typeof req.body.highlights === 'string' ? 
+        JSON.parse(req.body.highlights) : req.body.highlights,
       imageUrls: updatedImageUrls,
-      base64Images: [] // Explicitly set to empty array to avoid validation error
+      base64Images: []
     };
 
-    // Remove any undefined or null values
-    Object.keys(productData).forEach(key => {
-      if (productData[key] === undefined || productData[key] === null) {
-        delete productData[key];
-      }
-    });
-
-    const updatedProduct = await Product.findByIdAndUpdate(
-      req.params.id,
-      productData,
-      { new: true, runValidators: true }
-    );
-
-    if (!updatedProduct) {
+    const existingProduct = await Product.findById(req.params.id);
+    if (!existingProduct) {
       return res.status(404).json({ message: 'Product not found' });
     }
 
+    Object.assign(existingProduct, productData);
+    const updatedProduct = await existingProduct.save();
+
     res.json({ message: 'Product updated successfully', product: updatedProduct });
   } catch (error) {
-    console.error('Error updating product:', error);
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ 
+        message: 'Validation error', 
+        details: Object.keys(error.errors).reduce((acc, key) => {
+          acc[key] = error.errors[key].message;
+          return acc;
+        }, {})
+      });
+    }
     res.status(500).json({ message: 'Error updating product', error: error.message });
   }
 });
