@@ -75,15 +75,15 @@ const ProductDetails = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <Breadcrumb pageName="Product Details" />
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+      <div className="rounded-lg shadow-lg overflow-hidden dark:bg-boxdark">
         <div className="md:flex">
           {/* Product Images Section */}
           <div className="md:w-1/2 p-6">
-            <div className="relative rounded-lg overflow-hidden shadow-xl border-2 border-gray-100">
+            <div className="relative rounded-lg overflow-hidden shadow-xl border-2 border-gray-100 dark:border-boxdark-2 h-auto sm:h-[250px] md:h-[400px] lg:h-[500px]">
               <img
                 src={images[currentImageIndex]}
                 alt={`${product.title} - View ${currentImageIndex + 1}`}
-                className="w-full h-[500px] object-contain bg-white transition-transform duration-500 ease-in-out transform hover:scale-105"
+                className="w-full h-full object-contain bg-white  dark:bg-boxdark transition-transform duration-500 ease-in-out transform hover:scale-105"
               />
 
               {images.length > 1 && (
@@ -142,7 +142,7 @@ const ProductDetails = () => {
                     className={`cursor-pointer rounded-lg overflow-hidden transform transition-all duration-300 hover:scale-105 ${
                       currentImageIndex === index
                         ? 'border-2 border-[#dc651d] shadow-lg scale-105'
-                        : 'border-2 border-transparent hover:border-gray-300'
+                        : 'border-2 border-transparent hover:border-gray-300 dark:hover:border-boxdark-2'
                     }`}
                   >
                     <img
@@ -161,19 +161,19 @@ const ProductDetails = () => {
             <div className="mb-6">
               <div className="flex justify-between items-start">
                 <div>
-                  <p className="text-gray-600 text-sm">{product.brand}</p>
-                  <h1 className="text-3xl font-bold text-gray-800 mt-2">{product.title}</h1>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm">{product.brand}</p>
+                  <h1 className="text-3xl font-bold text-gray-800 dark:text-white mt-2">{product.title}</h1>
                 </div>
                 <span className="bg-green-100 text-green-800 text-xs font-medium px-4 py-1 rounded-full">
                   In Stock: {product.quantity}
                 </span>
               </div>
-              <div className="flex gap-4 mt-2 text-sm text-gray-600">
+              <div className="flex gap-4 mt-2 text-sm text-gray-600 dark:text-gray-400">
                 <p>Category: {product.category}</p>
               </div>
             </div>
 
-            <div className="mb-6 bg-gray-50 p-4 rounded-lg">
+            <div className="mb-6 bg-gray-50 dark:bg-boxdark-2 p-4 rounded-lg">
               <div className="flex items-center mb-2">
                 <span className="text-3xl font-bold text-orange-600">₹{product.discountedPrice}</span>
                 {product.originalPrice > product.discountedPrice && (
@@ -185,34 +185,34 @@ const ProductDetails = () => {
                   </>
                 )}
               </div>
-              <p className="text-sm text-gray-600">Inclusive of all taxes</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Inclusive of all taxes</p>
             </div>
 
-            <div className="mb-6">
-              <h2 className="text-lg font-semibold mb-3">Product Highlights</h2>
-              <ul className="list-disc list-inside space-y-2 text-gray-600">
+            <div className="mb-6 overflow-hidden">
+              <h2 className="text-lg font-semibold mb-3 dark:text-white">Product Highlights</h2>
+              <ul className="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-400 break-words">
                 {Array.isArray(product.highlights) ? 
                   product.highlights.map((highlight, index) => (
-                    <li key={index}>{String(highlight)}</li>
+                    <li key={index} className="px-2">{String(highlight)}</li>
                   ))
                   : null
                 }
               </ul>
             </div>
 
-            <div className="mb-6">
-              <h2 className="text-lg font-semibold mb-3">Product Description</h2>
-              <p className="text-gray-600">{product.description}</p>
+            <div className="mb-6 overflow-hidden">
+              <h2 className="text-lg font-semibold mb-3 dark:text-white">Product Description</h2>
+              <p className="text-gray-600 dark:text-gray-400 break-words px-2">{product.description}</p>
             </div>
 
             <div className="mb-6 grid grid-cols-3 gap-4">
-              <div className="bg-blue-50 p-3 rounded-lg text-center">
-                <p className="text-sm text-blue-600">Stock Alert</p>
-                <p className="font-bold text-blue-700">{String(product.stockAlert || 0)}</p>
+              <div className="bg-blue-50 bg-blue-900/30 p-3 rounded-lg text-center">
+                <p className="text-sm text-blue-600 ">Stock Alert</p>
+                <p className="font-bold text-blue-700 dark:text-blue-300">{String(product.stockAlert || 0)}</p>
               </div>
-              <div className="bg-green-50 p-3 rounded-lg text-center">
-                <p className="text-sm text-green-600">Last Restocked</p>
-                <p className="font-bold text-green-700">
+              <div className="bg-green-200 dark:bg-green-900/30 p-3 rounded-lg text-center">
+                <p className="text-sm text-green-600 dark:text-green-400">Last Restocked</p>
+                <p className="font-bold text-green-700 dark:text-green-300">
                   {product.lastRestocked ? new Date(product.lastRestocked).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'short',
@@ -220,9 +220,9 @@ const ProductDetails = () => {
                   }) : 'Not available'}
                 </p>
               </div>
-              <div className="bg-purple-50 p-3 rounded-lg text-center">
-                <p className="text-sm text-purple-600">Total Sales</p>
-                <p className="font-bold text-purple-700">{String(product.salesCount || 0)}</p>
+              <div className="bg-purple-300 dark:bg-purple-900/30 p-3 rounded-lg text-center">
+                <p className="text-sm text-purple-600 dark:text-purple-400">Total Sales</p>
+                <p className="font-bold text-purple-700 dark:text-purple-300">{String(product.salesCount || 0)}</p>
               </div>
             </div>
 
@@ -248,7 +248,7 @@ const ProductDetails = () => {
               </button>
               <button
                 onClick={() => navigate('/seller/product-list')}
-                className="flex-1 bg-[#24303f] text-white px-6 py-3 rounded-md hover:bg-opacity-90 transition-colors flex items-center justify-center gap-2"
+                className="flex-1 bg-[#24303f] dark:bg-gray-200 text-white dark:text-black px-6 py-3 rounded-md hover:bg-opacity-90 transition-colors flex items-center justify-center gap-2"
               >
                 <svg
                   className="w-5 h-5"

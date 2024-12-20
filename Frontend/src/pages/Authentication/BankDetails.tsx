@@ -15,8 +15,8 @@ const BankDetails: React.FC<{
 
         // Basic validation for required fields
         if (!data.bankName) newErrors.bankName = "Bank Name is required.";
-        if (!data.accountNumber || !/^\d+$/.test(data.accountNumber)) {
-            newErrors.accountNumber = "Bank Account Number must be numeric.";
+        if (!data.accountNumber || !/^\d+$/.test(data.accountNumber) || data.accountNumber.length < 10) {
+            newErrors.accountNumber = "Bank Account Number must be numeric and at least 10 digits.";
         }
         if (!data.accountType) newErrors.accountType = "Account Type is required.";
         if (!data.businessPhone || !/^\d{10}$/.test(data.businessPhone)) {
