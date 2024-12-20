@@ -78,7 +78,19 @@ const productSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: [true, 'User reference is required']
-  }
+  },
+  manufacturingDate: {
+    type: Date,
+    required: true,
+  },
+  warranty: {
+    type: String,
+    required: true,
+  },
+  shippingInfo: {
+    type: String,
+    required: true,
+  },
 }, { timestamps: true });
 
 productSchema.pre('save', function(next) {

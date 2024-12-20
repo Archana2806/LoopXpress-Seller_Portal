@@ -135,7 +135,6 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
         }
       });
 
-      
       toast.success('Product added successfully!');
       setTimeout(() => {
         if (onProductAdded) {

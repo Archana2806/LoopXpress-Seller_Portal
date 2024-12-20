@@ -243,6 +243,50 @@ const EditProduct: React.FC = () => {
                     className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
                   />
                 </div>
+
+                <div>
+                  <label className="mb-2.5 block text-light-theme-text">Stock Alert Level</label>
+                  <input
+                    type="number"
+                    name="stockAlert"
+                    value={product.stockAlert}
+                    onChange={handleInputChange}
+                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2.5 block text-light-theme-text">Quantity</label>
+                  <input
+                    type="number"
+                    name="quantity"
+                    value={product.quantity}
+                    onChange={handleInputChange}
+                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2.5 block text-light-theme-text">Shipping Info</label>
+                  <textarea
+                    name="shippingInfo"
+                    value={product.shippingInfo}
+                    onChange={handleInputChange}
+                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2.5 block text-light-theme-text">Highlights</label>
+                  <textarea
+                    name="highlights"
+                    value={product.highlights.join(', ')}
+                    onChange={handleInputChange}
+                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
+                  />
+                </div>
               </div>
             </div>
 
@@ -271,44 +315,6 @@ const EditProduct: React.FC = () => {
                     onChange={handleInputChange}
                     className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
                     required
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-2.5 block text-light-theme-text">Stock Alert Level</label>
-                  <input
-                    type="number"
-                    name="stockAlert"
-                    value={product.stockAlert}
-                    onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
-                    required
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Additional Information */}
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4 text-light-theme-text">Additional Information</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="mb-2.5 block text-light-theme-text">Shipping Info</label>
-                  <textarea
-                    name="shippingInfo"
-                    value={product.shippingInfo}
-                    onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-2.5 block text-light-theme-text">Highlights</label>
-                  <textarea
-                    name="highlights"
-                    value={product.highlights.join(', ')}
-                    onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
                   />
                 </div>
               </div>
