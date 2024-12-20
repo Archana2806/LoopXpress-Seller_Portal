@@ -168,7 +168,7 @@ const ProductList = () => {
               <span className="text-orange-400 font-bold">₹{product.discountedPrice}</span>
             </div>
             <div className="flex justify-between items-center text-sm text-black-400 mb-4">
-              <span>Category: {product.category}</span>
+              <span>{product.category}</span>
               <span>Stock: {product.quantity}</span>
             </div>
 
