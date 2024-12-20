@@ -1,5 +1,5 @@
 import express from 'express';
-import Product from '../models/Product.js';
+import Product from '../models/product.js';
 import verifyAuth from '../middleware/verifyAuth.js';
 import upload from '../middleware/upload.js';
 import cloudinary from '../config/cloudinary.js';
@@ -39,6 +39,9 @@ router.post('/add-product', verifyAuth, upload.array('images', 5), async (req, r
       quantity: req.body.quantity,
       description: req.body.description,
       highlights: req.body.highlights,
+      warranty: req.body.warranty,
+      shippingInfo: req.body.shippingInfo,
+      manufacturingDate: req.body.manufacturingDate,
       stockAlert: req.body.stockAlert,
       user: req.user.id,
     });
