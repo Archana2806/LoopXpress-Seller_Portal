@@ -153,6 +153,21 @@ const EditProduct: React.FC = () => {
     setUploadedFiles(newUploadedFiles);
   };
 
+  const handleHighlightChange = (index: number, value: string) => {
+    const newHighlights = [...product.highlights];
+    newHighlights[index] = value;
+    setProduct({ ...product, highlights: newHighlights });
+  };
+
+  const addHighlight = () => {
+    setProduct({ ...product, highlights: [...product.highlights, ''] });
+  };
+
+  const removeHighlight = (index: number) => {
+    const newHighlights = product.highlights.filter((_, i) => i !== index);
+    setProduct({ ...product, highlights: newHighlights });
+  };
+
   if (!product) {
     return <div>Loading...</div>;
   }
@@ -243,50 +258,6 @@ const EditProduct: React.FC = () => {
                     className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
                   />
                 </div>
-
-                <div>
-                  <label className="mb-2.5 block text-light-theme-text">Stock Alert Level</label>
-                  <input
-                    type="number"
-                    name="stockAlert"
-                    value={product.stockAlert}
-                    onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-2.5 block text-light-theme-text">Quantity</label>
-                  <input
-                    type="number"
-                    name="quantity"
-                    value={product.quantity}
-                    onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-2.5 block text-light-theme-text">Shipping Info</label>
-                  <textarea
-                    name="shippingInfo"
-                    value={product.shippingInfo}
-                    onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-2.5 block text-light-theme-text">Highlights</label>
-                  <textarea
-                    name="highlights"
-                    value={product.highlights.join(', ')}
-                    onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
-                  />
-                </div>
               </div>
             </div>
 
@@ -315,6 +286,44 @@ const EditProduct: React.FC = () => {
                     onChange={handleInputChange}
                     className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
                     required
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2.5 block text-light-theme-text">Stock Alert Level</label>
+                  <input
+                    type="number"
+                    name="stockAlert"
+                    value={product.stockAlert}
+                    onChange={handleInputChange}
+                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Additional Information */}
+            <div className="mb-8">
+              <h2 className="text-xl font-semibold mb-4 text-light-theme-text">Additional Information</h2>
+              <div className="gap-6">
+                <div>
+                  <label className="mb-2.5 block text-light-theme-text">Shipping Info</label>
+                  <textarea
+                    name="shippingInfo"
+                    value={product.shippingInfo}
+                    onChange={handleInputChange}
+                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2.5 block text-light-theme-text">Highlights</label>
+                  <textarea
+                    name="highlights"
+                    value={product.highlights.join(', ')}
+                    onChange={handleInputChange}
+                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
                   />
                 </div>
               </div>
@@ -374,6 +383,38 @@ const EditProduct: React.FC = () => {
                     </div>
                   </div>
                 )}
+              </div>
+            </div>
+
+            {/* Product Highlights */}
+            <div className="mb-8">
+              <h2 className="text-xl font-semibold mb-4 text-light-theme-text">Product Highlights</h2>
+              <div className="space-y-4">
+                {product.highlights.map((highlight, index) => (
+                  <div key={index} className="flex gap-2">
+                    <input
+                      type="text"
+                      value={highlight}
+                      onChange={(e) => handleHighlightChange(index, e.target.value)}
+                      placeholder={`Highlight ${index + 1}`}
+                      className="flex-1 rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeHighlight(index)}
+                      className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={addHighlight}
+                  className="w-full px-4 py-2 bg-[#dc651d] text-white rounded hover:bg-opacity-90"
+                >
+                  Add Highlight
+                </button>
               </div>
             </div>
 
