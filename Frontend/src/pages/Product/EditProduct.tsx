@@ -178,198 +178,30 @@ const EditProduct: React.FC = () => {
       <Breadcrumb pageName="Edit Product" />
       <div className="max-w-full">
         <div className="bg-light-theme-bg border rounded-lg p-6 shadow-lg text-light-theme-text">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Basic Information */}
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4 text-light-theme-text">Basic Information</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <form onSubmit={handleSubmit} className="space-y-10">
+            {/* Section: Product Images */}
+            <section className="mb-10">
+              <h2 className="text-2xl font-semibold mb-6 text-light-theme-text">Product Images</h2>
+              <div className="grid grid-cols-1 gap-6">
                 <div>
-                  <label className="mb-2.5 block text-light-theme-text">Title</label>
                   <input
-                    type="text"
-                    name="title"
-                    value={product.title}
-                    onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
-                    required
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleFileChange}
+                    className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-[#dc651d] file:text-white hover:file:bg-[#dc651d]"
                   />
-                </div>
-
-                <div>
-                  <label className="mb-2.5 block text-light-theme-text">Brand</label>
-                  <input
-                    type="text"
-                    name="brand"
-                    value={product.brand}
-                    onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-2.5 block text-light-theme-text">Category</label>
-                  <select
-                    name="category"
-                    value={product.category}
-                    onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
-                    required
-                  >
-                    <option value="">Select Category</option>
-                    {categories.map(category => (
-                      <option key={category.category} value={category.category}>
-                        {category.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="mb-2.5 block text-light-theme-text">Quantity</label>
-                  <input
-                    type="number"
-                    name="quantity"
-                    value={product.quantity}
-                    onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-2.5 block text-light-theme-text">Manufacturing Date</label>
-                  <input
-                    type="date"
-                    name="manufacturingDate"
-                    value={product.manufacturingDate}
-                    onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-2.5 block text-light-theme-text">Warranty</label>
-                  <input
-                    type="text"
-                    name="warranty"
-                    value={product.warranty}
-                    onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Pricing and Inventory */}
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4 text-light-theme-text">Pricing & Inventory</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div>
-                  <label className="mb-2.5 block text-light-theme-text">Original Price</label>
-                  <input
-                    type="number"
-                    name="originalPrice"
-                    value={product.originalPrice}
-                    onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-2.5 block text-light-theme-text">Discounted Price</label>
-                  <input
-                    type="number"
-                    name="discountedPrice"
-                    value={product.discountedPrice}
-                    onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-2.5 block text-light-theme-text">Stock Alert Level</label>
-                  <input
-                    type="number"
-                    name="stockAlert"
-                    value={product.stockAlert}
-                    onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
-                    required
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Additional Information */}
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4 text-light-theme-text">Additional Information</h2>
-              <div className="gap-6">
-                <div>
-                  <label className="mb-2.5 block text-light-theme-text">Shipping Info</label>
-                  <textarea
-                    name="shippingInfo"
-                    value={product.shippingInfo}
-                    onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-2.5 block text-light-theme-text">Highlights</label>
-                  <textarea
-                    name="highlights"
-                    value={product.highlights.join(', ')}
-                    onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Description */}
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4 text-light-theme-text">Description</h2>
-              <div className="space-y-6">
-                <div>
-                  <label className="mb-2.5 block text-light-theme-text">Product Description</label>
-                  <textarea
-                    name="description"
-                    value={product.description}
-                    onChange={handleInputChange}
-                    rows={4}
-                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
-                    required
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Images */}
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4 text-light-theme-text">Product Images</h2>
-              <div className="col-span-full">
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={handleFileChange}
-                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-blue-500 file:text-white hover:file:bg-blue-600"
-                />
-                <p className="mt-2 text-sm text-gray-300">
-                  * You can upload multiple images. First image will be used as the main product image.
-                </p>
-                {product && (
-                  <div className="mt-4 w-full overflow-x-auto scrollbar" style={{ maxHeight: '150px' }}>
-                    <div className="flex gap-4 pb-2">
-                      {product.imageUrls.map((url: string, index: number) => (
-                        <div key={index} className="relative flex-shrink-0">
+                  <p className="mt-3 text-sm text-gray-500">
+                    * You can upload multiple images. The first image will be used as the main product image.
+                  </p>
+                  {product.imageUrls.length > 0 && (
+                    <div className="mt-4 flex gap-4 overflow-x-auto">
+                      {product.imageUrls.map((url, index) => (
+                        <div key={index} className="relative">
                           <img
                             src={url}
-                            alt={`Uploaded Preview ${index + 1}`}
-                            className="h-24 w-24 object-cover rounded border"
+                            alt={`Preview ${index + 1}`}
+                            className="h-24 w-24 object-cover rounded-lg border"
                           />
                           <button
                             type="button"
@@ -381,28 +213,145 @@ const EditProduct: React.FC = () => {
                         </div>
                       ))}
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
-            </div>
+            </section>
 
-            {/* Product Highlights */}
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4 text-light-theme-text">Product Highlights</h2>
-              <div className="space-y-4">
+            {/* Section: Basic Information */}
+            <section className="mb-10">
+              <h2 className="text-2xl font-semibold mb-6 text-light-theme-text">Basic Information</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div>
+                  <label className="block mb-2 text-light-theme-text font-medium">Title</label>
+                  <input
+                    type="text"
+                    name="title"
+                    value={product.title}
+                    onChange={handleInputChange}
+                    className="w-full rounded-lg border border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-4 focus:ring-2 focus:ring-[#dc651d]"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block mb-2 text-light-theme-text font-medium">Brand</label>
+                  <input
+                    type="text"
+                    name="brand"
+                    value={product.brand}
+                    onChange={handleInputChange}
+                    className="w-full rounded-lg border border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-4 focus:ring-2 focus:ring-[#dc651d]"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block mb-2 text-light-theme-text font-medium">Category</label>
+                  <select
+                    name="category"
+                    value={product.category}
+                    onChange={handleInputChange}
+                    className="w-full rounded-lg border border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-4 focus:ring-2 focus:ring-[#dc651d]"
+                    required
+                  >
+                    <option value="">Select Category</option>
+                    {categories.map((category) => (
+                      <option key={category.category} value={category.category}>
+                        {category.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block mb-2 text-light-theme-text font-medium">Quantity</label>
+                  <input
+                    type="number"
+                    name="quantity"
+                    value={product.quantity}
+                    onChange={handleInputChange}
+                    className="w-full rounded-lg border border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-4 focus:ring-2 focus:ring-[#dc651d]"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block mb-2 text-light-theme-text font-medium">Manufacturing Date</label>
+                  <input
+                    type="date"
+                    name="manufacturingDate"
+                    value={product.manufacturingDate}
+                    onChange={handleInputChange}
+                    className="w-full rounded-lg border border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-4 focus:ring-2 focus:ring-[#dc651d]"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-2 text-light-theme-text font-medium">Warranty</label>
+                  <input
+                    type="text"
+                    name="warranty"
+                    value={product.warranty}
+                    onChange={handleInputChange}
+                    className="w-full rounded-lg border border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-4 focus:ring-2 focus:ring-[#dc651d]"
+                  />
+                </div>
+              </div>
+            </section>
+
+            {/* Section: Pricing & Inventory */}
+            <section className="mb-10">
+              <h2 className="text-2xl font-semibold mb-6 text-light-theme-text">Pricing & Inventory</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div>
+                  <label className="block mb-2 text-light-theme-text font-medium">Original Price</label>
+                  <input
+                    type="number"
+                    name="originalPrice"
+                    value={product.originalPrice}
+                    onChange={handleInputChange}
+                    className="w-full rounded-lg border border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-4 focus:ring-2 focus:ring-[#dc651d]"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block mb-2 text-light-theme-text font-medium">Discounted Price</label>
+                  <input
+                    type="number"
+                    name="discountedPrice"
+                    value={product.discountedPrice}
+                    onChange={handleInputChange}
+                    className="w-full rounded-lg border border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-4 focus:ring-2 focus:ring-[#dc651d]"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block mb-2 text-light-theme-text font-medium">Stock Alert Level</label>
+                  <input
+                    type="number"
+                    name="stockAlert"
+                    value={product.stockAlert}
+                    onChange={handleInputChange}
+                    className="w-full rounded-lg border border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-4 focus:ring-2 focus:ring-[#dc651d]"
+                    required
+                  />
+                </div>
+              </div>
+            </section>
+
+            {/* Section: Product Highlights */}
+            <section className="mb-10">
+              <h2 className="text-2xl font-semibold mb-6 text-light-theme-text">Product Highlights</h2>
+              <div className="space-y-6">
                 {product.highlights.map((highlight, index) => (
-                  <div key={index} className="flex gap-2">
+                  <div key={index} className="flex items-center gap-4">
                     <input
                       type="text"
                       value={highlight}
                       onChange={(e) => handleHighlightChange(index, e.target.value)}
                       placeholder={`Highlight ${index + 1}`}
-                      className="flex-1 rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
+                      className="flex-1 rounded-lg border border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-4 focus:ring-2 focus:ring-[#dc651d]"
                     />
                     <button
                       type="button"
                       onClick={() => removeHighlight(index)}
-                      className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                      className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
                     >
                       Remove
                     </button>
@@ -411,15 +360,51 @@ const EditProduct: React.FC = () => {
                 <button
                   type="button"
                   onClick={addHighlight}
-                  className="w-full px-4 py-2 bg-[#dc651d] text-white rounded hover:bg-opacity-90"
+                  className="px-6 py-3 bg-[#dc651d] text-white rounded-lg hover:bg-opacity-90"
                 >
                   Add Highlight
                 </button>
               </div>
-            </div>
+            </section>
 
-            {/* Submit and Cancel Buttons */}
-            <div className="flex justify-end gap-4">
+            {/* Section: Description */}
+            <section className="mb-10">
+              <h2 className="text-2xl font-semibold mb-6 text-light-theme-text">Description</h2>
+              <div className="grid grid-cols-1 gap-6">
+                <div>
+                  {/* <label className="block mb-2 text-light-theme-text font-medium">
+                    Product Description
+                  </label> */}
+                  <textarea
+                    name="description"
+                    value={product.description}
+                    onChange={handleInputChange}
+                    rows={5}
+                    className="w-full rounded-lg border-2 border-gray-300 bg-white text-gray-800 dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white px-4 py-3 focus:border-[#dc651d] outline-none"
+                    required
+                  />
+                </div>
+              </div>
+            </section>
+
+            {/* Section: Additional Information */}
+            <section className="mb-10">
+              <h2 className="text-2xl font-semibold mb-6 text-light-theme-text">Additional Information</h2>
+              <div className="grid grid-cols-1 gap-6">
+                <div>
+                  <label className="block mb-2 text-light-theme-text font-medium">Shipping Info</label>
+                  <textarea
+                    name="shippingInfo"
+                    value={product.shippingInfo}
+                    onChange={handleInputChange}
+                    className="w-full rounded-lg border border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-4 focus:ring-2 focus:ring-[#dc651d]"
+                  />
+                </div>
+              </div>
+            </section>
+
+            {/* Section: Submit Buttons */}
+            <section className="flex justify-end gap-4">
               <button
                 type="button"
                 onClick={handleCancel}
@@ -431,11 +416,11 @@ const EditProduct: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSaving}
-                className="bg-[#dc651d] text-white px-6 py-3 rounded-lg hover:bg-[#dc651d] transition-colors disabled:opacity-50"
+                className="bg-[#dc651d] text-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition-colors disabled:opacity-50"
               >
-                {isSaving ? 'Saving...' : 'Save Changes'}
+                {isSaving ? "Saving..." : "Save Changes"}
               </button>
-            </div>
+            </section>
           </form>
         </div>
       </div>
