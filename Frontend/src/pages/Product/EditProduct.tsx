@@ -167,7 +167,7 @@ const EditProduct: React.FC = () => {
                     name="title"
                     value={product.title}
                     onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
+                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
                     required
                   />
                 </div>
@@ -179,7 +179,7 @@ const EditProduct: React.FC = () => {
                     name="brand"
                     value={product.brand}
                     onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
+                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
                     required
                   />
                 </div>
@@ -190,7 +190,7 @@ const EditProduct: React.FC = () => {
                     name="category"
                     value={product.category}
                     onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
+                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
                     required
                   >
                     <option value="">Select Category</option>
@@ -209,7 +209,7 @@ const EditProduct: React.FC = () => {
                     name="quantity"
                     value={product.quantity}
                     onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
+                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
                     required
                   />
                 </div>
@@ -221,7 +221,7 @@ const EditProduct: React.FC = () => {
                     name="manufacturingDate"
                     value={product.manufacturingDate}
                     onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
+                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
                   />
                 </div>
 
@@ -232,7 +232,7 @@ const EditProduct: React.FC = () => {
                     name="warranty"
                     value={product.warranty}
                     onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
+                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
                   />
                 </div>
               </div>
@@ -249,7 +249,7 @@ const EditProduct: React.FC = () => {
                     name="originalPrice"
                     value={product.originalPrice}
                     onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
+                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
                     required
                   />
                 </div>
@@ -261,7 +261,7 @@ const EditProduct: React.FC = () => {
                     name="discountedPrice"
                     value={product.discountedPrice}
                     onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
+                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
                     required
                   />
                 </div>
@@ -273,7 +273,7 @@ const EditProduct: React.FC = () => {
                     name="stockAlert"
                     value={product.stockAlert}
                     onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
+                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
                     required
                   />
                 </div>
@@ -290,7 +290,7 @@ const EditProduct: React.FC = () => {
                     name="shippingInfo"
                     value={product.shippingInfo}
                     onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
+                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
                   />
                 </div>
 
@@ -300,7 +300,7 @@ const EditProduct: React.FC = () => {
                     name="highlights"
                     value={product.highlights.join(', ')}
                     onChange={handleInputChange}
-                    className="w-full rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
+                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
                   />
                 </div>
               </div>
@@ -317,7 +317,7 @@ const EditProduct: React.FC = () => {
                     value={product.description}
                     onChange={handleInputChange}
                     rows={4}
-                    className="w-full rounded border-[1.5px] border-light-theme-border bg-light-theme-bg py-3 px-5 text-light-theme-text outline-none transition focus:border-light-theme-focus"
+                    className="w-full rounded border-[1.5px] border-gray-300 bg-white text-black dark:border-[#dc651d] dark:bg-[#24303f] dark:text-white py-3 px-5 outline-none transition focus:border-[#dc651d]"
                     required
                   />
                 </div>
@@ -374,7 +374,7 @@ const EditProduct: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSaving}
-                className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50"
+                className="bg-[#dc651d] text-white px-6 py-3 rounded-lg hover:bg-[#dc651d] transition-colors disabled:opacity-50"
               >
                 {isSaving ? 'Saving...' : 'Save Changes'}
               </button>

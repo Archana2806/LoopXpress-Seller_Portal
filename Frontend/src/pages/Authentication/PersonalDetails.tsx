@@ -22,22 +22,34 @@ const PersonalDetails: React.FC<{
 
   const validateForm = () => {
     let formErrors: any = {};
+
+    // Full Name
     if (!data.fullName) formErrors.fullName = "Full Name is required.";
+
+    // Email
     if (!data.email) {
       formErrors.email = "Email is required.";
     } else if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/.test(data.email)) {
       formErrors.email = "Invalid email format.";
     }
+
+    // Password
     if (!data.password) {
       formErrors.password = "Password is required.";
     } else if (data.password.length < 6) {
       formErrors.password = "Password must be at least 6 characters.";
+    } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]+$/.test(data.password)) {
+      formErrors.password = "Password must contain at least one uppercase letter, one number, and one special character.";
     }
+
+    // Phone Number
     if (!data.phoneNumber) {
       formErrors.phoneNumber = "Phone Number is required.";
     } else if (!/^\d{10}$/.test(data.phoneNumber)) {
       formErrors.phoneNumber = "Phone Number must be 10 digits.";
     }
+
+    // Address
     if (!data.address) formErrors.address = "Address is required.";
 
     setErrors(formErrors);

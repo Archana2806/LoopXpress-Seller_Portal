@@ -80,11 +80,11 @@ const ProductDetails = () => {
         <div className="md:flex">
           {/* Product Images Section */}
           <div className="md:w-1/2 p-6">
-            <div className="relative rounded-lg overflow-hidden shadow-xl border-2 border-gray-100">
+            <div className="relative rounded-lg overflow-hidden shadow-xl border-2 border-gray-100 h-auto sm:h-[250px] md:h-[400px] lg:h-[500px]">
               <img
                 src={images[currentImageIndex]}
                 alt={`${product.title} - View ${currentImageIndex + 1}`}
-                className="w-full h-[500px] object-contain bg-white transition-transform duration-500 ease-in-out transform hover:scale-105"
+                className="w-full h-full object-contain bg-white transition-transform duration-500 ease-in-out transform hover:scale-105"
               />
 
               {images.length > 1 && (
@@ -169,11 +169,11 @@ const ProductDetails = () => {
                         In Stock: {product.quantity}
                       </span>
                     </div>
-                    <h1 className="text-2xl font-bold text-gray-800 mt-2 w-3/4">{product.title}</h1>
+                    <h1 className="text-2xl font-bold text-gray-800 mt-2 w-full md:w-3/4">{product.title}</h1>
                   </div>
                 </div>
                 
-                {/* Remove the SKU and only keep Category */}
+                {/* Category */}
                 <div className="flex gap-4 mt-2 text-sm text-gray-600">
                   <p>Category: {product.category}</p>
                 </div>
