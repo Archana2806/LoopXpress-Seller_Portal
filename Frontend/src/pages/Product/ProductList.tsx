@@ -162,7 +162,7 @@ const ProductList = () => {
             <h2 className="text-lg font-semibold mb-2 overflow-hidden text-ellipsis whitespace-nowrap text-black-100">
               {product.title}
             </h2>
-            <p className="text-black-300 mb-2">Brand: {product.brand}</p>
+            <p className="text-black-300 mb-2"> {product.brand}</p>
             <div className="flex items-center gap-1 mb-2">
               <span className="text-gray-400 line-through">₹{product.originalPrice}</span>
               <span className="text-orange-400 font-bold">₹{product.discountedPrice}</span>

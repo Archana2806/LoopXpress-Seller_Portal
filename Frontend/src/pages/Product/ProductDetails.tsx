@@ -162,18 +162,15 @@ const ProductDetails = () => {
               <div className="mb-6">
                 <div className="flex justify-between items-start">
                   <div className="flex flex-col">
-                    <div className="flex justify-between items-center">
-                      <p className="text-gray-600 dark:text-gray-400 text-sm">{product.brand}</p>
-                      <span className="bg-green-100 text-green-800 text-xs font-medium px-4 py-1 rounded-full">
-                        In Stock: {product.quantity}
-                      </span>
+                    <div >
+                      <p className="text-orange-500 dark:text-orange-500 text">{product.brand}</p>
                     </div>
-                    <h1 className="text-2xl font-bold dark:text-white mt-2 w-full md:w-3/4">{product.title}</h1>
+                    <h1 className="text-2xl font-bold dark:text-white mt-2 w-full ">{product.title}</h1>
                   </div>
                 </div>
                 
                 {/* Category */}
-                <div className="flex gap-4 mt-2 text-sm text-gray-600 dark:text-gray-400">
+                <div className="flex gap-4 mt-2 text text-gray-600 dark:text-gray-400">
                   <p>Category: {product.category}</p>
                 </div>
               </div>
@@ -211,19 +208,13 @@ const ProductDetails = () => {
             </div>
 
             <div className="mb-6 grid grid-cols-3 gap-4">
+            <div className="bg-green-200 dark:bg-green-900/30 p-3 rounded-lg text-center">
+                <p className="text-sm text-green-600 dark:text-green-400">In Stock</p>
+                <p className="font-bold text-green-700 dark:text-green-300">{product.quantity}</p>
+              </div>
               <div className="bg-blue-50 bg-blue-900/30 p-3 rounded-lg text-center">
                 <p className="text-sm text-blue-600 ">Stock Alert</p>
                 <p className="font-bold text-blue-700 dark:text-blue-300">{String(product.stockAlert || 0)}</p>
-              </div>
-              <div className="bg-green-200 dark:bg-green-900/30 p-3 rounded-lg text-center">
-                <p className="text-sm text-green-600 dark:text-green-400">Last Restocked</p>
-                <p className="font-bold text-green-700 dark:text-green-300">
-                  {product.lastRestocked ? new Date(product.lastRestocked).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric',
-                  }) : 'Not available'}
-                </p>
               </div>
               <div className="bg-purple-300 dark:bg-purple-900/30 p-3 rounded-lg text-center">
                 <p className="text-sm text-purple-600 dark:text-purple-400">Total Sales</p>

@@ -73,7 +73,7 @@ export interface ProductData {
 
 export const categories = [
     {
-      category: "firstAid",
+      category: "First Aid",
       label: "First Aid",
       subcategories: [
         { value: "firstAidKits", label: "First Aid Kits" },
@@ -95,7 +95,7 @@ export const categories = [
       ],
     },
     {
-      category: "gymEssentials",
+      category: "Gym Essentials",
       label: "Gym Essentials",
       subcategories: [
         { value: "dumbbells", label: "Dumbbells" },
@@ -112,7 +112,7 @@ export const categories = [
       ],
     },
     {
-      category: "outdoorFitness",
+      category: "Outdoor Equipment",
       label: "Outdoor Equipment",
       subcategories: [
         { value: "reflectiveVests", label: "Reflective Vests and Bands" },
@@ -129,7 +129,7 @@ export const categories = [
       ],
     },
     {
-      category: "yogaAndMeditation",
+      category: "Yoga & Meditation",
       label: "Yoga & Meditation",
       subcategories: [
         { value: "yogaMats", label: "Yoga Mats" },
@@ -144,7 +144,7 @@ export const categories = [
       ],
     },
     {
-      category: "cricket",
+      category: "Cricket",
       label: "Cricket",
       subcategories: [
         { value: "cricketBats", label: "Cricket Bats" },
@@ -172,7 +172,7 @@ export const categories = [
       ],
     },
     {
-      category: "golfEquipment",
+      category: "Golf Equipment",
       label: "Golf Equipment",
       subcategories: [
         { value: "golfClubs", label: "Golf Clubs" },
@@ -186,7 +186,7 @@ export const categories = [
       ],
     },
     {
-      category: "gymnasticsEquipment",
+      category: "Gymnastics Equipment",
       label: "Gymnastics Equipment",
       subcategories: [
         { value: "gymnasticsMats", label: "Gymnastics Mats" },
@@ -198,7 +198,7 @@ export const categories = [
       ],
     },
     {
-      category: "teamSports",
+      category: "Team Sports",
       label: "Soccer/Football/Basketball Equipment",
       subcategories: [
         { value: "soccerBalls", label: "Soccer Balls" },
@@ -212,7 +212,7 @@ export const categories = [
       ],
     },
     {
-      category: "racquetSports",
+      category: "Racquet Sports",
       label: "Tennis & Badminton Equipment",
       subcategories: [
         { value: "tennisRackets", label: "Tennis Rackets" },
@@ -225,7 +225,7 @@ export const categories = [
       ],
     },
     {
-      category: "swimming",
+      category: "Swimming",
       label: "Swimming & Water Sports",
       subcategories: [
         { value: "swimmingGoggles", label: "Swimming Goggles" },
@@ -251,7 +251,7 @@ export const categories = [
       ],
     },
     {
-      category: "combatSports",
+      category: "Combat Sports",
       label: "Combat Sports Equipment",
       subcategories: [
         { value: "boxingGloves", label: "Boxing Gloves" },
@@ -264,7 +264,7 @@ export const categories = [
       ],
     },
     {
-      category: "winterSports",
+      category: "WinterSports",
       label: "Winter Sports Equipment",
       subcategories: [
         { value: "snowboards", label: "Snowboards" },
@@ -277,7 +277,7 @@ export const categories = [
       ],
     },
     {
-      category: "kabaddi",
+      category: "Kabaddi",
       label: "Kabaddi Equipment",
       subcategories: [
         { value: "kabaddiBalls", label: "Kabaddi Balls" },
@@ -288,7 +288,7 @@ export const categories = [
       ],
     },
     {
-      category: "kidsSports",
+      category: "kids Sports",
       label: "Kids Sports & Equipment",
       subcategories: [
         { value: "kidsBalls", label: "Kids Balls" },
@@ -299,7 +299,7 @@ export const categories = [
       ],
     },
     {
-      category: "fitnessTrackers",
+      category: "Fitness Trackers",
       label: "Fitness Trackers",
       subcategories: [
         { value: "fitnessWatches", label: "Fitness Watches" },
@@ -309,7 +309,7 @@ export const categories = [
       ],
     },
     {
-      category: "athleticCare",
+      category: "Athletic Care",
       label: "Athletic Care & Recovery",
       subcategories: [
         { value: "icePacks", label: "Ice Packs" },
@@ -320,7 +320,7 @@ export const categories = [
       ],
     },
     {
-      category: "sportsNutrition",
+      category: "Sports Nutrition",
       label: "Sports Nutrition",
       subcategories: [
         { value: "proteinPowder", label: "Protein Powder" },
@@ -331,7 +331,7 @@ export const categories = [
       ],
     },
     {
-      category: "dryFruits",
+      category: "Dry Fruits",
       label: "Dry Fruits",
       subcategories: [
         { value: "almonds", label: "Almonds" },
@@ -342,7 +342,7 @@ export const categories = [
       ],
     },
     {
-      category: "cookingEssentials",
+      category: "Cooking Essentials",
       label: "Cooking Essentials",
       subcategories: [
         { value: "spices", label: "Spices" },
@@ -353,7 +353,7 @@ export const categories = [
       ],
     },
     {
-      category: "trainingEquipment",
+      category: "Training Equipment",
       label: "Training Equipment",
       subcategories: [
         { value: "trainingDummies", label: "Training Dummies" },
@@ -364,7 +364,7 @@ export const categories = [
       ],
     },
     {
-      category: "sportsAccessories",
+      category: "Sports Accessories",
       label: "Sports Accessories",
       subcategories: [
         { value: "sportsBags", label: "Sports Bags" },
