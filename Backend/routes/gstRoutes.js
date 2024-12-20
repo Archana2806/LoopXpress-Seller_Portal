@@ -44,7 +44,7 @@ router.post("/verify-gst", async (req, res) => {
   try {
     const options = {
       method: 'GET',
-      url: `https://${RAPID_API_HOST}/getGSTDetailsUsingGST/${gstin}`,
+      url: `https://${RAPID_API_HOST}/v1/gstin/${gstin}/details`,
       headers: {
         'X-RapidAPI-Key': RAPID_API_KEY,
         'X-RapidAPI-Host': RAPID_API_HOST
@@ -69,23 +69,21 @@ router.post("/verify-gst", async (req, res) => {
       });
 
       const transformedData = {
-        legalName: responseData.legalName,
-        tradeName: responseData.tradeName,
-        businessType: responseData.constitutionOfBusiness,
+        legalName: responseData.legal_name,
+        tradeName: responseData.trade_name,
+        businessType: responseData.business_constitution,
         gstStatus: responseData.status,
-        gstinValid: responseData.status === 'Active',
-        registrationDate: responseData.registrationDate,
-        lastUpdateDate: responseData.lastUpdateDate,
-        natureOfBusiness: Array.isArray(responseData.natureOfBusinessActivity)
-          ? responseData.natureOfBusinessActivity.join(', ')
-          : responseData.natureOfBusinessActivity,
-        address: responseData.principalAddress?.address
-          ? `${responseData.principalAddress.address.buildingNumber || ''} ${responseData.principalAddress.address.buildingName || ''}, ${responseData.principalAddress.address.street || ''}, ${responseData.principalAddress.address.locality || ''}, ${responseData.principalAddress.address.district || ''}, ${responseData.principalAddress.address.stateCode || ''} - ${responseData.principalAddress.address.pincode || ''}`.trim()
+        gstinValid: responseData.gstin ? true : false,
+        registrationDate: responseData.registration_date,
+        lastUpdateDate: responseData.last_update_date || 'N/A',
+        natureOfBusiness: responseData.business_activity_nature.join(', '),
+        address: responseData.place_of_business_principal.address
+          ? `${responseData.place_of_business_principal.address.building_name}, ${responseData.place_of_business_principal.address.street}, ${responseData.place_of_business_principal.address.location}, ${responseData.place_of_business_principal.address.state}, ${responseData.place_of_business_principal.address.pin_code}`
           : 'N/A',
-        stateJurisdiction: responseData.stateJurisdiction,
-        centerJurisdiction: responseData.centerJurisdiction,
-        gstNumber: responseData.gstNumber,
-        eInvoiceStatus: responseData.eInvoiceStatus
+        stateJurisdiction: responseData.state_jurisdiction,
+        centerJurisdiction: responseData.centre_jurisdiction,
+        gstNumber: responseData.gstin,
+        eInvoiceStatus: responseData.e_invoice_status || 'N/A'
       };
 
       console.log('Backend: Transformed data:', transformedData);
