@@ -72,7 +72,7 @@ const MultiStepForm: React.FC = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/submit-form",
+        `${import.meta.env.BACKEND_BASEURL}/api/users/submit-form`,
         formData
       );
       console.log("Form data submitted successfully:", response.data);

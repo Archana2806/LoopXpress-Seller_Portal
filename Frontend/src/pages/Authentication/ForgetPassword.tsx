@@ -21,7 +21,7 @@ const ForgotPassword: React.FC = () => {
       setIsSubmitting(true);
       setMessage('');
 
-      const response = await axios.post('http://localhost:5000/api/users/forgot-password', {
+      const response = await axios.post(`${import.meta.env.BACKEND_BASEURL}/api/users/forgot-password`, {
         email,
       });
 

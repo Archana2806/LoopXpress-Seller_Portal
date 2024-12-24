@@ -33,7 +33,7 @@ const ProductList = () => {
   const fetchProducts = async () => {
     try {
       const authToken = localStorage.getItem('authToken');
-      const response = await fetch('http://localhost:5000/api/products/my-products', {
+      const response = await fetch(`${import.meta.env.BACKEND_BASEURL}/api/products/my-products`, {
         headers: {
           'Authorization': `Bearer ${authToken}`,
         },
@@ -82,7 +82,7 @@ const ProductList = () => {
   const handleConfirmDelete = async (id: string) => {
     try {
       const authToken = localStorage.getItem('authToken');
-      const response = await fetch(`http://localhost:5000/api/products/product/${id}`, {
+      const response = await fetch(`${import.meta.env.BACKEND_BASEURL}/api/products/product/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${authToken}`,

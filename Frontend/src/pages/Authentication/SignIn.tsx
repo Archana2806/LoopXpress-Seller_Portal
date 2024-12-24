@@ -22,7 +22,7 @@ const SignIn: React.FC = () => {
             setIsSubmitting(true);
             setErrorMessage("");
 
-            const response = await axios.post("http://localhost:5000/api/users/signin", {
+            const response = await axios.post(`${import.meta.env.BACKEND_BASEURL}/api/users/signin`, {
                 email,
                 password,
             });

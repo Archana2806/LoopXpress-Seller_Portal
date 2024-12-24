@@ -107,7 +107,7 @@ const AddNewProduct = ({ onProductAdded }: AddNewProductProps) => {
     const authToken = localStorage.getItem("authToken");
 
     try {
-      const response = await fetch('http://localhost:5000/api/products/add-product', {
+      const response = await fetch(`${import.meta.env.BACKEND_BASEURL}/api/products/add-product`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${authToken}`,
