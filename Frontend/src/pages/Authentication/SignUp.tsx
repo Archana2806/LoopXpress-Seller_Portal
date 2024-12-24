@@ -72,7 +72,7 @@ const MultiStepForm: React.FC = () => {
 
     try {
       const response = await axios.post(
-        "https://loop-xpress-seller-portal.vercel.app/api/users/submit-form",
+        "http://localhost:5000/api/users/submit-form",
         formData
       );
       console.log("Form data submitted successfully:", response.data);
